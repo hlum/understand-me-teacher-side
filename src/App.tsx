@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import { onAuthStateChanged } from 'firebase/auth'
-import { auth } from "./firebase/firebase.jsx";
-import Login from './components/Login.jsx'
-import {logOut} from "./api/auth.jsx";
-import ApiKeyInput from "./components/ApiKeyInput.jsx";
+import { auth } from "./firebase/firebase.js";
+import Login from './components/Login.js'
+import ApiKeyInput from "./components/ApiKeyInput.js";
+import type { User } from "firebase/auth";
 
 const App = () => {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {

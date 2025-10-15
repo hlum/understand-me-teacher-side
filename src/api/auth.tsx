@@ -1,4 +1,4 @@
-import { auth, provider } from "../firebase/firebase.jsx";
+import { auth, provider } from "../firebase/firebase.js";
 import { signInWithPopup } from "firebase/auth"
 
 const signInWithGoogle = async () => {
