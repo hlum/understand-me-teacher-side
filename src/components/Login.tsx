@@ -1,5 +1,5 @@
 import React from 'react'
-import { signInWithGoogle } from "../api/auth.jsx";
+import { signInWithGoogle } from "../api/auth.js";
 
 const Login = () => {
 

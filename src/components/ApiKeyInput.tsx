@@ -1,16 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import {saveUser, userAlreadyExistsInDB } from "../api/user.jsx";
-import {logOut} from "../api/auth.jsx";
+import React, { useEffect, useState } from "react";
+import { saveUser, userAlreadyExistsInDB } from "../api/user.js";
+import { logOut } from "../api/auth.js";
+import type { User } from "firebase/auth";
 
-/**
- *
- * @param user - FirebaseのAuthDataResult
- * @param user.displayName - ユーザーの表示名
- * @param {string} user.uid - Firebase AuthのUUID
- * @param {string} user.email - Email アドレス
- * @param {string} user.photoURL - Profile写真
- */
-const ApiKeyInput = ({ user }) => {
+// 👇 define props type
+interface ApiKeyInputProps {
+    user: User;
+}
+
+const ApiKeyInput: React.FC<ApiKeyInputProps> = ({ user }) => {
     const [teacherApiKey, setTeacherApiKey] = useState("");
     const [userExists, setUserExists] = useState(false);
 
@@ -24,13 +22,13 @@ const ApiKeyInput = ({ user }) => {
 
     const logout = () => logOut();
 
-    const checkTeacherApiKey = (apiKey) => {
+    const checkTeacherApiKey = async (apiKey: string) => {
         const configTeacherAPIKEY = import.meta.env.VITE_TEACHER_APIKEY;
 
         if (apiKey === configTeacherAPIKEY) {
             console.log("教師用APIキーが正しいです。");
             try {
-                saveUser(user.uid, user.email, user.photoURL, apiKey);
+                await saveUser(user.uid, user.email ?? "", user.photoURL ?? "", apiKey);
                 setUserExists(true);
             } catch (error) {
                 alert("ユーザー情報の保存に失敗しました。");
@@ -41,16 +39,17 @@ const ApiKeyInput = ({ user }) => {
         }
     };
 
-
     return (
         <>
-        { userExists ? (
-            <div>
-                <h2>Welcome, { user.displayName }</h2>
-                <img src={user.photoURL} alt="Profile picture" width={50} />
-                <br/>
-                <button onClick={logout}>Logout</button>
-            </div>
+            {userExists ? (
+                <div>
+                    <h2>Welcome, {user.displayName}</h2>
+                    {user.photoURL && (
+                        <img src={user.photoURL} alt="Profile picture" width={50} />
+                    )}
+                    <br />
+                    <button onClick={logout}>Logout</button>
+                </div>
             ) : (
                 <div>
                     <h2>教師用APIキーを入力してください</h2>
@@ -63,9 +62,8 @@ const ApiKeyInput = ({ user }) => {
                         検証する
                     </button>
                 </div>
-            ) }
+            )}
         </>
-
     );
 };
 
