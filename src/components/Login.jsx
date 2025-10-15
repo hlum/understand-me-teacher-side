@@ -1,22 +1,23 @@
 import React from 'react'
-import { signInWithPopup } from "firebase/auth";
-import {auth, provider} from "../firebase/firebase.jsx";
+import { signInWithGoogle } from "../api/auth.jsx";
 
 const Login = () => {
-    const signInWithGoogle = async () => {
+
+
+    const handleLogin = async () => {
         try {
-            const result = await signInWithPopup(auth, provider);
-            const user = result.user;
+            const user = await signInWithGoogle();
             console.log("User Info: " ,user);
-        } catch (error) {
-            console.log("Google Sign-In Error: ", error);
+        } catch {
+            alert("Login 失敗しました。")
         }
     }
+
 
     return (
         <div>
             <h2> Login With Google </h2>
-            <button onClick={signInWithGoogle}>Sign In With Google</button>
+            <button onClick={handleLogin}>Sign In With Google</button>
         </div>
     );
 };
