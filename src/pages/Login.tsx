@@ -1,12 +1,14 @@
-import React, {useEffect} from 'react'
 import { signInWithGoogle } from "../api/auth.js";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+    const navigate = useNavigate();
 
 
     const handleLogin = async () => {
         try {
             const user = await signInWithGoogle();
+            navigate("/");
         } catch {
             alert("Login 失敗しました。")
         }

@@ -44,4 +44,4 @@ const ApiKeyCheckBeforeRegistration: React.FC<ApiKeyInputProps> = ({ user, setUs
     );
 };
 
-export default ApiKeyCheckBeforeRegistration;
+export { ApiKeyCheckBeforeRegistration };

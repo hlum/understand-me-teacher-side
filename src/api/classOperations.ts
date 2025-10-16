@@ -32,3 +32,34 @@ export const fetchClassList = async (
         throw new Error(result.message);
     }
 }
+
+export const addNewClass = async (
+    newClass: Class
+) => {
+    const endpoint = `${import.meta.env.VITE_API_ENDPOINT}/class/add_class.php`
+    const API_KEY = import.meta.env.VITE_TEACHER_APIKEY as string
+
+    const body = JSON.stringify({
+        teacher_id: newClass.teacherID,
+        name: newClass.name,
+        admission_year: newClass.admissionYear,
+        major_code: newClass.majorCode
+    });
+
+    const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: API_KEY,
+        },
+        body,
+    });
+
+    const result = await response.json() as { status: "success" | "error", message: string };
+
+    if (result.status === "success") {
+        console.log("✅ クラス追加成功。");
+    } else {
+        throw new Error(result.message);
+    }
+}
