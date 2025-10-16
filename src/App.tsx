@@ -6,6 +6,7 @@ import {userAlreadyExistsInDB} from "./api/user.js";
 import {logOut} from "./api/auth.js";
 import ApiKeyCheckBeforeRegistration from "./components/ApiKeyCheckBeforeRegistration.js";
 import Login from "./components/Login.js";
+import { MainDashboardView } from "./components/MainDashboardView.js";
 
 const App = () => {
     const [user, setUser] = useState<User | null>(null);
@@ -36,14 +37,7 @@ const App = () => {
                 userExists ? (
                     <>
                         {/* Login終わって, DBにユーザーが存在する場合 */}
-                        <div>
-                            <h2>Welcome, {user.displayName}</h2>
-                            {user.photoURL && (
-                                <img src={user.photoURL} alt="Profile picture" width={50} />
-                            )}
-                            <br />
-                            <button onClick={logout}>Logout</button>
-                        </div>
+                       <MainDashboardView user={user}/>
                     </>
                 ) : (
                     <>
