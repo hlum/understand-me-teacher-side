@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import type {User} from "firebase/auth";
 import type { Class } from "../types/class.js";
 import { fetchClassList } from "../api/classOperations.js";
+import {useNavigate} from "react-router-dom";
 
 type MainDashboardViewProps = {
     user: User
@@ -10,6 +11,7 @@ type MainDashboardViewProps = {
 const MainDashboardView = (props: MainDashboardViewProps) => {
     const { user } = props
     const [classes, setClasses] = useState<Class[]>([])
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchClasses = async () => {
@@ -23,10 +25,13 @@ const MainDashboardView = (props: MainDashboardViewProps) => {
 
     return (
         <div>
+            <button>
+                <a href="#" onClick={() => navigate("/addNewClassView")}>クラスを追加する</a>
+            </button>
             <h1>Welcome {user.displayName}</h1>
             { classes.length === 0 ?
 
-                <p>No classes available.</p>
+                <p>担当しているクラスがありません。</p>
 
                 :
 

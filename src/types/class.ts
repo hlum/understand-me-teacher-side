@@ -7,7 +7,7 @@ export type Class = {
 }
 
 export const transformClassResponse = (raw: any): Class => ({
-    id: raw.class_id,
+    id: raw.id,
     name: raw.name,
     teacherID: raw.teacher_id,
     admissionYear: Number(raw.admission_year),
