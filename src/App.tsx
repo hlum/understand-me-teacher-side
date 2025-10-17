@@ -11,6 +11,7 @@ import { ApiKeyCheckBeforeRegistration } from "./pages/ApiKeyCheckBeforeRegistra
 import { ProtectedRoute } from "./components/ProtectedRoute.js";
 import AddNewClassView from "./pages/AddNewClassView.js";
 import {ClassDetailPage} from "./pages/ClassDetailPage.js";
+import {AddNewHomeworkPage} from "./pages/AddNewHomeworkPage.js";
 
 const App = () => {
     const [user, setUser] = useState<User | null>(null);
@@ -70,6 +71,7 @@ const App = () => {
 
             <Route path="/classDetail/:classID" element={<ClassDetailPage/>}/>
 
+            <Route path="/AddNewHomeworkPage" element={<AddNewHomeworkPage/>}/>
         </Routes>
 );
 };

@@ -35,6 +35,7 @@ const MainDashboardView = ({ user }: MainDashboardViewProps) => {
                     onClick={() => navigate("/addNewClassView")}
                     className="inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold px-5 py-2.5 rounded-lg shadow-md hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 ease-in-out"
                 >
+                    {/* Plus Icon */}
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-5 w-5 mr-2"

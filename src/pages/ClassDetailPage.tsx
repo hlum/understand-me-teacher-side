@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import type { Class } from "../types/class.js";
 import { fetchClassDetail } from "../api/classOperations.js";
 import { fetchHomeworkListForClass } from "../api/HomeworksOperations.js";
 
 
 export const ClassDetailPage = () => {
+    const navigate = useNavigate();
     const { classID } = useParams<{ classID: string }>();
     const [classDetail, setClassDetail] = useState<Class | null>(null);
     const [homeworks, setHomeworks] = useState<Homework[]>([]);
@@ -64,16 +65,34 @@ export const ClassDetailPage = () => {
     return (
         <div className="max-w-3xl mx-auto px-6 py-10">
             {/* Header */}
-            <div className="mb-8">
+            <div className="flex flex-wrap justify-between items-center mb-8 gap-4">
                 <h1 className="text-3xl font-bold text-gray-800">{classDetail.name}</h1>
                 <p className="text-gray-500 mt-2">
-          <span className="mr-4">
-            <strong>Admission Year:</strong> {classDetail.admissionYear}
-          </span>
-                    <span>
-            <strong>Major:</strong> {classDetail.majorCode.toUpperCase()}
-          </span>
+              <span className="mr-4">
+                <strong>Admission Year:</strong> {classDetail.admissionYear}
+              </span>
+                        <span>
+                <strong>Major:</strong> {classDetail.majorCode.toUpperCase()}
+              </span>
                 </p>
+                <button
+                    onClick={() =>
+                        navigate("/AddNewHomeworkPage", { state: { classID: classDetail.id, teacherID: classDetail?.teacherID } })
+                }
+                    className="inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold px-5 py-2.5 rounded-lg shadow-md hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 ease-in-out cursor-pointer"
+                >
+                    {/* Plus Icon */}
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 mr-2"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    課題を追加
+                </button>
             </div>
 
             {/* Homework Section */}
