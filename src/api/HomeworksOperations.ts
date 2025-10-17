@@ -35,7 +35,7 @@ export const fetchHomeworkListForClass = async (
 }
 
 
-const addNewHomework = async (
+export const addNewHomework = async (
     classID: string,
     teacherID: string,
     title: string,
@@ -44,13 +44,14 @@ const addNewHomework = async (
 ): Promise<void> => {
     const endPoint = `${import.meta.env.VITE_API_ENDPOINT}/homework/add_homework.php`
     const apiKey = import.meta.env.VITE_TEACHER_APIKEY as string
+    const dueDateInISO = new Date(`${dueDate}T23:59:00Z`).toISOString();
 
     const body = JSON.stringify({
         teacher_id: teacherID,
         class_id: classID,
         title: title,
         description: description,
-        due_date: dueDate
+        due_date: dueDateInISO
     })
 
     const response = await fetch(endPoint, {
