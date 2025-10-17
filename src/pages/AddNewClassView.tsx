@@ -62,37 +62,80 @@ const AddNewClassView = (props: AddNewClassViewProps) => {
 
 
     return (
-      <div>
-          <h2>クラス追加ページ</h2> <br/>
-          <input
-              placeholder="クラス名"
-              value={className}
-              onChange={(event)=>{
-                  setClassName(event.target.value)
-                  checkClassName(event.target.value)
-              }
-          } /> <br/>
+        <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 flex items-center justify-center px-6 py-12">
+            <div className="w-full max-w-2xl bg-gray-900/70 backdrop-blur-xl border border-gray-700 rounded-2xl shadow-[0_0_25px_rgba(0,0,0,0.6)] hover:shadow-[0_0_40px_rgba(0,0,0,0.8)] transition-all duration-500 p-10">
+                {/* Header */}
+                <h1 className="text-4xl font-bold text-center text-white mb-10 tracking-wide">
+                    クラスを追加
+                </h1>
 
-          <input
-              placeholder="対象の入学年度"
-              value={admissionYear}
-              onChange={(event)=>{
-                  setAdmissionYear(event.target.value)
-                  checkAdmissionYear(event.target.value)}}
-          /> <br/>
+                {/* クラス名 */}
+                <div className="mb-8">
+                    <label className="block text-gray-300 font-medium mb-2">クラス名</label>
+                    <input
+                        type="text"
+                        placeholder="例: iOS開発クラス"
+                        value={className}
+                        onChange={(event) => {
+                            setClassName(event.target.value);
+                            checkClassName(event.target.value);
+                        }}
+                        className={`w-full px-4 py-3 rounded-lg bg-gray-800/80 text-white border ${
+                            errors.className ? "border-red-500" : "border-gray-700"
+                        } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition`}
+                    />
+                    {errors.className && (
+                        <p className="text-red-500 text-sm mt-2">{errors.className}</p>
+                    )}
+                </div>
 
-          <input
-              placeholder="対象の専攻コード"
-              value={majorCode}
-              onChange={(event)=>setMajorCode(event.target.value)}
-          /> <br/>
+                {/* 入学年度 */}
+                <div className="mb-8">
+                    <label className="block text-gray-300 font-medium mb-2">対象の入学年度</label>
+                    <input
+                        type="number"
+                        placeholder="例: 2025"
+                        value={admissionYear}
+                        onChange={(event) => {
+                            setAdmissionYear(event.target.value);
+                            checkAdmissionYear(event.target.value);
+                        }}
+                        className={`w-full px-4 py-3 rounded-lg bg-gray-800/80 text-white border ${
+                            errors.admissionYear ? "border-red-500" : "border-gray-700"
+                        } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition`}
+                    />
+                    {errors.admissionYear && (
+                        <p className="text-red-500 text-sm mt-2">{errors.admissionYear}</p>
+                    )}
+                </div>
 
-          {errors.className && <p style={{ color: "red" }}>{errors.className}</p>}
-          {errors.admissionYear && <p style={{ color: "red" }}>{errors.admissionYear}</p>}
+                {/* 専攻コード */}
+                <div className="mb-10">
+                    <label className="block text-gray-300 font-medium mb-2">専攻コード</label>
+                    <input
+                        type="text"
+                        placeholder="例: ios, java, web"
+                        value={majorCode}
+                        onChange={(event) => setMajorCode(event.target.value)}
+                        className="w-full px-4 py-3 rounded-lg bg-gray-800/80 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                    />
+                </div>
 
-          <button disabled={ errors.className != null && errors.admissionYear != null} onClick={handleSubmit}>クラスを追加する</button>
-      </div>
-  );
+                {/* ボタン */}
+                <button
+                    onClick={handleSubmit}
+                    disabled={errors.className === null || errors.admissionYear === null}
+                    className={`w-full py-3 rounded-lg font-semibold text-lg tracking-wide transition-all duration-300 ${
+                        errors.className || errors.admissionYear
+                            ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+                            : "bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-lg hover:shadow-[0_0_20px_rgba(37,99,235,0.6)] hover:-translate-y-0.5"
+                    }`}
+                >
+                    クラスを追加する
+                </button>
+            </div>
+        </div>
+    );
 };
 
 export default AddNewClassView;

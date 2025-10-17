@@ -23,19 +23,18 @@ const MainDashboardView = ({ user }: MainDashboardViewProps) => {
     }, [])
 
     return (
-        <div className="min-h-screen bg-gray-50 p-6">
+        <div className="min-h-screen bg-gradient-to-br from-gray-950 via-blue-950 to-gray-900 p-8">
 
             {/* Header Section */}
-            <div className="flex flex-wrap justify-between items-center mb-8 gap-4">
-                <h1 className="text-3xl sm:text-4xl font-bold text-gray-800">
-                    クラス管理、 <span className="text-green-600">{user.displayName}</span>
+            <div className="flex flex-wrap justify-between items-center mb-10 gap-6">
+                <h1 className="text-3xl sm:text-4xl font-bold text-white">
+                    クラス管理、 <span className="text-green-400">{user.displayName}</span>
                 </h1>
 
                 <button
                     onClick={() => navigate("/addNewClassView")}
-                    className="inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold px-5 py-2.5 rounded-lg shadow-md hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 ease-in-out"
+                    className="inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-semibold px-6 py-3 rounded-lg shadow-md hover:shadow-[0_0_25px_rgba(59,130,246,0.7)] hover:-translate-y-0.5 transition-all duration-300 ease-in-out"
                 >
-                    {/* Plus Icon */}
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-5 w-5 mr-2"
@@ -51,34 +50,34 @@ const MainDashboardView = ({ user }: MainDashboardViewProps) => {
 
             {/* Class List Section */}
             {classes.length === 0 ? (
-                <div className="flex justify-center items-center py-20 text-center">
-                    <p className="text-gray-500 text-lg">担当しているクラスがありません。</p>
+                <div className="flex justify-center items-center py-24 text-center">
+                    <p className="text-gray-400 text-lg">担当しているクラスがありません。</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {classes.map((cls) => (
                         <div
                             key={cls.id}
                             onClick={() => navigate(`/classDetail/${cls.id}`)}
-                            className="bg-white border border-gray-200 rounded-2xl p-6 shadow hover:shadow-2xl hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 cursor-pointer"
+                            className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 shadow-md hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] hover:-translate-y-0.5 transition-all duration-300 ease-in-out cursor-pointer"
                         >
                             <div className="flex justify-between items-start mb-4">
-                                <h2 className="text-lg font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">
+                                <h2 className="text-lg font-semibold text-white hover:text-blue-400 transition-colors">
                                     {cls.name}
                                 </h2>
                             </div>
 
                             <div className="flex flex-wrap gap-2">
                                 {/* Year Badge */}
-                                <span className="inline-flex items-center gap-1 bg-gradient-to-br from-blue-100 to-blue-200 text-blue-800 px-3 py-1 rounded-md text-sm font-semibold border border-blue-300">
-              <span className="opacity-75 text-xs">第</span>
+                                <span className="inline-flex items-center gap-1 bg-gradient-to-br from-blue-950 to-blue-800 text-blue-200 px-3 py-1 rounded-md text-sm font-semibold border border-blue-700 shadow-[inset_0_0_8px_rgba(59,130,246,0.5)]">
+              <span className="opacity-70 text-xs">第</span>
                                     {cls.admissionYear}
-                                    <span className="opacity-75 text-xs">年度</span>
+                                    <span className="opacity-70 text-xs">年度</span>
             </span>
 
                                 {/* Major Badge */}
-                                <span className="inline-flex items-center gap-1 bg-gradient-to-br from-green-100 to-green-200 text-green-800 px-3 py-1 rounded-md text-sm font-semibold border border-green-300">
-              {cls.majorCode}
+                                <span className="inline-flex items-center gap-1 bg-gradient-to-br from-green-950 to-green-800 text-green-200 px-3 py-1 rounded-md text-sm font-semibold border border-green-700 shadow-[inset_0_0_8px_rgba(74,222,128,0.5)]">
+              {cls.majorCode.toUpperCase()}
             </span>
                             </div>
                         </div>
@@ -86,6 +85,7 @@ const MainDashboardView = ({ user }: MainDashboardViewProps) => {
                 </div>
             )}
         </div>
+
 
     );
 }
