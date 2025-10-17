@@ -1,24 +1,25 @@
 import React from 'react';
 import {useLocation} from "react-router-dom";
-// +-------------+--------------+------+-----+-------------------+-------------------+
-// | Field       | Type         | Null | Key | Default           | Extra             |
-// +-------------+--------------+------+-----+-------------------+-------------------+
-// | id          | char(36)     | NO   | PRI | NULL              |                   |
-// | teacher_id  | char(36)     | NO   | MUL | NULL              |                   |
-// | class_id    | char(36)     | NO   | MUL | NULL              |                   |
-// | title       | varchar(255) | NO   |     | NULL              |                   |
-// | description | text         | YES  |     | NULL              |                   |
-// | due_date    | date         | YES  |     | NULL              |                   |
-// | created_at  | timestamp    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
-// +-------------+--------------+------+-----+-------------------+-------------------+
-//     7 rows in set (0.01 sec)
+import { addNewHomework } from '../api/HomeworksOperations.js';
+
+
 export const AddNewHomeworkPage = () => {
   const location = useLocation();
   const { classID, teacherID } = location.state || {};
   const [title, setTitle] = React.useState('');
   const [description, setDescription] = React.useState('');
   const [dueDate, setDueDate] = React.useState('');
-  
+
+
+  const handleSubmit = async () => {
+    try {
+      await addNewHomework(classID, teacherID, title, description, dueDate);
+    } catch (error) {
+        alert(`課題の追加に失敗しました。もう一度やり直してください。`);
+        console.error(error);
+    }
+  }
+
   return (
       <>
         <h3>クラスID： {classID}</h3>
@@ -44,7 +45,7 @@ export const AddNewHomeworkPage = () => {
         />
         <br/>
         <button
-            onClick={()=>{}} >追加する
+            onClick={handleSubmit} >追加する
         </button>
       </>
 
