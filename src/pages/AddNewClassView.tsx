@@ -38,7 +38,7 @@ const AddNewClassView = (props: AddNewClassViewProps) => {
             checkClassName(className);
             checkAdmissionYear(admissionYear);
 
-            if (!errors.className && !errors.admissionYear) {
+            if (errors.className && errors.admissionYear) {
                 const newClass = {
                     teacherID: user.uid,
                     name: className,
@@ -49,14 +49,15 @@ const AddNewClassView = (props: AddNewClassViewProps) => {
                     await addNewClass(newClass as Class)
                 }catch (error) {
                     alert(`クラスの追加に失敗しました。${error}`);
+                }finally {
+                    // フォームをリセット
+                    setClassName("");
+                    setAdmissionYear("");
+                    setMajorCode("");
+                    setErrors({});
                 }
             }
 
-            // フォームをリセット
-            setClassName("");
-            setAdmissionYear("");
-            setMajorCode("");
-            setErrors({});
 
     }
 
@@ -91,10 +92,10 @@ const AddNewClassView = (props: AddNewClassViewProps) => {
 
                 {/* 入学年度 */}
                 <div className="mb-8">
-                    <label className="block text-gray-300 font-medium mb-2">対象の入学年度</label>
+                    <label className="block text-gray-300 font-medium mb-2">対象の入学年度 </label>
                     <input
                         type="number"
-                        placeholder="例: 2025"
+                        placeholder="例: 23"
                         value={admissionYear}
                         onChange={(event) => {
                             setAdmissionYear(event.target.value);
@@ -114,7 +115,7 @@ const AddNewClassView = (props: AddNewClassViewProps) => {
                     <label className="block text-gray-300 font-medium mb-2">専攻コード</label>
                     <input
                         type="text"
-                        placeholder="例: ios, java, web"
+                        placeholder="例: cm, ap, ac"
                         value={majorCode}
                         onChange={(event) => setMajorCode(event.target.value)}
                         className="w-full px-4 py-3 rounded-lg bg-gray-800/80 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
