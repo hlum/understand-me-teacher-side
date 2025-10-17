@@ -10,6 +10,7 @@ import { Routes, Route } from "react-router-dom";
 import { ApiKeyCheckBeforeRegistration } from "./pages/ApiKeyCheckBeforeRegistration.js";
 import { ProtectedRoute } from "./components/ProtectedRoute.js";
 import AddNewClassView from "./pages/AddNewClassView.js";
+import {ClassDetailPage} from "./pages/ClassDetailPage.js";
 
 const App = () => {
     const [user, setUser] = useState<User | null>(null);
@@ -66,8 +67,11 @@ const App = () => {
                     </ProtectedRoute>
                 }
             />
+
+            <Route path="/classDetail/:classID" element={<ClassDetailPage/>}/>
+
         </Routes>
-    );
+);
 };
 
 export default App;
