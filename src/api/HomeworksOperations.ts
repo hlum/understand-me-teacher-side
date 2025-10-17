@@ -33,3 +33,40 @@ export const fetchHomeworkListForClass = async (
         throw new Error(result.message);
     }
 }
+
+
+const addNewHomework = async (
+    classID: string,
+    teacherID: string,
+    title: string,
+    description: string | null,
+    dueDate: string | null
+): Promise<void> => {
+    const endPoint = `${import.meta.env.VITE_API_ENDPOINT}/homework/add_homework.php`
+    const apiKey = import.meta.env.VITE_TEACHER_APIKEY as string
+
+    const body = JSON.stringify({
+        teacher_id: teacherID,
+        class_id: classID,
+        title: title,
+        description: description,
+        due_date: dueDate
+    })
+
+    const response = await fetch(endPoint, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: apiKey,
+        },
+        body,
+    })
+
+    const result = await response.json() as { status: "success" | "error", message: string};
+
+    if(result.status === "success") {
+        console.log("✅ Homework 保存成功。");
+    } else {
+        throw new Error(result.message);
+    }
+}
