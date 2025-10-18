@@ -6,18 +6,17 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-
     const handleClick = async () => {
         setLoading(true);
         try {
             const user = await signInWithGoogle();
             navigate("/");
         } catch {
-            alert("Login 失敗しました。")
+            alert("Login 失敗しました。");
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 flex items-center justify-center px-6 py-12">
@@ -39,9 +38,9 @@ const Login = () => {
                 >
                     {loading ? (
                         <span className="flex items-center gap-2">
-              <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              ログイン中...
-            </span>
+                            <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                            ログイン中...
+                        </span>
                     ) : (
                         <>
                             <svg
@@ -73,6 +72,5 @@ const Login = () => {
             </div>
         </div>
     );
-
 };
-export default Login
+export default Login;

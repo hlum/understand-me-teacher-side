@@ -5,9 +5,12 @@ import type { User } from "firebase/auth";
 type ApiKeyInputProps = {
     user: User;
     setUserExists: (exists: boolean) => void;
-}
+};
 
-const ApiKeyCheckBeforeRegistration: React.FC<ApiKeyInputProps> = ({ user, setUserExists }) => {
+const ApiKeyCheckBeforeRegistration: React.FC<ApiKeyInputProps> = ({
+    user,
+    setUserExists,
+}) => {
     const [teacherApiKey, setTeacherApiKey] = useState("");
 
     const checkTeacherApiKey = async (apiKey: string) => {
@@ -16,7 +19,12 @@ const ApiKeyCheckBeforeRegistration: React.FC<ApiKeyInputProps> = ({ user, setUs
         if (apiKey === configTeacherAPIKEY) {
             console.log("教師用APIキーが正しいです。");
             try {
-                await saveUser(user.uid, user.email ?? "", user.photoURL ?? "", apiKey);
+                await saveUser(
+                    user.uid,
+                    user.email ?? "",
+                    user.photoURL ?? "",
+                    apiKey
+                );
                 setUserExists(true);
             } catch (error) {
                 alert("ユーザー情報の保存に失敗しました。");

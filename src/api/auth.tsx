@@ -1,5 +1,5 @@
 import { auth, provider } from "../firebase/firebase.js";
-import { signInWithPopup } from "firebase/auth"
+import { signInWithPopup } from "firebase/auth";
 
 const signInWithGoogle = async () => {
     try {
@@ -9,16 +9,15 @@ const signInWithGoogle = async () => {
         console.error("ログインエラ：", error);
         throw error;
     }
-}
-
+};
 
 const logOut = async () => {
     try {
-        await auth.signOut()
+        await auth.signOut();
     } catch (error) {
         console.error(error);
         throw error;
     }
-}
+};
 
 export { signInWithGoogle, logOut };

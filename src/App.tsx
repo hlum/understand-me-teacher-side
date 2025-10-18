@@ -10,8 +10,9 @@ import { Routes, Route } from "react-router-dom";
 import { ApiKeyCheckBeforeRegistration } from "./pages/ApiKeyCheckBeforeRegistration.js";
 import { ProtectedRoute } from "./components/ProtectedRoute.js";
 import AddNewClassView from "./pages/AddNewClassView.js";
-import {ClassDetailPage} from "./pages/ClassDetailPage.js";
-import {AddNewHomeworkPage} from "./pages/AddNewHomeworkPage.js";
+import { ClassDetailPage } from "./pages/ClassDetailPage.js";
+import { AddNewHomeworkPage } from "./pages/AddNewHomeworkPage.js";
+import { HomeworkProgressPage } from "./pages/HomeworkProgressPage.js";
 
 const App = () => {
     const [user, setUser] = useState<User | null>(null);
@@ -92,14 +93,18 @@ const App = () => {
 
                     {/* 課題追加ページ */}
                     <Route
-                        path="/AddNewHomeworkPage"
+                        path="/addNewHomeworkPage"
                         element={<AddNewHomeworkPage />}
+                    />
+
+                    <Route
+                        path="/homeworkDetail"
+                        element={<HomeworkProgressPage />}
                     />
                 </Routes>
             </div>
         </div>
     );
-
 };
 
 export default App;
