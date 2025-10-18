@@ -13,7 +13,9 @@ export const saveUser = async (
     photoURL: string,
     apiKey: string
 ): Promise<void> => {
-    const endpoint = `${import.meta.env.VITE_API_ENDPOINT}/user/register_teacher.php`;
+    const endpoint = `${
+        import.meta.env.VITE_API_ENDPOINT
+    }/user/register_teacher.php`;
 
     try {
         const body = JSON.stringify({
@@ -32,7 +34,10 @@ export const saveUser = async (
             body,
         });
 
-        const result = await response.json() as { status: "success" | "error", message: string};
+        const result = (await response.json()) as {
+            status: "success" | "error";
+            message: string;
+        };
 
         if (result.status === "success") {
             console.log("✅ User 保存成功。");
@@ -68,24 +73,22 @@ export const userAlreadyExistsInDB = async (
             },
         });
 
-        const result = await response.json() as { data: string | null};
-        if(!result.data) return false;
+        const result = (await response.json()) as { data: string | null };
+        if (!result.data) return false;
 
         let decodedData: { role: string }[];
 
         try {
             decodedData = JSON.parse(result.data) as { role: string }[];
-            if(!Array.isArray(decodedData) || decodedData.length === 0)  return false;
+            if (!Array.isArray(decodedData) || decodedData.length === 0)
+                return false;
             const firstUser = decodedData[0];
             if (!firstUser || !firstUser.role) return false;
             return firstUser.role === "teacher";
-
         } catch (e) {
             console.error("❌ JSON decoded error:", e);
             return false;
         }
-
-
     } catch (error) {
         console.error("❌ ユーザー存在確認に失敗:", error);
         return false;

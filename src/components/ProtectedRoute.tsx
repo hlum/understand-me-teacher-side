@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 import type { User } from "firebase/auth";
-import type {JSX} from "react";
+import type { JSX } from "react";
 
 interface ProtectedRouteProps {
     user: User | null;
@@ -12,5 +12,4 @@ export const ProtectedRoute = ({ user, children }: ProtectedRouteProps) => {
         return <Navigate to="/login" replace />;
     }
     return children;
-}
-
+};
