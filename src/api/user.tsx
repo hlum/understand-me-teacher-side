@@ -1,15 +1,15 @@
-import * as querystring from "node:querystring";
-
 /**
  * ユーザーデータをLollipopサーバーに保存（新規ユーザーのみ）
  * @param id - Firebase Auth の UUID
  * @param email - ユーザーのメールアドレス
+ * @param name - ユーザーの名前
  * @param photoURL - プロフィール写真のURL
  * @param apiKey - 教師専用の API キー
  */
 export const saveUser = async (
     id: string,
     email: string,
+    name: string,
     photoURL: string,
     apiKey: string
 ): Promise<void> => {
@@ -21,6 +21,7 @@ export const saveUser = async (
         const body = JSON.stringify({
             id,
             email,
+            name,
             role: "teacher",
             photoURL,
         });
