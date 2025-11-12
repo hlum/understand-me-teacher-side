@@ -1,7 +1,7 @@
 import React from "react";
 import { type User } from "firebase/auth";
 import { useState } from "react";
-import { type Class } from "../Entity/class.js";
+import { type Class } from "../Entity/Class.js";
 import { addNewClass } from "../Manager/ClassManager.js";
 
 interface AddNewClassViewProps {

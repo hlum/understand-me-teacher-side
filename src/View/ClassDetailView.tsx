@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import type { Class } from "../Entity/class.js";
+import type { Class } from "../Entity/Class.js";
 import { fetchClassDetail } from "../Manager/ClassManager.js";
 import { fetchHomeworkListForClass } from "../Manager/HomeworkManager.js";
 

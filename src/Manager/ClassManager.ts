@@ -1,4 +1,4 @@
-import { type Class, transformClassResponse } from "../Entity/class.js";
+import { type Class, transformClassResponse } from "../Entity/Class.js";
 
 export const fetchClassDetail = async (
 	classID: string

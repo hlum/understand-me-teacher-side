@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import type { User } from "firebase/auth";
-import type { Class } from "../Entity/class.js";
+import type { Class } from "../Entity/Class.js";
 import { fetchClassList } from "../Manager/ClassManager.js";
 import { useNavigate } from "react-router-dom";
 

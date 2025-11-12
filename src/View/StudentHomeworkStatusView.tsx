@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { fetchHomeworkStatusForAllStudents } from "../Manager/HomeworkManager.js";
 import type { HomeworkDetail } from "../Entity/Homework.js";
 
-export const StudentHomeworkStatusView = () => {
+const StudentHomeworkStatusView = () => {
 	const location = useLocation();
 	const { homeworkID } = location.state || {};
 	const [homeworkWithStatus, setHomeworkWithStatus] = React.useState<
