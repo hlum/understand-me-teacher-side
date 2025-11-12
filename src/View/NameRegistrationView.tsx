@@ -7,7 +7,7 @@ type NameInputPageProps = {
 	onNameSubmit: (name: string) => void;
 };
 
-const NameInputPage: React.FC<NameInputPageProps> = ({
+const NameRegistrationView: React.FC<NameInputPageProps> = ({
 	user,
 	apiKey,
 	onNameSubmit,
@@ -92,4 +92,4 @@ const NameInputPage: React.FC<NameInputPageProps> = ({
 	);
 };
 
-export { NameInputPage };
+export { NameRegistrationView as NameInputPage };

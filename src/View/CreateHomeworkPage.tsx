@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import { addNewHomework } from "../Manager/HomeworkManager.js";
 
-export const AddNewHomeworkPage = () => {
+export const CreateHomeworkPage = () => {
 	const location = useLocation();
 	const { classID, teacherID } = location.state || {};
 	const [title, setTitle] = React.useState("");

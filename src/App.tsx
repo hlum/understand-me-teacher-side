@@ -4,15 +4,15 @@ import { auth } from "./firebase/firebase.js";
 import type { User } from "firebase/auth";
 import { userAlreadyExistsInDB } from "./Manager/UserManager.js";
 import { logOut } from "./Manager/AuthManager.js";
-import Login from "./View/Login.js";
+import SignInView from "./View/SignInView.js";
 import { MainDashboardView } from "./View/MainDashboardView.js";
 import { Routes, Route } from "react-router-dom";
-import { ApiKeyCheckBeforeRegistration } from "./View/ApiKeyCheckBeforeRegistration.js";
+import { ApiKeyCheckBeforeRegistration } from "./View/TeacherApiKeyValidationForm.js";
 import { ProtectedRoute } from "./View/Components/ProtectedRoute.js";
-import AddNewClassView from "./View/AddNewClassView.js";
-import { ClassDetailPage } from "./View/ClassDetailPage.js";
-import { AddNewHomeworkPage } from "./View/AddNewHomeworkPage.js";
-import { HomeworkProgressPage } from "./View/HomeworkProgressPage.js";
+import CreateClassView from "./View/CreateClassView.js";
+import { ClassDetailView } from "./View/ClassDetailView.js";
+import { CreateHomeworkPage } from "./View/CreateHomeworkPage.js";
+import { StudentHomeworkStatusView } from "./View/StudentHomeworkStatusView.js";
 
 const App = () => {
 	const [user, setUser] = useState<User | null>(null);
@@ -55,7 +55,7 @@ const App = () => {
 		<div className="w-full mx-auto">
 			<Routes>
 				{/* ログインページ */}
-				<Route path="/login" element={<Login />} />
+				<Route path="/login" element={<SignInView />} />
 
 				{/* メインページ */}
 				<Route
@@ -79,7 +79,7 @@ const App = () => {
 					path="/addNewClassView"
 					element={
 						<ProtectedRoute user={user}>
-							<AddNewClassView user={user!} />
+							<CreateClassView user={user!} />
 						</ProtectedRoute>
 					}
 				/>
@@ -87,18 +87,18 @@ const App = () => {
 				{/* クラス詳細ページ */}
 				<Route
 					path="/classDetail/:classID"
-					element={<ClassDetailPage />}
+					element={<ClassDetailView />}
 				/>
 
 				{/* 課題追加ページ */}
 				<Route
 					path="/addNewHomeworkPage"
-					element={<AddNewHomeworkPage />}
+					element={<CreateHomeworkPage />}
 				/>
 
 				<Route
 					path="/homeworkDetail"
-					element={<HomeworkProgressPage />}
+					element={<StudentHomeworkStatusView />}
 				/>
 			</Routes>
 		</div>

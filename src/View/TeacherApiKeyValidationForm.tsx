@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { saveUser } from "../Manager/UserManager.js";
 import type { User } from "firebase/auth";
-import { NameInputPage } from "./NameInputPage.js";
+import { NameInputPage } from "./NameRegistrationView.js";
 
 type ApiKeyInputProps = {
 	user: User;
 	setUserExists: (exists: boolean) => void;
 };
 
-const ApiKeyCheckBeforeRegistration: React.FC<ApiKeyInputProps> = ({
+const TeacherApiKeyValidationForm: React.FC<ApiKeyInputProps> = ({
 	user,
 	setUserExists,
 }) => {
@@ -131,4 +131,4 @@ const ApiKeyCheckBeforeRegistration: React.FC<ApiKeyInputProps> = ({
 	);
 };
 
-export { ApiKeyCheckBeforeRegistration };
+export { TeacherApiKeyValidationForm as ApiKeyCheckBeforeRegistration };

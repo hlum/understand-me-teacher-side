@@ -2,7 +2,7 @@ import { signInWithGoogle } from "../Manager/AuthManager.js";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-const Login = () => {
+const SignInView = () => {
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
 
@@ -73,4 +73,4 @@ const Login = () => {
 		</div>
 	);
 };
-export default Login;
+export default SignInView;

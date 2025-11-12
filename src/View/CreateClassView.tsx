@@ -8,7 +8,7 @@ interface AddNewClassViewProps {
 	user: User;
 }
 
-const AddNewClassView = (props: AddNewClassViewProps) => {
+const CreateClassView = (props: AddNewClassViewProps) => {
 	const { user } = props;
 	const [className, setClassName] = useState("");
 	const [admissionYear, setAdmissionYear] = useState("");
@@ -191,4 +191,4 @@ const AddNewClassView = (props: AddNewClassViewProps) => {
 	);
 };
 
-export default AddNewClassView;
+export default CreateClassView;

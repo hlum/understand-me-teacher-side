@@ -4,7 +4,7 @@ import type { Class } from "../Entity/class.js";
 import { fetchClassDetail } from "../Manager/ClassManager.js";
 import { fetchHomeworkListForClass } from "../Manager/HomeworkManager.js";
 
-export const ClassDetailPage = () => {
+export const ClassDetailView = () => {
 	const navigate = useNavigate();
 	const { classID } = useParams<{ classID: string }>();
 	const [classDetail, setClassDetail] = useState<Class | null>(null);
