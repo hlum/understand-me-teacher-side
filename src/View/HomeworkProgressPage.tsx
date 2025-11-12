@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { fetchHomeworkStatusForAllStudents } from "../api/HomeworksOperations.js";
-import type { HomeworkDetail } from "../types/Homework.js";
+import { fetchHomeworkStatusForAllStudents } from "../Manager/HomeworkManager.js";
+import type { HomeworkDetail } from "../Entity/Homework.js";
 
 export const HomeworkProgressPage = () => {
 	const location = useLocation();
@@ -44,10 +44,10 @@ export const HomeworkProgressPage = () => {
 						border: "1px solid #ccc",
 					}}
 				>
-					<h3>{hw.userEmail}</h3>
-					<p>Title: {hw.title}</p>
-					<p>Description: {hw.description || "N/A"}</p>
-					<p>Due Date: {hw.dueDate || "N/A"}</p>
+					<h3>{hw.userEmail} </h3>
+					<p> Title: {hw.title} </p>
+					<p> Description: {hw.description || "N/A"} </p>
+					<p> Due Date: {hw.dueDate || "N/A"} </p>
 					<p>
 						GitHub File Link:{" "}
 						{hw.githubFileLink ? (
@@ -62,9 +62,9 @@ export const HomeworkProgressPage = () => {
 							"N/A"
 						)}
 					</p>
-					<p>Job Status: {hw.jobStatus || "N/A"}</p>
-					<p>Score: {hw.score}</p>
-					<p>Submission State: {hw.submissionState}</p>
+					<p> Job Status: {hw.jobStatus || "N/A"} </p>
+					<p> Score: {hw.score} </p>
+					<p> Submission State: {hw.submissionState} </p>
 				</div>
 			))}
 		</>

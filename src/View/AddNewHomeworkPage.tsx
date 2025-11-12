@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import { addNewHomework } from "../api/HomeworksOperations.js";
+import { addNewHomework } from "../Manager/HomeworkManager.js";
 
 export const AddNewHomeworkPage = () => {
 	const location = useLocation();

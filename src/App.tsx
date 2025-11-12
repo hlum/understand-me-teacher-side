@@ -2,17 +2,17 @@ import React, { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/firebase.js";
 import type { User } from "firebase/auth";
-import { userAlreadyExistsInDB } from "./api/user.js";
-import { logOut } from "./api/auth.js";
-import Login from "./pages/Login.js";
-import { MainDashboardView } from "./pages/MainDashboardView.js";
+import { userAlreadyExistsInDB } from "./Manager/UserManager.js";
+import { logOut } from "./Manager/AuthManager.js";
+import Login from "./View/Login.js";
+import { MainDashboardView } from "./View/MainDashboardView.js";
 import { Routes, Route } from "react-router-dom";
-import { ApiKeyCheckBeforeRegistration } from "./pages/ApiKeyCheckBeforeRegistration.js";
-import { ProtectedRoute } from "./components/ProtectedRoute.js";
-import AddNewClassView from "./pages/AddNewClassView.js";
-import { ClassDetailPage } from "./pages/ClassDetailPage.js";
-import { AddNewHomeworkPage } from "./pages/AddNewHomeworkPage.js";
-import { HomeworkProgressPage } from "./pages/HomeworkProgressPage.js";
+import { ApiKeyCheckBeforeRegistration } from "./View/ApiKeyCheckBeforeRegistration.js";
+import { ProtectedRoute } from "./View/Components/ProtectedRoute.js";
+import AddNewClassView from "./View/AddNewClassView.js";
+import { ClassDetailPage } from "./View/ClassDetailPage.js";
+import { AddNewHomeworkPage } from "./View/AddNewHomeworkPage.js";
+import { HomeworkProgressPage } from "./View/HomeworkProgressPage.js";
 
 const App = () => {
 	const [user, setUser] = useState<User | null>(null);

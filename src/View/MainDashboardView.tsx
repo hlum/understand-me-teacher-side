@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import type { User } from "firebase/auth";
-import type { Class } from "../types/class.js";
-import { fetchClassList } from "../api/classOperations.js";
+import type { Class } from "../Entity/class.js";
+import { fetchClassList } from "../Manager/ClassManager.js";
 import { useNavigate } from "react-router-dom";
 
 type MainDashboardViewProps = {

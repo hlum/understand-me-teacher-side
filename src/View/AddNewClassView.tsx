@@ -1,12 +1,13 @@
 import React from "react";
 import { type User } from "firebase/auth";
 import { useState } from "react";
-import { type Class } from "../types/class.js";
-import { addNewClass } from "../api/classOperations.js";
+import { type Class } from "../Entity/class.js";
+import { addNewClass } from "../Manager/ClassManager.js";
 
 interface AddNewClassViewProps {
 	user: User;
 }
+
 const AddNewClassView = (props: AddNewClassViewProps) => {
 	const { user } = props;
 	const [className, setClassName] = useState("");

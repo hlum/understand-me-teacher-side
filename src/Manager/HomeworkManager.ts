@@ -3,14 +3,13 @@ import {
 	type HomeworkDetail,
 	transformHomeworkDetailResponse,
 	transformHomeworkResponse,
-} from "../types/Homework.js";
+} from "../Entity/Homework.js";
 
 export const fetchHomeworkListForClass = async (
 	classID: string
 ): Promise<Homework[]> => {
-	const baseURL = `${
-		import.meta.env.VITE_API_ENDPOINT
-	}/homework/get_homework.php`;
+	const baseURL = `${import.meta.env.VITE_API_ENDPOINT
+		}/homework/get_homework.php`;
 	const API_KEY = import.meta.env.VITE_API_KEY as string;
 
 	const params = new URLSearchParams({ class_id: classID });
@@ -50,9 +49,8 @@ export const addNewHomework = async (
 	description: string | null,
 	dueDate: string | null
 ): Promise<void> => {
-	const endPoint = `${
-		import.meta.env.VITE_API_ENDPOINT
-	}/homework/add_homework.php`;
+	const endPoint = `${import.meta.env.VITE_API_ENDPOINT
+		}/homework/add_homework.php`;
 
 	const apiKey = import.meta.env.VITE_TEACHER_APIKEY as string;
 	const dueDateInISO = new Date(`${dueDate}T23:59:00Z`).toISOString();
@@ -90,9 +88,8 @@ export const addNewHomework = async (
 export const fetchHomeworkStatusForAllStudents = async (
 	homeworkID: string
 ): Promise<HomeworkDetail[]> => {
-	const endPoint = `${
-		import.meta.env.VITE_API_ENDPOINT
-	}/homework/homework_status_list.php`;
+	const endPoint = `${import.meta.env.VITE_API_ENDPOINT
+		}/homework/homework_status_list.php`;
 
 	const apiKey = import.meta.env.VITE_API_KEY as string;
 

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import type { Class } from "../types/class.js";
-import { fetchClassDetail } from "../api/classOperations.js";
-import { fetchHomeworkListForClass } from "../api/HomeworksOperations.js";
+import type { Class } from "../Entity/class.js";
+import { fetchClassDetail } from "../Manager/ClassManager.js";
+import { fetchHomeworkListForClass } from "../Manager/HomeworkManager.js";
 
 export const ClassDetailPage = () => {
 	const navigate = useNavigate();

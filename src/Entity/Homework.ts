@@ -19,10 +19,10 @@ export type HomeworkDetail = {
 	jobStatus: string | null;
 	score: number;
 	submissionState:
-		| "notAssigned"
-		| "generatingQuestions"
-		| "questionGenerated"
-		| "completed";
+	| "notAssigned"
+	| "generatingQuestions"
+	| "questionGenerated"
+	| "completed";
 };
 
 export const transformHomeworkDetailResponse = (raw: any): HomeworkDetail => ({
