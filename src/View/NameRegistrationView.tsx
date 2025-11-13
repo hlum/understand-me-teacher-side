@@ -2,16 +2,11 @@ import React, { useState } from "react";
 import type { User } from "firebase/auth";
 
 type NameInputPageProps = {
-	user: User;
-	apiKey: string;
+	email: string;
 	onNameSubmit: (name: string) => void;
 };
 
-const NameRegistrationView: React.FC<NameInputPageProps> = ({
-	user,
-	apiKey,
-	onNameSubmit,
-}) => {
+const NameRegistrationView = ({ email, onNameSubmit }: NameInputPageProps) => {
 	const [name, setName] = useState("");
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -29,20 +24,13 @@ const NameRegistrationView: React.FC<NameInputPageProps> = ({
 			<div className="w-full max-w-md bg-gray-900/70 backdrop-blur-xl border border-gray-700 rounded-2xl shadow-[0_0_25px_rgba(0,0,0,0.6)] hover:shadow-[0_0_40px_rgba(0,0,0,0.8)] transition-all duration-500 p-10">
 				{/* Header */}
 				<div className="text-center mb-8">
-					<h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500 mb-3 tracking-wide">
-						ようこそ！
-					</h2>
-					<p className="text-gray-300 text-sm">
-						アカウント登録を完了するために、お名前を入力してください
-					</p>
+					<h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500 mb-3 tracking-wide">ようこそ！</h2>
+					<p className="text-gray-300 text-sm">アカウント登録を完了するために、お名前を入力してください</p>
 				</div>
 
 				{/* Name Input */}
 				<div className="mb-6">
-					<label
-						htmlFor="name"
-						className="block text-sm font-medium text-gray-300 mb-2"
-					>
+					<label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
 						お名前
 					</label>
 					<input
@@ -66,9 +54,7 @@ const NameRegistrationView: React.FC<NameInputPageProps> = ({
 					onClick={handleSubmit}
 					disabled={isSubmitting}
 					className={`w-full inline-flex items-center justify-center text-white font-semibold py-3 rounded-lg text-lg transition-all duration-300 ${
-						isSubmitting
-							? "bg-gray-700 cursor-not-allowed"
-							: "bg-gradient-to-r from-blue-600 to-indigo-700 hover:shadow-[0_0_25px_rgba(37,99,235,0.6)] hover:-translate-y-0.5"
+						isSubmitting ? "bg-gray-700 cursor-not-allowed" : "bg-gradient-to-r from-blue-600 to-indigo-700 hover:shadow-[0_0_25px_rgba(37,99,235,0.6)] hover:-translate-y-0.5"
 					}`}
 				>
 					{isSubmitting ? (
@@ -83,9 +69,7 @@ const NameRegistrationView: React.FC<NameInputPageProps> = ({
 
 				{/* User Info Display */}
 				<div className="mt-6 pt-6 border-t border-gray-700">
-					<p className="text-xs text-gray-400 text-center">
-						登録メールアドレス: {user.email}
-					</p>
+					<p className="text-xs text-gray-400 text-center">登録メールアドレス: {email}</p>
 				</div>
 			</div>
 		</div>

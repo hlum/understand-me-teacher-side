@@ -1,4 +1,4 @@
-import { type Class } from "../Entity/Class.js";
+import type { Class } from "../Entity/Class.js";
 
 export interface ClassManagerInterface {
 	/**

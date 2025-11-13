@@ -1,37 +1,19 @@
-import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { fetchHomeworkWithSubmissionStatusForAllStudents } from "../Manager/HomeworkManager.js";
-import type { HomeworkWithSubmissionStatus } from "../Entity/Homework.js";
+import { useHomeworkStatusViewModel } from "../ViewModel/HomeworkStatusViewModel.js";
+import { Loading } from "./Components/Loading.js";
+import { HomeworkManager } from "../Manager/HomeworkManager.js";
 
-const StudentHomeworkStatusView = () => {
+export const StudentHomeworkStatusView = () => {
 	const location = useLocation();
 	const { homeworkID } = location.state || {};
-	const [homeworkWithStatus, setHomeworkWithStatus] = React.useState<HomeworkWithSubmissionStatus[]>([]);
+	const homeworkManager = new HomeworkManager();
+	const { loading, homeworkStatusList } = useHomeworkStatusViewModel(homeworkID, homeworkManager);
 
-	const [loading, setLoading] = React.useState(false);
-
-	useEffect(() => {
-		const fetchData = async () => {
-			setLoading(true);
-			try {
-				const homeworkStatus = await fetchHomeworkWithSubmissionStatusForAllStudents(homeworkID);
-				setHomeworkWithStatus(homeworkStatus);
-			} catch (error) {
-				alert("宿題の進捗状況の取得に失敗しました。");
-				console.error("Error fetching homework progress:", error);
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		fetchData();
-	}, [homeworkID]);
-
-	if (loading) return <div>Loading...</div>;
+	if (loading) return <Loading />;
 
 	return (
 		<>
-			{homeworkWithStatus.map((hw) => (
+			{homeworkStatusList.map((hw) => (
 				<div
 					key={hw.userID}
 					style={{
