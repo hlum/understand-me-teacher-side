@@ -6,16 +6,8 @@
  * @param photoURL - プロフィール写真のURL
  * @param apiKey - 教師専用の API キー
  */
-export const saveUser = async (
-	id: string,
-	email: string,
-	name: string,
-	photoURL: string,
-	apiKey: string
-): Promise<void> => {
-	const endpoint = `${
-		import.meta.env.VITE_API_ENDPOINT
-	}/user/register_teacher.php`;
+export const saveUser = async (id: string, email: string, name: string, photoURL: string, apiKey: string): Promise<void> => {
+	const endpoint = `${import.meta.env.VITE_API_ENDPOINT}/user/register_teacher.php`;
 
 	try {
 		const body = JSON.stringify({
@@ -56,9 +48,7 @@ export const saveUser = async (
  * @param userID - Firebase Auth の UUID
  * @returns ユーザーが存在する場合 true、存在しない場合 false
  */
-export const userAlreadyExistsInDB = async (
-	userID: string
-): Promise<boolean> => {
+export const userAlreadyExistsInDB = async (userID: string): Promise<boolean> => {
 	const baseURL = `${import.meta.env.VITE_API_ENDPOINT}/user/get_user.php`;
 	const API_KEY = import.meta.env.VITE_API_KEY as string;
 
@@ -81,8 +71,7 @@ export const userAlreadyExistsInDB = async (
 
 		try {
 			decodedData = JSON.parse(result.data) as { role: string }[];
-			if (!Array.isArray(decodedData) || decodedData.length === 0)
-				return false;
+			if (!Array.isArray(decodedData) || decodedData.length === 0) return false;
 			const firstUser = decodedData[0];
 			if (!firstUser || !firstUser.role) return false;
 			return firstUser.role === "teacher";
