@@ -8,14 +8,10 @@ export class ClassManager implements ClassManagerInterface {
 		const context = "ClassManager.fetchClass"; // エラーログ用のコンテキスト情報
 
 		const endPoint = LollipopHelper.instance.buildEndpoint("/class/get_class.php", { id: classID });
-		const API_KEY = import.meta.env.VITE_API_KEY as string;
-
+		const headers = LollipopHelper.instance.buildHeader();
 		const result = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, context, {
 			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: API_KEY,
-			},
+			headers: headers,
 		});
 
 		LollipopHelper.instance.validateLollipopResponse(result, context, true);
@@ -35,13 +31,11 @@ export class ClassManager implements ClassManagerInterface {
 
 	async fetchClassesForTeacher(teacherID: string): Promise<Class[]> {
 		const endPoint = LollipopHelper.instance.buildEndpoint("class/get_class.php", { teacher_id: teacherID });
-		const API_KEY = import.meta.env.VITE_API_KEY as string;
+		const headers = LollipopHelper.instance.buildHeader();
+
 		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, "ClassManager.fetchClassesForTeacher", {
 			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: API_KEY,
-			},
+			headers: headers,
 		});
 
 		LollipopHelper.instance.validateLollipopResponse(lollipopResponse, "ClassManager.fetchClassesForTeacher");
@@ -62,7 +56,7 @@ export class ClassManager implements ClassManagerInterface {
 
 	async addNewClass(newClass: Class): Promise<void> {
 		const endPoint = LollipopHelper.instance.buildEndpoint("/class/add_class.php", {});
-		const API_KEY = import.meta.env.VITE_TEACHER_APIKEY as string;
+		const headers = LollipopHelper.instance.buildHeader(true);
 
 		let body: string;
 		try {
@@ -78,10 +72,7 @@ export class ClassManager implements ClassManagerInterface {
 
 		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, "ClassManager.addNewClass", {
 			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: API_KEY,
-			},
+			headers: headers,
 			body,
 		});
 

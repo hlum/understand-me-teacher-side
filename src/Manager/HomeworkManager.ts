@@ -11,15 +11,11 @@ import { type HomeworkManagerInterface } from "../ManagerInterface/HomeworkManag
 
 export class HomeworkManager implements HomeworkManagerInterface {
 	async fetchHomeworkListForClass(classID: string): Promise<Homework[]> {
-		const API_KEY = import.meta.env.VITE_API_KEY as string;
 		const endPoint = LollipopHelper.instance.buildEndpoint("/homework/get_homework.php", { class_id: classID });
-
+		const headers = LollipopHelper.instance.buildHeader();
 		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, "HomeworkManager.fetchHomeworkListForClass", {
 			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: API_KEY,
-			},
+			headers: headers,
 		});
 
 		LollipopHelper.instance.validateLollipopResponse(lollipopResponse, "HomeworkManager.fetchHomeworkListForClass", true);
@@ -30,8 +26,7 @@ export class HomeworkManager implements HomeworkManagerInterface {
 
 	async addNewHomework(classID: string, teacherID: string, title: string, description: string | null, dueDate: string | null): Promise<void> {
 		const endPoint = LollipopHelper.instance.buildEndpoint("/homework/add_homework.php", {});
-
-		const API_KEY = import.meta.env.VITE_TEACHER_APIKEY as string;
+		const headers = LollipopHelper.instance.buildHeader(true);
 		const dueDateInISO = new Date(`${dueDate}T23:59:00Z`).toISOString();
 
 		const body = JSON.stringify({
@@ -44,10 +39,7 @@ export class HomeworkManager implements HomeworkManagerInterface {
 
 		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, "HomeworkManager.addNewHomework", {
 			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: API_KEY,
-			},
+			headers: headers,
 			body: body,
 		});
 
@@ -58,14 +50,11 @@ export class HomeworkManager implements HomeworkManagerInterface {
 
 	async fetchHomeworkWithSubmissionStatusForAllStudents(homeworkID: string): Promise<HomeworkWithSubmissionStatus[]> {
 		const endPoint = LollipopHelper.instance.buildEndpoint("/homework/homework_status_list.php", { homework_id: homeworkID });
-		const API_KEY = import.meta.env.VITE_API_KEY as string;
+		const headers = LollipopHelper.instance.buildHeader();
 
 		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, "HomeworkManager.fetchHomeworkWithSubmissionStatusForAllStudents", {
 			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: API_KEY,
-			},
+			headers: headers,
 		});
 
 		LollipopHelper.instance.validateLollipopResponse(lollipopResponse, "HomeworkManager.fetchHomeworkWithSubmissionStatusForAllStudents", true);
