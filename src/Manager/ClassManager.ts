@@ -1,103 +1,92 @@
-import { type Class, transformClassResponse } from "../Entity/Class.js";
+import { type Class, type RawClassResponse, transformClassResponse } from "../Entity/Class.js";
+import { DataParseError } from "../Helper/CustomErrors.js";
+import { LollipopHelper } from "../Helper/LollipopHelper.js";
+import { type ClassManagerInterface } from "../ManagerInterface/ClassManagerInterface.js";
 
-export const fetchClassDetail = async (
-	classID: string
-): Promise<Class | null> => {
-	const baseURL = `${import.meta.env.VITE_API_ENDPOINT}/class/get_class.php`;
-	const API_KEY = import.meta.env.VITE_API_KEY as string;
+export class ClassManager implements ClassManagerInterface {
+	async fetchClass(classID: string): Promise<Class> {
+		const context = "ClassManager.fetchClass"; // エラーログ用のコンテキスト情報
 
-	const params = new URLSearchParams({ id: classID });
-	const endpoint = `${baseURL}?${params.toString()}`;
+		const endPoint = LollipopHelper.instance.buildEndpoint("/class/get_class.php", { id: classID });
+		const API_KEY = import.meta.env.VITE_API_KEY as string;
 
-	const response = await fetch(endpoint, {
-		method: "GET",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: API_KEY,
-		},
-	});
+		const result = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, context, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: API_KEY,
+			},
+		});
 
-	const result = (await response.json()) as {
-		status: "success" | "error";
-		message: string;
-		data: string | null;
-	};
-	if (result.status === "success") {
-		if (!result.data) return null;
-		try {
-			const decodedData = JSON.parse(result.data) as any[];
-			return decodedData.map(transformClassResponse)[0] || null;
-		} catch (error) {
-			console.error("❌ クラス詳細の取得に失敗しました:", error);
-			throw error;
+		LollipopHelper.instance.validateLollipopResponse(result, context, true);
+		const rawClassResponse = LollipopHelper.instance.decodeDataFromLollipopResponse<RawClassResponse[]>(result.data!, context);
+
+		if (!Array.isArray(rawClassResponse)) {
+			throw new DataParseError("ClassManager.fetchClass レスポンスデータの形式が不正です。配列ではありません。");
 		}
-	} else {
-		throw new Error(result.message);
-	}
-};
 
-export const fetchClassList = async (teacherID: string): Promise<Class[]> => {
-	const baseURL = `${import.meta.env.VITE_API_ENDPOINT}/class/get_class.php`;
-	const API_KEY = import.meta.env.VITE_API_KEY as string;
+		const classDetails = rawClassResponse.map(transformClassResponse)[0];
 
-	const params = new URLSearchParams({ teacher_id: teacherID });
-	const endpoint = `${baseURL}?${params.toString()}`;
-
-	const response = await fetch(endpoint, {
-		method: "GET",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: API_KEY,
-		},
-	});
-
-	const result = (await response.json()) as {
-		status: "success" | "error";
-		message: string;
-		data: string | null;
-	};
-	if (result.status === "success") {
-		if (!result.data) return [];
-		try {
-			const decodedData = JSON.parse(result.data) as any[];
-			return decodedData.map(transformClassResponse);
-		} catch (error) {
-			console.error("❌ クラスリストの取得に失敗しました:", error);
-			throw error;
+		if (!classDetails) {
+			throw new DataParseError("ClassManager.fetchClass 生のデータからクラス詳細を取得できませんでした。");
 		}
-	} else {
-		throw new Error(result.message);
+		return classDetails;
 	}
-};
 
-export const addNewClass = async (newClass: Class) => {
-	const endpoint = `${import.meta.env.VITE_API_ENDPOINT}/class/add_class.php`;
-	const API_KEY = import.meta.env.VITE_TEACHER_APIKEY as string;
+	async fetchClassesForTeacher(teacherID: string): Promise<Class[]> {
+		const endPoint = LollipopHelper.instance.buildEndpoint("class/get_class.php", { teacher_id: teacherID });
+		const API_KEY = import.meta.env.VITE_API_KEY as string;
+		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, "ClassManager.fetchClassesForTeacher", {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: API_KEY,
+			},
+		});
 
-	const body = JSON.stringify({
-		teacher_id: newClass.teacherID,
-		name: newClass.name,
-		admission_year: newClass.admissionYear,
-		major_code: newClass.majorCode,
-	});
+		LollipopHelper.instance.validateLollipopResponse(lollipopResponse, "ClassManager.fetchClassesForTeacher");
 
-	const response = await fetch(endpoint, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: API_KEY,
-		},
-		body,
-	});
+		if (!lollipopResponse.data) {
+			console.warn("ClassManager.fetchClassesForTeacher レスポンスの中にdataが存在しません。");
+			return [];
+		}
 
-	const result = (await response.json()) as {
-		status: "success" | "error";
-		message: string;
-	};
+		const rawClassList = LollipopHelper.instance.decodeDataFromLollipopResponse<RawClassResponse[]>(lollipopResponse.data, "ClassManager.fetchClassesForTeacher");
 
-	if (result.status === "success") {
-		console.log("✅ クラス追加成功。");
-	} else {
-		throw new Error(result.message);
+		if (!Array.isArray(rawClassList)) {
+			throw new DataParseError("ClassManager.fetchClassesForTeacher レスポンスデータの形式が不正です。配列ではありません。");
+		}
+
+		return rawClassList.map(transformClassResponse);
 	}
-};
+
+	async addNewClass(newClass: Class): Promise<void> {
+		const endPoint = LollipopHelper.instance.buildEndpoint("/class/add_class.php", {});
+		const API_KEY = import.meta.env.VITE_TEACHER_APIKEY as string;
+
+		let body: string;
+		try {
+			body = JSON.stringify({
+				teacher_id: newClass.teacherID,
+				name: newClass.name,
+				admission_year: newClass.admissionYear,
+				major_code: newClass.majorCode,
+			});
+		} catch (error) {
+			throw new DataParseError("ClassManager.addNewClass クラス情報のシリアライズに失敗しました。エラー: " + error);
+		}
+
+		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, "ClassManager.addNewClass", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: API_KEY,
+			},
+			body,
+		});
+
+		LollipopHelper.instance.validateLollipopResponse(lollipopResponse, "ClassManager.addNewClass");
+
+		console.info("✅ クラス追加成功。");
+	}
+}
