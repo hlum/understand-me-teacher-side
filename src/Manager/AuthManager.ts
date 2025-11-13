@@ -1,23 +1,24 @@
 import { auth, provider } from "../firebase/firebase.js";
 import { signInWithPopup } from "firebase/auth";
+import { type User } from "firebase/auth";
+import { type AuthManagerInterface } from "../ManagerInterface/AuthManagerInterface.js";
+import { AuthenticationError } from "../Helper/CustomErrors.js";
 
-const signInWithGoogle = async () => {
-	try {
-		const result = await signInWithPopup(auth, provider);
-		return result.user;
-	} catch (error) {
-		console.error("ログインエラ：", error);
-		throw error;
+export class AuthManager implements AuthManagerInterface {
+	async signInWithGoogle(): Promise<User> {
+		try {
+			const result = await signInWithPopup(auth, provider);
+			return result.user;
+		} catch (error) {
+			throw new AuthenticationError("AuthManager.signInWithGoogle Googleサインインに失敗しました。" + error);
+		}
 	}
-};
 
-const logOut = async () => {
-	try {
-		await auth.signOut();
-	} catch (error) {
-		console.error(error);
-		throw error;
+	async logOut(): Promise<void> {
+		try {
+			await auth.signOut();
+		} catch (error) {
+			throw new AuthenticationError("AuthManager.logOut ログアウトに失敗しました。" + error);
+		}
 	}
-};
-
-export { signInWithGoogle, logOut };
+}
