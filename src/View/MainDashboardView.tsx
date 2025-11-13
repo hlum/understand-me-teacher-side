@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import type { User } from "firebase/auth";
 import type { Class } from "../Entity/Class.js";
-import { fetchClassList } from "../Manager/ClassManager.js";
+import { fetchClassesForTeacher } from "../Manager/ClassManager.js";
 import { useNavigate } from "react-router-dom";
 
 type MainDashboardViewProps = {
@@ -14,7 +14,7 @@ const MainDashboardView = ({ user }: MainDashboardViewProps) => {
 
 	useEffect(() => {
 		const fetchClasses = async () => {
-			const classList = await fetchClassList(user.uid);
+			const classList = await fetchClassesForTeacher(user.uid);
 			setClasses(classList);
 		};
 

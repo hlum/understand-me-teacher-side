@@ -11,6 +11,7 @@ export class LollipopHelper {
 	 * @param context エラーログ用のコンテキスト情報
 	 * @param options fetchのオプション
 	 * @returns LollipopからのResponseをデコードしたもの
+	 * @throws NetworkError, DataParseError
 	 */
 	async fetchAndDecodeLollipopResponse(endpoint: string, context: string, options: RequestInit): Promise<LollipopResponse> {
 		let response: Response;
@@ -35,6 +36,7 @@ export class LollipopHelper {
 	 * @param response LollipopからのResponse
 	 * @param context エラーログ用のコンテキスト情報
 	 * @param requireData LollipopからのResponseの中にデータの存在を必須とするかどうか
+	 * @throws APIError, DataParseError
 	 */
 	validateLollipopResponse(response: LollipopResponse, context: string, requireData: boolean = false): void {
 		if (response.status !== "success") {
@@ -45,7 +47,13 @@ export class LollipopHelper {
 		}
 	}
 
-	/** Lollipopレスポンスのdataフィールドからデータをデコード */
+	/**
+	 * Lollipopレスポンスのdataフィールドからデータをデコード
+	 * @param data Lollipopレスポンスのdataフィールド
+	 * @param context エラーログ用のコンテキスト情報
+	 * @returns デコードされたデータ
+	 * @throws DataParseError
+	 */
 	decodeDataFromLollipopResponse<T>(data: string, context: string): T {
 		try {
 			return JSON.parse(data) as T;
@@ -54,7 +62,12 @@ export class LollipopHelper {
 		}
 	}
 
-	// エンドポイントURLの構築
+	/**
+	 * APIエンドポイントの構築
+	 * @param path APIのパス
+	 * @param params クエリパラメータのオブジェクト
+	 * @returns 完全なAPIエンドポイントURL
+	 */
 	buildEndpoint(path: string, params: Record<string, string>): string {
 		const baseURL = import.meta.env.VITE_API_ENDPOINT;
 		const searchParams = new URLSearchParams(params);

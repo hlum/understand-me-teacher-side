@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import type { Class } from "../Entity/Class.js";
-import { fetchClassDetail } from "../Manager/ClassManager.js";
+import { fetchClass } from "../Manager/ClassManager.js";
 import { fetchHomeworkListForClass } from "../Manager/HomeworkManager.js";
 
-export const ClassDetailView = () => {
+export const HomeworkListView = () => {
 	const navigate = useNavigate();
 	const { classID } = useParams<{ classID: string }>();
 	const [classDetail, setClassDetail] = useState<Class | null>(null);
@@ -16,7 +16,7 @@ export const ClassDetailView = () => {
 		const fetchClass = async () => {
 			if (!classID) return;
 			try {
-				const classData = await fetchClassDetail(classID);
+				const classData = await fetchClass(classID);
 				if (!classData) {
 					alert("クラスが見つかりません。");
 					return;

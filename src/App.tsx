@@ -10,7 +10,7 @@ import { Routes, Route } from "react-router-dom";
 import { ApiKeyCheckBeforeRegistration } from "./View/TeacherApiKeyValidationForm.js";
 import { ProtectedRoute } from "./View/Components/ProtectedRoute.js";
 import CreateClassView from "./View/CreateClassView.js";
-import { ClassDetailView } from "./View/ClassDetailView.js";
+import { HomeworkListView } from "./View/HomeworkListView.js";
 import { CreateHomeworkPage } from "./View/CreateHomeworkPage.js";
 import { StudentHomeworkStatusView } from "./View/StudentHomeworkStatusView.js";
 
@@ -87,7 +87,7 @@ const App = () => {
 				{/* クラス詳細ページ */}
 				<Route
 					path="/classDetail/:classID"
-					element={<ClassDetailView />}
+					element={<HomeworkListView />}
 				/>
 
 				{/* 課題追加ページ */}

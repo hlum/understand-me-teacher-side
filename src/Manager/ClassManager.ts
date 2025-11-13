@@ -4,6 +4,12 @@ import { LollipopHelper } from "../Helper/LollipopHelper.js";
 import { type ClassManagerInterface } from "../ManagerInterface/ClassManagerInterface.js";
 
 export class ClassManager implements ClassManagerInterface {
+	/**
+	 * 指定したクラスIDのクラス情報を取得します。
+	 * @param classID クラスID
+	 * @returns Classオブジェクト
+	 * @throws APIError, NetworkError, DataParseError
+	 */
 	async fetchClass(classID: string): Promise<Class> {
 		const context = "ClassManager.fetchClass"; // エラーログ用のコンテキスト情報
 
@@ -33,6 +39,12 @@ export class ClassManager implements ClassManagerInterface {
 		return classDetails;
 	}
 
+	/**
+	 * 指定した教師IDに関連するクラスのリストを取得します。
+	 * @param teacherID 教師ID
+	 * @returns Classオブジェクトの配列
+	 * @throws APIError, NetworkError, DataParseError
+	 */
 	async fetchClassesForTeacher(teacherID: string): Promise<Class[]> {
 		const endPoint = LollipopHelper.instance.buildEndpoint("class/get_class.php", { teacher_id: teacherID });
 		const API_KEY = import.meta.env.VITE_API_KEY as string;
@@ -60,6 +72,12 @@ export class ClassManager implements ClassManagerInterface {
 		return rawClassList.map(transformClassResponse);
 	}
 
+	/**
+	 * 新しいクラスを追加します。
+	 * @param newClass 追加するクラスの情報
+	 * @returns void
+	 * @throws APIError, NetworkError, DataParseError
+	 */
 	async addNewClass(newClass: Class): Promise<void> {
 		const endPoint = LollipopHelper.instance.buildEndpoint("/class/add_class.php", {});
 		const API_KEY = import.meta.env.VITE_TEACHER_APIKEY as string;

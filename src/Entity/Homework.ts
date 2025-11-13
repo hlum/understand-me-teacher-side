@@ -1,3 +1,4 @@
+// 課題一覧のときに使う課題の型
 export type Homework = {
 	id: string;
 	teacherID: string;
@@ -7,7 +8,30 @@ export type Homework = {
 	dueDate: string | null;
 };
 
-export type HomeworkDetail = {
+// APIからの生データの型定義
+export type RawHomeworkResponse = {
+	id: string;
+	teacher_id: string;
+	class_id: string;
+	title: string;
+	description: string | null;
+	due_date: string | null;
+};
+
+// APIレスポンスをHomework型に変換する関数
+export const transformHomeworkResponse = (raw: RawHomeworkResponse): Homework => ({
+	id: raw.id,
+	teacherID: raw.teacher_id,
+	classID: raw.class_id,
+	title: raw.title,
+	description: raw.description,
+	dueDate: raw.due_date,
+});
+
+// --------------------------------------------------------------------------------
+
+// 学生ごとの課題詳細情報の型（進捗状況などを含む）
+export type HomeworkWithSubmissionStatus = {
 	id: string;
 	userID: string;
 	userEmail: string;
@@ -18,14 +42,26 @@ export type HomeworkDetail = {
 	githubFileLink: string | null;
 	jobStatus: string | null;
 	score: number;
-	submissionState:
-	| "notAssigned"
-	| "generatingQuestions"
-	| "questionGenerated"
-	| "completed";
+	submissionState: "notAssigned" | "generatingQuestions" | "questionGenerated" | "completed";
 };
 
-export const transformHomeworkDetailResponse = (raw: any): HomeworkDetail => ({
+// APIからの生データの型定義
+export type RawHomeworkWithSubmissionStatusResponse = {
+	id: string;
+	user_id: string;
+	user_email: string;
+	title: string;
+	class_id: string;
+	description: string | null;
+	due_date: string | null;
+	github_file_link: string | null;
+	job_status: string | null;
+	score: number;
+	submission_state: "notAssigned" | "generatingQuestions" | "questionGenerated" | "completed";
+};
+
+// APIレスポンスをHomeworkWithSubmissionStatus型に変換する関数
+export const transformHomeworkWithSubmissionStatusResponse = (raw: RawHomeworkWithSubmissionStatusResponse): HomeworkWithSubmissionStatus => ({
 	id: raw.id,
 	userID: raw.user_id,
 	userEmail: raw.user_email,
@@ -37,13 +73,4 @@ export const transformHomeworkDetailResponse = (raw: any): HomeworkDetail => ({
 	jobStatus: raw.job_status,
 	score: raw.score,
 	submissionState: raw.submission_state,
-});
-
-export const transformHomeworkResponse = (raw: any): Homework => ({
-	id: raw.id,
-	teacherID: raw.teacher_id,
-	classID: raw.class_id,
-	title: raw.title,
-	description: raw.description,
-	dueDate: raw.due_date,
 });

@@ -1,14 +1,12 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { fetchHomeworkStatusForAllStudents } from "../Manager/HomeworkManager.js";
-import type { HomeworkDetail } from "../Entity/Homework.js";
+import { fetchHomeworkWithSubmissionStatusForAllStudents } from "../Manager/HomeworkManager.js";
+import type { HomeworkWithSubmissionStatus } from "../Entity/Homework.js";
 
 const StudentHomeworkStatusView = () => {
 	const location = useLocation();
 	const { homeworkID } = location.state || {};
-	const [homeworkWithStatus, setHomeworkWithStatus] = React.useState<
-		HomeworkDetail[]
-	>([]);
+	const [homeworkWithStatus, setHomeworkWithStatus] = React.useState<HomeworkWithSubmissionStatus[]>([]);
 
 	const [loading, setLoading] = React.useState(false);
 
@@ -16,9 +14,7 @@ const StudentHomeworkStatusView = () => {
 		const fetchData = async () => {
 			setLoading(true);
 			try {
-				const homeworkStatus = await fetchHomeworkStatusForAllStudents(
-					homeworkID
-				);
+				const homeworkStatus = await fetchHomeworkWithSubmissionStatusForAllStudents(homeworkID);
 				setHomeworkWithStatus(homeworkStatus);
 			} catch (error) {
 				alert("宿題の進捗状況の取得に失敗しました。");
@@ -51,11 +47,7 @@ const StudentHomeworkStatusView = () => {
 					<p>
 						GitHub File Link:{" "}
 						{hw.githubFileLink ? (
-							<a
-								href={hw.githubFileLink}
-								target="_blank"
-								rel="noopener noreferrer"
-							>
+							<a href={hw.githubFileLink} target="_blank" rel="noopener noreferrer">
 								{hw.githubFileLink}
 							</a>
 						) : (
