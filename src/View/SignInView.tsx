@@ -1,21 +1,15 @@
-import { signInWithGoogle } from "../Manager/AuthManager.js";
+import { AuthManager } from "../Manager/AuthManager.js";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useSignInViewModel } from "../ViewModel/SignInViewModel.js";
 
 const SignInView = () => {
-	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
+	const authManager = new AuthManager();
+	const { loading, handleSignIn } = useSignInViewModel(authManager);
 
 	const handleClick = async () => {
-		setLoading(true);
-		try {
-			const user = await signInWithGoogle();
-			navigate("/");
-		} catch {
-			alert("Login 失敗しました。");
-		} finally {
-			setLoading(false);
-		}
+		await handleSignIn();
+		navigate("/");
 	};
 
 	return (
