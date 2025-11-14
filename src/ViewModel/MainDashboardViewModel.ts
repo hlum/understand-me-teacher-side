@@ -2,16 +2,22 @@ import { useState, useEffect } from "react";
 import type { ClassManagerInterface } from "../ManagerInterface/ClassManagerInterface.js";
 import { DataParseError, NetworkError, APIError } from "../Helper/CustomErrors.js";
 import type { Class } from "../Entity/Class.js";
+import { auth } from "../firebase/firebase.js";
 
-export const useMainDashboardViewModel = (userID: string, classManager: ClassManagerInterface) => {
+export const useMainDashboardViewModel = (classManager: ClassManagerInterface) => {
+	const [authData, setAuthData] = useState(auth.currentUser);
 	const [classes, setClasses] = useState<Class[]>([]);
 	const [loading, setLoading] = useState(true);
+
+	if (!authData) {
+		return;
+	}
 
 	useEffect(() => {
 		const fetchClasses = async () => {
 			try {
 				setLoading(true);
-				const classList = await classManager.fetchClassesForTeacher(userID);
+				const classList = await classManager.fetchClassesForTeacher(authData.uid);
 				setClasses(classList);
 			} catch (error: unknown) {
 				if (error instanceof APIError) {
@@ -32,7 +38,7 @@ export const useMainDashboardViewModel = (userID: string, classManager: ClassMan
 			}
 		};
 		fetchClasses();
-	}, [userID]);
+	}, [authData]);
 
-	return { classes, loading };
+	return { classes, loading, authData };
 };
