@@ -1,15 +1,12 @@
 import { AuthManager } from "../Manager/AuthManager.js";
-import { useNavigate } from "react-router-dom";
 import { useSignInViewModel } from "../ViewModel/SignInViewModel.js";
 
 const SignInView = () => {
-	const navigate = useNavigate();
 	const authManager = new AuthManager();
 	const { loading, handleSignIn } = useSignInViewModel(authManager);
 
 	const handleClick = async () => {
 		await handleSignIn();
-		navigate("/");
 	};
 
 	return (

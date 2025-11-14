@@ -1,10 +1,11 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useHomeworkListViewModel } from "../ViewModel/HomeworkListViewModel.js";
 import { ClassManager } from "../Manager/ClassManager.js";
 import { HomeworkManager } from "../Manager/HomeworkManager.js";
+import { useRouteManager } from "../Router/useRouteManager.js";
 
 export const HomeworkListView = () => {
-	const navigate = useNavigate();
+	const navigate = useRouteManager();
 	const { classID } = useParams<{ classID: string }>();
 	const classManager = new ClassManager();
 	const homeworkManager = new HomeworkManager();
@@ -43,14 +44,7 @@ export const HomeworkListView = () => {
 					</div>
 
 					<button
-						onClick={() =>
-							navigate("/addNewHomeworkPage", {
-								state: {
-									classID: classDetail.id,
-									teacherID: classDetail?.teacherID,
-								},
-							})
-						}
+						onClick={() => navigate.toCreateHomework(classID)}
 						className="inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-semibold px-5 py-2.5 rounded-lg shadow-md hover:shadow-[0_0_20px_rgba(37,99,235,0.7)] hover:-translate-y-0.5 transition-all duration-300 ease-in-out cursor-pointer"
 					>
 						<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -71,11 +65,7 @@ export const HomeworkListView = () => {
 							{homeworks.map((item) => (
 								<div
 									key={item.id}
-									onClick={() =>
-										navigate(`/homeworkDetail`, {
-											state: { homeworkID: item.id },
-										})
-									}
+									onClick={() => navigate.toStudentHomeworkStatus(item.id)}
 									className="bg-white/10 border border-white/20 rounded-2xl p-6 shadow-md hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] hover:-translate-y-0.5 transition-all duration-300 ease-in-out"
 								>
 									<h3 className="text-xl font-semibold text-white">{item.title}</h3>

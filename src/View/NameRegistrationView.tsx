@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import type { User } from "firebase/auth";
+import { useState } from "react";
 
 type NameInputPageProps = {
 	email: string;

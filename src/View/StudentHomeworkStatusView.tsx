@@ -1,11 +1,15 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useHomeworkStatusViewModel } from "../ViewModel/HomeworkStatusViewModel.js";
 import { Loading } from "./Components/Loading.js";
 import { HomeworkManager } from "../Manager/HomeworkManager.js";
 
 export const StudentHomeworkStatusView = () => {
-	const location = useLocation();
-	const { homeworkID } = location.state || {};
+	const { homeworkID } = useParams<{ homeworkID: string }>();
+
+	if (!homeworkID) {
+		return <div>Invalid homework ID</div>;
+	}
+
 	const homeworkManager = new HomeworkManager();
 	const { loading, homeworkStatusList } = useHomeworkStatusViewModel(homeworkID, homeworkManager);
 

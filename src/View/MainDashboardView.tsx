@@ -1,17 +1,20 @@
-import type { User } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useMainDashboardViewModel } from "../ViewModel/MainDashboardViewModel.js";
 import { ClassManager } from "../Manager/ClassManager.js";
 import { Loading } from "./Components/Loading.js";
+import { useRouteManager } from "../Router/useRouteManager.js";
 
-type MainDashboardViewProps = {
-	user: User;
-};
-
-const MainDashboardView = ({ user }: MainDashboardViewProps) => {
-	const navigate = useNavigate();
+const MainDashboardView = () => {
 	const classManager = new ClassManager();
-	const { classes, loading } = useMainDashboardViewModel(user.uid, classManager);
+	const navigate = useRouteManager();
+	const vm = useMainDashboardViewModel(classManager);
+
+	if (!vm) {
+		navigate.toLogin();
+		return null;
+	}
+
+	const { loading, authData, classes } = vm;
 
 	if (loading) {
 		return <Loading />;
@@ -22,11 +25,11 @@ const MainDashboardView = ({ user }: MainDashboardViewProps) => {
 			{/* Header Section */}
 			<div className="flex flex-wrap justify-between items-center mb-10 gap-6">
 				<h1 className="text-3xl sm:text-4xl font-bold text-white">
-					クラス管理、 <span className="text-green-400">{user.displayName}</span>
+					クラス管理、 <span className="text-green-400">{authData.displayName}</span>
 				</h1>
 
 				<button
-					onClick={() => navigate("/addNewClassView")}
+					onClick={() => navigate.toCreateClass()}
 					className="inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-semibold px-6 py-3 rounded-lg shadow-md hover:shadow-[0_0_25px_rgba(59,130,246,0.7)] hover:-translate-y-0.5 transition-all duration-300 ease-in-out"
 				>
 					<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -46,7 +49,7 @@ const MainDashboardView = ({ user }: MainDashboardViewProps) => {
 					{classes.map((cls) => (
 						<div
 							key={cls.id}
-							onClick={() => navigate(`/classDetail/${cls.id}`)}
+							onClick={() => navigate.toClassDetail(cls.id)}
 							className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 shadow-md hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] hover:-translate-y-0.5 transition-all duration-300 ease-in-out cursor-pointer"
 						>
 							<div className="flex justify-between items-start mb-4">
