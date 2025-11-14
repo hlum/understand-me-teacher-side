@@ -2,7 +2,7 @@ import { transformUserResponse, type RawUserResponse } from "../Entity/User.js";
 import { LollipopHelper } from "../Helper/LollipopHelper.js";
 import type { UserManagerInterface } from "../ManagerInterface/UserManagerInterface.js";
 
-class UserManager implements UserManagerInterface {
+export class UserManager implements UserManagerInterface {
 	async registerTeacher(id: string, email: string, name: string, photoURL: string): Promise<void> {
 		const endPoint = LollipopHelper.instance.buildEndpoint("/user/register_user.php", {});
 		const headers = LollipopHelper.instance.buildHeader(true);
@@ -28,7 +28,7 @@ class UserManager implements UserManagerInterface {
 
 	async userAlreadyExistsInDB(userID: string): Promise<boolean> {
 		const endPoint = LollipopHelper.instance.buildEndpoint("/user/get_user.php", { id: userID });
-		const headers = LollipopHelper.instance.buildHeader(true);
+		const headers = LollipopHelper.instance.buildHeader();
 
 		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, "UserManager.userAlreadyExistsInDB", {
 			method: "GET",
