@@ -1,21 +1,22 @@
 import { useState } from "react";
+import type { User } from "firebase/auth";
+import { useNameRegistrationViewModel } from "../ViewModel/NameRegisterationViewModel.js";
+import { UserManager } from "../Manager/UserManager.js";
 
 type NameInputPageProps = {
-	email: string;
-	onNameSubmit: (name: string) => void;
+	authData: User;
 };
 
-const NameRegistrationView = ({ email, onNameSubmit }: NameInputPageProps) => {
-	const [name, setName] = useState("");
-	const [isSubmitting, setIsSubmitting] = useState(false);
+export const NameRegistrationView = ({ authData }: NameInputPageProps) => {
+	const userManager = new UserManager();
+	const { loading, name, setName, registerTeacherAndNavigateToDashboard } = useNameRegistrationViewModel(userManager, authData);
 
 	const handleSubmit = () => {
 		if (!name.trim()) {
 			alert("名前を入力してください。");
 			return;
 		}
-		setIsSubmitting(true);
-		onNameSubmit(name.trim());
+		registerTeacherAndNavigateToDashboard(name);
 	};
 
 	return (
@@ -38,10 +39,10 @@ const NameRegistrationView = ({ email, onNameSubmit }: NameInputPageProps) => {
 						value={name}
 						onChange={(e) => setName(e.target.value)}
 						placeholder="山田 太郎"
-						disabled={isSubmitting}
+						disabled={loading}
 						className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
 						onKeyDown={(e) => {
-							if (e.key === "Enter" && !isSubmitting) {
+							if (e.key === "Enter" && !loading) {
 								handleSubmit();
 							}
 						}}
@@ -51,12 +52,12 @@ const NameRegistrationView = ({ email, onNameSubmit }: NameInputPageProps) => {
 				{/* Submit Button */}
 				<button
 					onClick={handleSubmit}
-					disabled={isSubmitting}
+					disabled={loading}
 					className={`w-full inline-flex items-center justify-center text-white font-semibold py-3 rounded-lg text-lg transition-all duration-300 ${
-						isSubmitting ? "bg-gray-700 cursor-not-allowed" : "bg-gradient-to-r from-blue-600 to-indigo-700 hover:shadow-[0_0_25px_rgba(37,99,235,0.6)] hover:-translate-y-0.5"
+						loading ? "bg-gray-700 cursor-not-allowed" : "bg-gradient-to-r from-blue-600 to-indigo-700 hover:shadow-[0_0_25px_rgba(37,99,235,0.6)] hover:-translate-y-0.5"
 					}`}
 				>
-					{isSubmitting ? (
+					{loading ? (
 						<span className="flex items-center gap-2">
 							<span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
 							登録中...
@@ -68,7 +69,7 @@ const NameRegistrationView = ({ email, onNameSubmit }: NameInputPageProps) => {
 
 				{/* User Info Display */}
 				<div className="mt-6 pt-6 border-t border-gray-700">
-					<p className="text-xs text-gray-400 text-center">登録メールアドレス: {email}</p>
+					<p className="text-xs text-gray-400 text-center">登録メールアドレス: {authData.email}</p>
 				</div>
 			</div>
 		</div>

@@ -1,11 +1,13 @@
 import { AuthManager } from "../Manager/AuthManager.js";
+import { UserManager } from "../Manager/UserManager.js";
 import { useSignInViewModel } from "../ViewModel/SignInViewModel.js";
 
 const SignInView = () => {
 	const authManager = new AuthManager();
-	const { loading, handleSignIn } = useSignInViewModel(authManager);
+	const userManager = new UserManager();
+	const { loading, handleSignIn } = useSignInViewModel(authManager, userManager);
 
-	const handleClick = async () => {
+	const onSignInClicked = async () => {
 		await handleSignIn();
 	};
 
@@ -17,7 +19,7 @@ const SignInView = () => {
 
 				{/* Button */}
 				<button
-					onClick={handleClick}
+					onClick={onSignInClicked}
 					disabled={loading}
 					className={`relative w-full inline-flex items-center justify-center text-white font-semibold py-3 rounded-lg text-lg transition-all duration-300 ${
 						loading ? "bg-gray-700 cursor-not-allowed" : "bg-gradient-to-r from-blue-600 to-indigo-700 hover:shadow-[0_0_25px_rgba(37,99,235,0.6)] hover:-translate-y-0.5"

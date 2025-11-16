@@ -1,13 +1,11 @@
 import { useState } from "react";
-import { auth } from "../firebase/firebase.js";
 import { type User } from "firebase/auth";
 import { createClass, type Class } from "../Entity/Class.js";
 import type { ClassManagerInterface } from "../ManagerInterface/ClassManagerInterface.js";
 import { APIError, DataParseError, NetworkError } from "../Helper/CustomErrors.js";
 
-export const useCreateClassViewModel = (classManager: ClassManagerInterface) => {
+export const useCreateClassViewModel = (classManager: ClassManagerInterface, authData: User) => {
 	const [loading, setLoading] = useState<boolean>(false);
-	const [authData, setAuthData] = useState<User | null>(auth.currentUser);
 	const [className, setClassName] = useState<string>("");
 	const [majorCode, setMajorCode] = useState<string>("");
 	const [admissionYear, setAdmissionYear] = useState<string>("");
@@ -16,11 +14,6 @@ export const useCreateClassViewModel = (classManager: ClassManagerInterface) => 
 		admissionYear?: string | undefined;
 		majorCode?: string | undefined;
 	}>({});
-
-	if (authData === null) {
-		alert("ユーザーが認証されていません。再度ログインしてください。");
-		return;
-	}
 
 	const checkClassName = (name: string) => {
 		setErrors((prev) => ({
@@ -71,6 +64,7 @@ export const useCreateClassViewModel = (classManager: ClassManagerInterface) => 
 		const newClass = createClass(authData.uid, className, admissionYear, majorCode);
 
 		try {
+			setLoading(true);
 			await classManager.addNewClass(newClass as Class);
 			alert("クラスが追加されました！🎉");
 		} catch (error) {
@@ -88,6 +82,7 @@ export const useCreateClassViewModel = (classManager: ClassManagerInterface) => 
 				console.error("Error: ", error);
 			}
 		} finally {
+			setLoading(false);
 			// Reset form
 			setClassName("");
 			setAdmissionYear("");

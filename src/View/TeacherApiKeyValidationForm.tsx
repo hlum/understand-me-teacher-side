@@ -1,25 +1,14 @@
 import type { User } from "firebase/auth";
-import { NameInputPage } from "./NameRegistrationView.js";
 import { useTeacherAPIKeyValidationFormViewModel } from "../ViewModel/TeacherAPIKeyValidationFormViewModel.js";
 import { UserManager } from "../Manager/UserManager.js";
 
 type ApiKeyInputProps = {
 	authData: User;
-	onRegisterationComplete: () => void;
 };
 
-const TeacherApiKeyValidationForm: React.FC<ApiKeyInputProps> = ({ authData, onRegisterationComplete }) => {
+const TeacherApiKeyValidationForm: React.FC<ApiKeyInputProps> = ({ authData }) => {
 	const userManager = new UserManager();
-	const { teacherAPIKey, setTeacherAPIKey, userIsValidTeacher, loading, checkTeacherApiKey, registerTeacher } = useTeacherAPIKeyValidationFormViewModel(
-		userManager,
-		onRegisterationComplete,
-		authData
-	);
-
-	// APIキーが検証済みの場合は名前入力ページを表示
-	if (userIsValidTeacher && authData.email) {
-		return <NameInputPage email={authData.email} onNameSubmit={registerTeacher} />;
-	}
+	const { teacherAPIKey, setTeacherAPIKey, loading, checkTeacherApiKey } = useTeacherAPIKeyValidationFormViewModel(userManager, authData);
 
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 flex items-center justify-center px-6 py-12">

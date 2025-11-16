@@ -6,7 +6,9 @@ export const useRouteManager = () => {
 	const paths = usePathBuilder();
 
 	return {
+		toNameRegistration: () => navigate(paths.nameRegistration()),
 		toMainDashboard: () => navigate(paths.mainDashboard()),
+		toApiKeyValidation: () => navigate(paths.apiKeyValidation()),
 		toCreateClass: () => navigate(paths.createClass()),
 		toClassDetail: (classID: string) => navigate(paths.classDetail(classID)),
 		toCreateHomework: (classID: string) => navigate(paths.createHomework(classID)),
