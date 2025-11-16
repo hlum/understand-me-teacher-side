@@ -2,16 +2,11 @@ import { useState, useEffect } from "react";
 import type { ClassManagerInterface } from "../ManagerInterface/ClassManagerInterface.js";
 import { DataParseError, NetworkError, APIError } from "../Helper/CustomErrors.js";
 import type { Class } from "../Entity/Class.js";
-import { auth } from "../firebase/firebase.js";
+import type { User } from "firebase/auth";
 
-export const useMainDashboardViewModel = (classManager: ClassManagerInterface) => {
-	const [authData, setAuthData] = useState(auth.currentUser);
+export const useMainDashboardViewModel = (classManager: ClassManagerInterface, authData: User) => {
 	const [classes, setClasses] = useState<Class[]>([]);
 	const [loading, setLoading] = useState(true);
-
-	if (!authData) {
-		return;
-	}
 
 	useEffect(() => {
 		const fetchClasses = async () => {
