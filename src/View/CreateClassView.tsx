@@ -2,19 +2,18 @@ import { useCreateClassViewModel } from "../ViewModel/CreateClassViewModel.js";
 import { ClassManager } from "../Manager/ClassManager.js";
 import { Loading } from "./Components/Loading.js";
 import { useRouteManager } from "../Router/useRouteManager.js";
+import type { User } from "firebase/auth";
 
-const CreateClassView = () => {
-	const navigate = useRouteManager();
+type CreateClassViewProps = {
+	authData: User;
+};
+
+const CreateClassView = (props: CreateClassViewProps) => {
+	const { authData } = props;
 	const classManager = new ClassManager();
-	const vm = useCreateClassViewModel(classManager);
-	if (!vm) {
-		alert("もう一度ログインしてください！");
-		navigate.toLogin();
-		return null;
-	}
-	const { loading, className, setClassName, majorCode, setMajorCode, admissionYear, setAdmissionYear, errors, checkClassName, checkAdmissionYear, handleSubmit } = vm;
+	const vm = useCreateClassViewModel(classManager, authData);
 
-	if (loading) {
+	if (vm.loading) {
 		return <Loading />;
 	}
 
@@ -30,16 +29,16 @@ const CreateClassView = () => {
 					<input
 						type="text"
 						placeholder="例: iOS開発クラス"
-						value={className}
+						value={vm.className}
 						onChange={(event) => {
-							setClassName(event.target.value);
-							checkClassName(event.target.value);
+							vm.setClassName(event.target.value);
+							vm.checkClassName(event.target.value);
 						}}
 						className={`w-full px-4 py-3 rounded-lg bg-gray-800/80 text-white border ${
-							errors.className ? "border-red-500" : "border-gray-700"
+							vm.errors.className ? "border-red-500" : "border-gray-700"
 						} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition`}
 					/>
-					{errors.className && <p className="text-red-500 text-sm mt-2">{errors.className}</p>}
+					{vm.errors.className && <p className="text-red-500 text-sm mt-2">{vm.errors.className}</p>}
 				</div>
 
 				{/* 入学年度 */}
@@ -48,16 +47,16 @@ const CreateClassView = () => {
 					<input
 						type="number"
 						placeholder="例: 23"
-						value={admissionYear}
+						value={vm.admissionYear}
 						onChange={(event) => {
-							setAdmissionYear(event.target.value);
-							checkAdmissionYear(event.target.value);
+							vm.setAdmissionYear(event.target.value);
+							vm.checkAdmissionYear(event.target.value);
 						}}
 						className={`w-full px-4 py-3 rounded-lg bg-gray-800/80 text-white border ${
-							errors.admissionYear ? "border-red-500" : "border-gray-700"
+							vm.errors.admissionYear ? "border-red-500" : "border-gray-700"
 						} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition`}
 					/>
-					{errors.admissionYear && <p className="text-red-500 text-sm mt-2">{errors.admissionYear}</p>}
+					{vm.errors.admissionYear && <p className="text-red-500 text-sm mt-2">{vm.errors.admissionYear}</p>}
 				</div>
 
 				{/* 専攻コード */}
@@ -66,19 +65,19 @@ const CreateClassView = () => {
 					<input
 						type="text"
 						placeholder="例: cm, ap, ac"
-						value={majorCode}
-						onChange={(event) => setMajorCode(event.target.value)}
+						value={vm.majorCode}
+						onChange={(event) => vm.setMajorCode(event.target.value)}
 						className="w-full px-4 py-3 rounded-lg bg-gray-800/80 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
 					/>
-					{errors.majorCode && <p className="text-red-500 text-sm mt-2">{errors.majorCode}</p>}
+					{vm.errors.majorCode && <p className="text-red-500 text-sm mt-2">{vm.errors.majorCode}</p>}
 				</div>
 
 				{/* ボタン */}
 				<button
-					onClick={handleSubmit}
-					disabled={errors.className === null || errors.admissionYear === null}
+					onClick={vm.handleSubmit}
+					disabled={vm.errors.className === null || vm.errors.admissionYear === null}
 					className={`w-full py-3 rounded-lg font-semibold text-lg tracking-wide transition-all duration-300 ${
-						errors.className || errors.admissionYear
+						vm.errors.className || vm.errors.admissionYear
 							? "bg-gray-700 text-gray-400 cursor-not-allowed"
 							: "bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-lg hover:shadow-[0_0_20px_rgba(37,99,235,0.6)] hover:-translate-y-0.5"
 					}`}

@@ -3,20 +3,18 @@ import { useMainDashboardViewModel } from "../ViewModel/MainDashboardViewModel.j
 import { ClassManager } from "../Manager/ClassManager.js";
 import { Loading } from "./Components/Loading.js";
 import { useRouteManager } from "../Router/useRouteManager.js";
+import type { User } from "firebase/auth";
 
-const MainDashboardView = () => {
+type MainDashboardViewProps = {
+	authData: User;
+};
+
+const MainDashboardView = ({ authData }: MainDashboardViewProps) => {
 	const classManager = new ClassManager();
 	const navigate = useRouteManager();
-	const vm = useMainDashboardViewModel(classManager);
+	const vm = useMainDashboardViewModel(classManager, authData);
 
-	if (!vm) {
-		navigate.toLogin();
-		return null;
-	}
-
-	const { loading, authData, classes } = vm;
-
-	if (loading) {
+	if (vm.loading) {
 		return <Loading />;
 	}
 
@@ -40,13 +38,13 @@ const MainDashboardView = () => {
 			</div>
 
 			{/* Class List Section */}
-			{classes.length === 0 ? (
+			{vm.classes.length === 0 ? (
 				<div className="flex justify-center items-center py-24 text-center">
 					<p className="text-gray-400 text-lg">担当しているクラスがありません。</p>
 				</div>
 			) : (
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-					{classes.map((cls) => (
+					{vm.classes.map((cls) => (
 						<div
 							key={cls.id}
 							onClick={() => navigate.toClassDetail(cls.id)}

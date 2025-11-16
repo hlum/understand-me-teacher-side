@@ -16,5 +16,5 @@ export interface UserManagerInterface {
 	 * @returns 存在する場合はtrue、存在しない場合はfalse
 	 * @throws APIError, NetworkError, DataParseError
 	 */
-	userAlreadyExistsInDB(userID: string): Promise<boolean>;
+	teacherRecordExists(userID: string): Promise<boolean>;
 }

@@ -26,7 +26,7 @@ export class UserManager implements UserManagerInterface {
 		console.log("✅ User 保存成功。");
 	}
 
-	async userAlreadyExistsInDB(userID: string): Promise<boolean> {
+	async teacherRecordExists(userID: string): Promise<boolean> {
 		const endPoint = LollipopHelper.instance.buildEndpoint("/user/get_user.php", { id: userID });
 		const headers = LollipopHelper.instance.buildHeader();
 

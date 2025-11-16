@@ -2,8 +2,14 @@ import { useParams } from "react-router-dom";
 import { useCreateHomeworkViewModel } from "../ViewModel/CreateHomeworkViewModel.js";
 import { HomeworkManager } from "../Manager/HomeworkManager.js";
 import { useRouteManager } from "../Router/useRouteManager.js";
+import type { User } from "firebase/auth";
 
-export const CreateHomeworkPage = () => {
+type CreateHomeworkPageProps = {
+	authData: User;
+};
+
+export const CreateHomeworkPage = (props: CreateHomeworkPageProps) => {
+	const { authData } = props;
 	const { classID } = useParams<{ classID: string }>();
 	if (!classID) {
 		return <div>Invalid class ID</div>;
