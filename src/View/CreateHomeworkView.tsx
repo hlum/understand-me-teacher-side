@@ -63,7 +63,9 @@ export const CreateHomeworkPage = (props: CreateHomeworkPageProps) => {
 						onClick={addNewHomework}
 						disabled={loading}
 						className={`w-full mt-6 py-3 rounded-lg font-semibold text-white text-lg transition-all duration-300 ${
-							loading ? "btn-disabled opacity-70" : "bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-indigo-600 hover:to-blue-600 shadow-[0_0_20px_rgba(59,130,246,0.5)] hover:shadow-[0_0_40px_rgba(59,130,246,0.7)] hover:-translate-y-0.5"
+							loading
+								? "btn-disabled opacity-70"
+								: "bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-indigo-600 hover:to-blue-600 shadow-[0_0_20px_rgba(59,130,246,0.5)] hover:shadow-[0_0_40px_rgba(59,130,246,0.7)] hover:-translate-y-0.5"
 						}`}
 					>
 						{loading ? "追加中..." : "課題を追加"}

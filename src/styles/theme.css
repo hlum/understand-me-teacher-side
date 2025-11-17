@@ -1,14 +1,13 @@
 /* Tailwind CSS v4 syntax - using @theme and utility classes */
 
 @theme {
-/* CSS custom properties for theming */
---color-bg: #ffffff;
---color-bg-secondary: #f1f5f9;
---color-text: #111111;
---color-text-secondary: #64748b;
---color-primary: #3b82f6;
---color-primary-hover: #2563eb;
---color-accent: #10b981;
+	--color-bg: #ffffff;
+	--color-bg-secondary: #f1f5f9;
+	--color-text: #111111;
+	--color-text-secondary: #64748b;
+	--color-primary: #3b82f6;
+	--color-primary-hover: #2563eb;
+	--color-accent: #10b981;
 }
 
 /* Dark mode theme variables */
