@@ -18,8 +18,8 @@ const CreateClassView = (props: CreateClassViewProps) => {
 	}
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 flex items-center justify-center px-6 py-12">
-			<div className="w-full max-w-2xl bg-gray-900/70 backdrop-blur-xl border border-gray-700 rounded-2xl shadow-[0_0_25px_rgba(0,0,0,0.6)] hover:shadow-[0_0_40px_rgba(0,0,0,0.8)] transition-all duration-500 p-10">
+		<div className="page-bg-auth flex items-center justify-center px-6 py-12">
+			<div className="w-full max-w-2xl card-auth p-10">
 				{/* Header */}
 				<h1 className="text-4xl font-bold text-center text-white mb-10 tracking-wide">クラスを追加</h1>
 
@@ -34,9 +34,7 @@ const CreateClassView = (props: CreateClassViewProps) => {
 							vm.setClassName(event.target.value);
 							vm.checkClassName(event.target.value);
 						}}
-						className={`w-full px-4 py-3 rounded-lg bg-gray-800/80 text-white border ${
-							vm.errors.className ? "border-red-500" : "border-gray-700"
-						} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition`}
+						className={`input ${vm.errors.className ? "input-error" : ""}`}
 					/>
 					{vm.errors.className && <p className="text-red-500 text-sm mt-2">{vm.errors.className}</p>}
 				</div>
@@ -52,9 +50,7 @@ const CreateClassView = (props: CreateClassViewProps) => {
 							vm.setAdmissionYear(event.target.value);
 							vm.checkAdmissionYear(event.target.value);
 						}}
-						className={`w-full px-4 py-3 rounded-lg bg-gray-800/80 text-white border ${
-							vm.errors.admissionYear ? "border-red-500" : "border-gray-700"
-						} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition`}
+						className={`input ${vm.errors.admissionYear ? "input-error" : ""}`}
 					/>
 					{vm.errors.admissionYear && <p className="text-red-500 text-sm mt-2">{vm.errors.admissionYear}</p>}
 				</div>
@@ -67,7 +63,7 @@ const CreateClassView = (props: CreateClassViewProps) => {
 						placeholder="例: cm, ap, ac"
 						value={vm.majorCode}
 						onChange={(event) => vm.setMajorCode(event.target.value)}
-						className="w-full px-4 py-3 rounded-lg bg-gray-800/80 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+						className="input"
 					/>
 					{vm.errors.majorCode && <p className="text-red-500 text-sm mt-2">{vm.errors.majorCode}</p>}
 				</div>
@@ -77,9 +73,7 @@ const CreateClassView = (props: CreateClassViewProps) => {
 					onClick={vm.handleSubmit}
 					disabled={vm.errors.className === null || vm.errors.admissionYear === null}
 					className={`w-full py-3 rounded-lg font-semibold text-lg tracking-wide transition-all duration-300 ${
-						vm.errors.className || vm.errors.admissionYear
-							? "bg-gray-700 text-gray-400 cursor-not-allowed"
-							: "bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-lg hover:shadow-[0_0_20px_rgba(37,99,235,0.6)] hover:-translate-y-0.5"
+						vm.errors.className || vm.errors.admissionYear ? "btn-disabled" : "bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-lg hover:shadow-[0_0_20px_rgba(37,99,235,0.6)] hover:-translate-y-0.5"
 					}`}
 				>
 					クラスを追加する

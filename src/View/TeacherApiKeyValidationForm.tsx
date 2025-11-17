@@ -11,11 +11,11 @@ const TeacherApiKeyValidationForm: React.FC<ApiKeyInputProps> = ({ authData }) =
 	const { teacherAPIKey, setTeacherAPIKey, loading, checkTeacherApiKey } = useTeacherAPIKeyValidationFormViewModel(userManager, authData);
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 flex items-center justify-center px-6 py-12">
-			<div className="w-full max-w-md bg-gray-900/70 backdrop-blur-xl border border-gray-700 rounded-2xl shadow-[0_0_25px_rgba(0,0,0,0.6)] hover:shadow-[0_0_40px_rgba(0,0,0,0.8)] transition-all duration-500 p-10">
+		<div className="page-bg-auth flex items-center justify-center px-6 py-12">
+			<div className="w-full max-w-md card-auth p-10">
 				{/* Header */}
 				<div className="text-center mb-8">
-					<h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500 mb-3 tracking-wide">教師用APIキー認証</h2>
+					<h2 className="heading-gradient mb-3">教師用APIキー認証</h2>
 					<p className="text-gray-300 text-sm">教師専用のAPIキーを入力してアカウントを登録してください</p>
 				</div>
 
@@ -31,7 +31,7 @@ const TeacherApiKeyValidationForm: React.FC<ApiKeyInputProps> = ({ authData }) =
 						onChange={(e) => setTeacherAPIKey(e.target.value)}
 						placeholder="教師用APIキーを入力してください"
 						disabled={loading}
-						className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+						className="input disabled:opacity-50 disabled:cursor-not-allowed"
 						onKeyDown={(e) => {
 							if (e.key === "Enter" && !loading) {
 								checkTeacherApiKey(teacherAPIKey);
@@ -45,12 +45,12 @@ const TeacherApiKeyValidationForm: React.FC<ApiKeyInputProps> = ({ authData }) =
 					onClick={() => checkTeacherApiKey(teacherAPIKey)}
 					disabled={loading}
 					className={`w-full inline-flex items-center justify-center text-white font-semibold py-3 rounded-lg text-lg transition-all duration-300 ${
-						loading ? "bg-gray-700 cursor-not-allowed" : "bg-gradient-to-r from-blue-600 to-indigo-700 hover:shadow-[0_0_25px_rgba(37,99,235,0.6)] hover:-translate-y-0.5"
+						loading ? "btn-disabled" : "bg-gradient-to-r from-blue-600 to-indigo-700 hover:shadow-[0_0_25px_rgba(37,99,235,0.6)] hover:-translate-y-0.5"
 					}`}
 				>
 					{loading ? (
 						<span className="flex items-center gap-2">
-							<span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+							<span className="spinner-sm" />
 							検証中...
 						</span>
 					) : (

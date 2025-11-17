@@ -25,28 +25,25 @@ export const HomeworkListView = () => {
 	}
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-gray-950 via-blue-950 to-gray-900 py-12 px-6">
-			<div className="max-w-screen mx-auto backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-8 shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+		<div className="page-bg py-12 px-6">
+			<div className="max-w-screen mx-auto card p-8">
 				{/* Header */}
 				<div className="flex flex-wrap justify-between items-center mb-10 gap-4">
 					<div>
 						<h1 className="text-3xl font-bold text-white mb-2">{classDetail.name}</h1>
 						<p className="text-gray-300 text-sm space-x-6">
 							<span>
-								<span className="font-semibold text-blue-400">入学年度：</span>
+								<span className="font-semibold text-primary-light">入学年度：</span>
 								{classDetail.admissionYear}
 							</span>
 							<span>
-								<span className="font-semibold text-green-400">専攻：</span>
+								<span className="font-semibold text-accent-light">専攻：</span>
 								{classDetail.majorCode.toUpperCase()}
 							</span>
 						</p>
 					</div>
 
-					<button
-						onClick={() => navigate.toCreateHomework(classID)}
-						className="inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-semibold px-5 py-2.5 rounded-lg shadow-md hover:shadow-[0_0_20px_rgba(37,99,235,0.7)] hover:-translate-y-0.5 transition-all duration-300 ease-in-out cursor-pointer"
-					>
+					<button onClick={() => navigate.toCreateHomework(classID)} className="btn-primary-sm">
 						<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
 						</svg>
@@ -63,11 +60,7 @@ export const HomeworkListView = () => {
 					) : (
 						<div className="grid gap-5">
 							{homeworks.map((item) => (
-								<div
-									key={item.id}
-									onClick={() => navigate.toStudentHomeworkStatus(item.id)}
-									className="bg-white/10 border border-white/20 rounded-2xl p-6 shadow-md hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] hover:-translate-y-0.5 transition-all duration-300 ease-in-out"
-								>
+								<div key={item.id} onClick={() => navigate.toStudentHomeworkStatus(item.id)} className="card-hover">
 									<h3 className="text-xl font-semibold text-white">{item.title}</h3>
 
 									{item.description && <p className="text-gray-300 mt-2 text-sm leading-relaxed">{item.description}</p>}
@@ -75,7 +68,7 @@ export const HomeworkListView = () => {
 									{item.dueDate && (
 										<p className="text-gray-400 mt-3 text-sm">
 											締め切り日：
-											<span className="text-blue-400 font-medium ml-1">{new Date(item.dueDate).toLocaleDateString("ja-JP")}</span>
+											<span className="text-primary-light font-medium ml-1">{new Date(item.dueDate).toLocaleDateString("ja-JP")}</span>
 										</p>
 									)}
 								</div>
