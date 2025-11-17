@@ -25,12 +25,12 @@ export const NameRegistrationView = ({ authData }: NameInputPageProps) => {
 				{/* Header */}
 				<div className="text-center mb-8">
 					<h2 className="heading-gradient mb-3">ようこそ！</h2>
-					<p className="text-gray-300 text-sm">アカウント登録を完了するために、お名前を入力してください</p>
+					<p className="text-adaptive-secondary text-sm">アカウント登録を完了するために、お名前を入力してください</p>
 				</div>
 
 				{/* Name Input */}
 				<div className="mb-6">
-					<label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
+					<label htmlFor="name" className="block text-sm font-medium text-adaptive-secondary mb-2">
 						お名前
 					</label>
 					<input
@@ -68,8 +68,8 @@ export const NameRegistrationView = ({ authData }: NameInputPageProps) => {
 				</button>
 
 				{/* User Info Display */}
-				<div className="mt-6 pt-6 border-t border-gray-700">
-					<p className="text-xs text-gray-400 text-center">登録メールアドレス: {authData.email}</p>
+				<div className="mt-6 pt-6 border-t border-gray-300 dark:border-gray-700">
+					<p className="text-xs text-adaptive-secondary text-center">登録メールアドレス: {authData.email}</p>
 				</div>
 			</div>
 		</div>

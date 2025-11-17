@@ -30,7 +30,7 @@ export const CreateHomeworkPage = (props: CreateHomeworkPageProps) => {
 		<div className="page-bg flex items-center justify-center p-6">
 			<div className="w-full max-w-lg card p-8">
 				{/* Header */}
-				<h2 className="text-3xl font-bold text-center text-white mb-6 tracking-wide">課題追加ページ</h2>
+				<h2 className="text-3xl font-bold text-center text-adaptive mb-6 tracking-wide">課題追加ページ</h2>
 
 				{/* Info */}
 				<div className="mb-6 text-center text-gray-300 text-sm space-y-1"></div>
@@ -38,12 +38,12 @@ export const CreateHomeworkPage = (props: CreateHomeworkPageProps) => {
 				{/* Form */}
 				<div className="space-y-5">
 					<div>
-						<label className="block text-gray-200 mb-2 font-medium">課題名</label>
+						<label className="block text-adaptive-secondary mb-2 font-medium">課題名</label>
 						<input type="text" placeholder="例: 第1章 課題レポート" value={title} onChange={(e) => setTitle(e.target.value)} className="input" />
 					</div>
 
 					<div>
-						<label className="block text-gray-200 mb-2 font-medium">課題の説明</label>
+						<label className="block text-adaptive-secondary mb-2 font-medium">課題の説明</label>
 						<textarea
 							rows={4}
 							placeholder="課題の詳細を入力してください..."
@@ -54,7 +54,7 @@ export const CreateHomeworkPage = (props: CreateHomeworkPageProps) => {
 					</div>
 
 					<div>
-						<label className="block text-gray-200 mb-2 font-medium">締め切り日</label>
+						<label className="block text-adaptive-secondary mb-2 font-medium">締め切り日</label>
 						<input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} className="input" />
 					</div>
 

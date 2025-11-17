@@ -21,11 +21,11 @@ const CreateClassView = (props: CreateClassViewProps) => {
 		<div className="page-bg-auth flex items-center justify-center px-6 py-12">
 			<div className="w-full max-w-2xl card-auth p-10">
 				{/* Header */}
-				<h1 className="text-4xl font-bold text-center text-white mb-10 tracking-wide">クラスを追加</h1>
+				<h1 className="text-4xl font-bold text-center text-adaptive mb-10 tracking-wide">クラスを追加</h1>
 
 				{/* クラス名 */}
 				<div className="mb-8">
-					<label className="block text-gray-300 font-medium mb-2">クラス名</label>
+					<label className="block text-adaptive-secondary font-medium mb-2">クラス名</label>
 					<input
 						type="text"
 						placeholder="例: iOS開発クラス"
@@ -41,7 +41,7 @@ const CreateClassView = (props: CreateClassViewProps) => {
 
 				{/* 入学年度 */}
 				<div className="mb-8">
-					<label className="block text-gray-300 font-medium mb-2">対象の入学年度 </label>
+					<label className="block text-adaptive-secondary font-medium mb-2">対象の入学年度 </label>
 					<input
 						type="number"
 						placeholder="例: 23"
@@ -57,7 +57,7 @@ const CreateClassView = (props: CreateClassViewProps) => {
 
 				{/* 専攻コード */}
 				<div className="mb-10">
-					<label className="block text-gray-300 font-medium mb-2">専攻コード</label>
+					<label className="block text-adaptive-secondary font-medium mb-2">専攻コード</label>
 					<input
 						type="text"
 						placeholder="例: cm, ap, ac"

@@ -6,13 +6,21 @@ export function applyTheme(): void {
 	const saved = localStorage.getItem("theme");
 
 	if (saved === "light" || saved === "dark") {
-		document.documentElement.classList.toggle("dark", saved === "dark");
+		if (saved === "dark") {
+			document.documentElement.classList.add("dark");
+		} else {
+			document.documentElement.classList.remove("dark");
+		}
 		return;
 	}
 
 	// No saved preference → use system preference
 	const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-	document.documentElement.classList.toggle("dark", systemDark);
+	if (systemDark) {
+		document.documentElement.classList.add("dark");
+	} else {
+		document.documentElement.classList.remove("dark");
+	}
 }
 
 /**

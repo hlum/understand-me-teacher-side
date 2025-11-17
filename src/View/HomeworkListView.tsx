@@ -30,8 +30,8 @@ export const HomeworkListView = () => {
 				{/* Header */}
 				<div className="flex flex-wrap justify-between items-center mb-10 gap-4">
 					<div>
-						<h1 className="text-3xl font-bold text-white mb-2">{classDetail.name}</h1>
-						<p className="text-gray-300 text-sm space-x-6">
+						<h1 className="text-3xl font-bold text-adaptive mb-2">{classDetail.name}</h1>
+						<p className="text-adaptive-secondary text-sm space-x-6">
 							<span>
 								<span className="font-semibold text-primary-light">入学年度：</span>
 								{classDetail.admissionYear}
@@ -53,17 +53,17 @@ export const HomeworkListView = () => {
 
 				{/* Homework Section */}
 				<div>
-					<h2 className="text-2xl font-semibold text-white mb-6 border-b border-white/10 pb-2">課題一覧</h2>
+					<h2 className="text-2xl font-semibold text-adaptive mb-6 border-b border-gray-300 dark:border-white/10 pb-2">課題一覧</h2>
 
 					{homeworks.length === 0 ? (
-						<div className="py-12 text-center text-gray-400 text-lg">このクラスにはまだ課題がありません。</div>
+						<div className="py-12 text-center text-adaptive-secondary text-lg">このクラスにはまだ課題がありません。</div>
 					) : (
 						<div className="grid gap-5">
 							{homeworks.map((item) => (
 								<div key={item.id} onClick={() => navigate.toStudentHomeworkStatus(item.id)} className="card-hover">
-									<h3 className="text-xl font-semibold text-white">{item.title}</h3>
+									<h3 className="text-xl font-semibold text-adaptive">{item.title}</h3>
 
-									{item.description && <p className="text-gray-300 mt-2 text-sm leading-relaxed">{item.description}</p>}
+									{item.description && <p className="text-adaptive-secondary mt-2 text-sm leading-relaxed">{item.description}</p>}
 
 									{item.dueDate && (
 										<p className="text-gray-400 mt-3 text-sm">

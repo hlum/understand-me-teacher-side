@@ -23,7 +23,7 @@ const MainDashboardView = ({ authData }: MainDashboardViewProps) => {
 		<div className="page-bg p-8">
 			{/* Header Section */}
 			<div className="flex flex-wrap justify-between items-center mb-10 gap-6">
-				<h1 className="text-3xl sm:text-4xl font-bold text-white">
+				<h1 className="text-3xl sm:text-4xl font-bold text-adaptive">
 					クラス管理、 <span className="text-accent-light">{authData.displayName}</span>
 				</h1>
 
@@ -48,7 +48,7 @@ const MainDashboardView = ({ authData }: MainDashboardViewProps) => {
 					{vm.classes.map((cls) => (
 						<div key={cls.id} onClick={() => navigate.toClassDetail(cls.id)} className="card-hover">
 							<div className="flex justify-between items-start mb-4">
-								<h2 className="text-lg font-semibold text-white hover:text-primary-light transition-colors">{cls.name}</h2>
+								<h2 className="text-lg font-semibold text-adaptive hover:text-primary-light transition-colors">{cls.name}</h2>
 							</div>
 
 							<div className="flex flex-wrap gap-2">
