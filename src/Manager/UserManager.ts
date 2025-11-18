@@ -48,4 +48,24 @@ export class UserManager implements UserManagerInterface {
 
 		return true;
 	}
+
+	async fetchUserData(userID: string): Promise<UserEntity> {
+		const endPoint = LollipopHelper.instance.buildEndpoint("/user/get_user.php", { id: userID });
+		const headers = LollipopHelper.instance.buildHeader();
+
+		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, "UserManager.fetchUserData", {
+			method: "GET",
+			headers: headers,
+		});
+
+		LollipopHelper.instance.validateLollipopResponse(lollipopResponse, "UserManager.fetchUserData", true);
+
+		const rawUsers = LollipopHelper.instance.decodeDataFromLollipopResponse<RawUserEntityResponse[]>(lollipopResponse.data!, "UserManager.fetchUserData");
+		const user = rawUsers.map(transformUserEntityResponse)[0];
+		if (!user) {
+			throw new Error("UserManager.fetchUserData: ユーザーデータが存在しません。");
+		}
+
+		return user;
+	}
 }
