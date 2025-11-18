@@ -58,22 +58,35 @@ const CreateClassView = (props: CreateClassViewProps) => {
 				{/* 専攻コード */}
 				<div className="mb-10">
 					<label className="block text-adaptive-secondary font-medium mb-2">専攻コード</label>
-					<input
-						type="text"
-						placeholder="例: cm, ap, ac"
-						value={vm.majorCode}
-						onChange={(event) => vm.setMajorCode(event.target.value)}
-						className="input"
-					/>
+					<input type="text" placeholder="例: cm, ap, ac" value={vm.majorCode} onChange={(event) => vm.setMajorCode(event.target.value)} className="input" />
 					{vm.errors.majorCode && <p className="text-red-500 text-sm mt-2">{vm.errors.majorCode}</p>}
 				</div>
+
+				{/* 選択科目かどうかのチェックボックス */}
+				<div className="mb-10">
+					<label className="inline-flex items-center">
+						<input type="checkbox" checked={vm.isOptionalClass} onChange={(e) => vm.setIsOptionalClass(e.target.checked)} className="form-checkbox h-5 w-5 text-blue-600" />
+						<span className="ml-2 text-adaptive-secondary">選択科目として設定する</span>
+					</label>
+				</div>
+
+				{/* 選択科目のクラスコード */}
+				{vm.isOptionalClass && (
+					<div className="mb-10">
+						<label className="block text-adaptive-secondary font-medium mb-2">クラスコード</label>
+						<input type="text" placeholder="例: IOS2023A" value={vm.classCode} onChange={(event) => vm.setClassCode(event.target.value)} className="input" />
+						{vm.errors.classCode && <p className="text-red-500 text-sm mt-2">{vm.errors.classCode}</p>}
+					</div>
+				)}
 
 				{/* ボタン */}
 				<button
 					onClick={vm.handleSubmit}
 					disabled={vm.errors.className === null || vm.errors.admissionYear === null}
 					className={`w-full py-3 rounded-lg font-semibold text-lg tracking-wide transition-all duration-300 ${
-						vm.errors.className || vm.errors.admissionYear ? "btn-disabled" : "bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-lg hover:shadow-[0_0_20px_rgba(37,99,235,0.6)] hover:-translate-y-0.5"
+						vm.errors.className || vm.errors.admissionYear
+							? "btn-disabled"
+							: "bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-lg hover:shadow-[0_0_20px_rgba(37,99,235,0.6)] hover:-translate-y-0.5"
 					}`}
 				>
 					クラスを追加する
