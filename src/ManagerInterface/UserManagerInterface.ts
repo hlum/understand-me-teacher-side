@@ -1,3 +1,5 @@
+import type { UserEntity } from "@/Entity/UserEntity.js";
+
 export interface UserManagerInterface {
 	/**
 	 * ユーザー情報を保存します。

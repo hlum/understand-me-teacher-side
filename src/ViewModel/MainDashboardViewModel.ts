@@ -3,6 +3,7 @@ import type { ClassManagerInterface } from "../ManagerInterface/ClassManagerInte
 import { DataParseError, NetworkError, APIError } from "../Helper/CustomErrors.js";
 import type { Class } from "../Entity/Class.js";
 import type { User } from "firebase/auth";
+import type { UserEntity } from "@/Entity/UserEntity.js";
 
 export const useMainDashboardViewModel = (classManager: ClassManagerInterface, authData: User) => {
 	const [classes, setClasses] = useState<Class[]>([]);

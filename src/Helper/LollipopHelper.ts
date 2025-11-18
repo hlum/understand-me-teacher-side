@@ -58,7 +58,7 @@ export class LollipopHelper {
 		try {
 			return JSON.parse(data) as T;
 		} catch (error) {
-			throw new DataParseError(`${context} データのデコードに失敗しました。 Error: ${error}`);
+			throw new DataParseError(`${context} データのデコードに失敗しました。 Error: ${error}, Response Data: ${data}`);
 		}
 	}
 
