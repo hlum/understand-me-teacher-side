@@ -1,3 +1,5 @@
+import type { UserEntity } from "@/Entity/UserEntity.js";
+
 export interface UserManagerInterface {
 	/**
 	 * ユーザー情報を保存します。
@@ -17,4 +19,12 @@ export interface UserManagerInterface {
 	 * @throws APIError, NetworkError, DataParseError
 	 */
 	teacherRecordExists(userID: string): Promise<boolean>;
+
+	/**
+	 * ユーザーのデータを取得します。
+	 * @param userID Firebase Auth UUID
+	 * @returns UserEntity
+	 * @throws APIError, NetworkError, DataParseError
+	 */
+	fetchUserData(userID: string): Promise<UserEntity>;
 }

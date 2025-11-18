@@ -1,10 +1,10 @@
-import { transformUserResponse, type RawUserResponse } from "../Entity/User.js";
+import { transformUserEntityResponse, type RawUserEntityResponse, type UserEntity } from "../Entity/UserEntity.js";
 import { LollipopHelper } from "../Helper/LollipopHelper.js";
 import type { UserManagerInterface } from "../ManagerInterface/UserManagerInterface.js";
 
 export class UserManager implements UserManagerInterface {
 	async registerTeacher(id: string, email: string, name: string, photoURL: string): Promise<void> {
-		const endPoint = LollipopHelper.instance.buildEndpoint("/user/register_user.php", {});
+		const endPoint = LollipopHelper.instance.buildEndpoint("/user/register_teacher.php", {});
 		const headers = LollipopHelper.instance.buildHeader(true);
 
 		const body = JSON.stringify({
@@ -40,12 +40,32 @@ export class UserManager implements UserManagerInterface {
 			return false;
 		}
 
-		const rawUsers = LollipopHelper.instance.decodeDataFromLollipopResponse<RawUserResponse[]>(lollipopResponse.data, "UserManager.userAlreadyExistsInDB");
-		const user = rawUsers.map(transformUserResponse)[0];
+		const rawUsers = LollipopHelper.instance.decodeDataFromLollipopResponse<RawUserEntityResponse[]>(lollipopResponse.data, "UserManager.userAlreadyExistsInDB");
+		const user = rawUsers.map(transformUserEntityResponse)[0];
 		if (!user || user.role !== "teacher") {
 			return false;
 		}
 
 		return true;
+	}
+
+	async fetchUserData(userID: string): Promise<UserEntity> {
+		const endPoint = LollipopHelper.instance.buildEndpoint("/user/get_user.php", { id: userID });
+		const headers = LollipopHelper.instance.buildHeader();
+
+		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, "UserManager.fetchUserData", {
+			method: "GET",
+			headers: headers,
+		});
+
+		LollipopHelper.instance.validateLollipopResponse(lollipopResponse, "UserManager.fetchUserData", true);
+
+		const rawUsers = LollipopHelper.instance.decodeDataFromLollipopResponse<RawUserEntityResponse[]>(lollipopResponse.data!, "UserManager.fetchUserData");
+		const user = rawUsers.map(transformUserEntityResponse)[0];
+		if (!user) {
+			throw new Error("UserManager.fetchUserData: ユーザーデータが存在しません。");
+		}
+
+		return user;
 	}
 }

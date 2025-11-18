@@ -1,4 +1,4 @@
-export type User = {
+export type UserEntity = {
 	id: string;
 	name: string;
 	email: string;
@@ -9,7 +9,7 @@ export type User = {
 	photoURL: string | null;
 };
 
-export type RawUserResponse = {
+export type RawUserEntityResponse = {
 	id: string;
 	email: string;
 	name: string;
@@ -20,7 +20,7 @@ export type RawUserResponse = {
 	photo_url: string | null;
 };
 
-export function transformUserResponse(raw: RawUserResponse): User {
+export function transformUserEntityResponse(raw: RawUserEntityResponse): UserEntity {
 	return {
 		id: raw.id,
 		name: raw.name,
