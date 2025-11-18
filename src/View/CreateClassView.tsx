@@ -18,8 +18,8 @@ const CreateClassView = (props: CreateClassViewProps) => {
 	}
 
 	return (
-		<div className="page-bg-auth flex items-center justify-center px-6 py-12">
-			<div className="w-full max-w-2xl card-auth p-10">
+		<div className="page-bg flex items-center justify-center px-6 py-12">
+			<div className="w-full max-w-2xl card p-10">
 				{/* Header */}
 				<h1 className="text-4xl font-bold text-center text-adaptive mb-10 tracking-wide">クラスを追加</h1>
 

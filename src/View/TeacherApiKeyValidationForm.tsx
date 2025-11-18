@@ -11,8 +11,8 @@ const TeacherApiKeyValidationForm: React.FC<ApiKeyInputProps> = ({ authData }) =
 	const { teacherAPIKey, setTeacherAPIKey, loading, checkTeacherApiKey } = useTeacherAPIKeyValidationFormViewModel(userManager, authData);
 
 	return (
-		<div className="page-bg-auth flex items-center justify-center px-6 py-12">
-			<div className="w-full max-w-md card-auth p-10">
+		<div className="page-bg flex items-center justify-center px-6 py-12">
+			<div className="w-full max-w-md card p-10">
 				{/* Header */}
 				<div className="text-center mb-8">
 					<h2 className="heading-gradient mb-3">教師用APIキー認証</h2>

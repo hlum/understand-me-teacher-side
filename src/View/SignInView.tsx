@@ -12,8 +12,8 @@ const SignInView = () => {
 	};
 
 	return (
-		<div className="page-bg-auth flex items-center justify-center px-6 py-12">
-			<div className="w-full max-w-md card-auth p-10 text-center">
+		<div className="page-bg flex items-center justify-center px-6 py-12">
+			<div className="w-full max-w-md card p-10 text-center">
 				{/* Header */}
 				<h2 className="heading-gradient mb-8">Googleでログイン</h2>
 

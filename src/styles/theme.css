@@ -12,264 +12,232 @@
 
 /* Dark mode theme variables */
 .dark {
---color-bg: #0f172a;
---color-bg-secondary: #1e293b;
---color-text: #f1f5f9;
---color-text-secondary: #94a3b8;
---color-primary: #60a5fa;
---color-primary-hover: #3b82f6;
---color-accent: #4ade80;
+	--color-bg: #0f172a;
+	--color-bg-secondary: #1e293b;
+	--color-text: #f1f5f9;
+	--color-text-secondary: #94a3b8;
+	--color-primary: #60a5fa;
+	--color-primary-hover: #3b82f6;
+	--color-accent: #4ade80;
 }
 
 /* Reusable component classes using @utility */
 @utility page-bg {
-min-height: 100vh;
-background: linear-gradient(to bottom right, rgb(226 232 240), rgb(191 219 254), rgb(219 234 254));
+	min-height: 100vh;
+	background: linear-gradient(to bottom right, rgb(226 232 240), rgb(191 219 254), rgb(219 234 254));
 }
 
 .dark .page-bg {
-background: linear-gradient(to bottom right, rgb(3 7 18), rgb(23 37 84), rgb(17 24 39));
-}
-
-@utility page-bg-auth {
-min-height: 100vh;
-background: linear-gradient(to bottom right, rgb(241 245 249), rgb(226 232 240), rgb(203 213 225));
-}
-
-.dark .page-bg-auth {
-background: linear-gradient(to bottom right, rgb(3 7 18), rgb(17 24 39), rgb(31 41 55));
+	background: linear-gradient(to bottom right, rgb(3 7 18), rgb(23 37 84), rgb(17 24 39));
 }
 
 @utility card {
-background-color: rgba(255, 255, 255, 0.9);
-backdrop-filter: blur(12px);
-border: 1px solid rgba(203, 213, 225, 0.8);
-border-radius: 1rem;
-padding: 1.5rem;
-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	background-color: rgba(255, 255, 255, 0.9);
+	backdrop-filter: blur(12px);
+	border: 1px solid rgba(203, 213, 225, 0.8);
+	border-radius: 1rem;
+	padding: 1.5rem;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .dark .card {
-background-color: rgba(255, 255, 255, 0.1);
-border: 1px solid rgba(255, 255, 255, 0.2);
+	background-color: rgba(255, 255, 255, 0.1);
+	border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 @utility card-hover {
-background-color: rgba(255, 255, 255, 0.9);
-backdrop-filter: blur(12px);
-border: 1px solid rgba(203, 213, 225, 0.8);
-border-radius: 1rem;
-padding: 1.5rem;
-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-transition: all 0.3s ease-in-out;
-cursor: pointer;
+	background-color: rgba(255, 255, 255, 0.9);
+	backdrop-filter: blur(12px);
+	border: 1px solid rgba(203, 213, 225, 0.8);
+	border-radius: 1rem;
+	padding: 1.5rem;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	transition: all 0.3s ease-in-out;
+	cursor: pointer;
 
-&:hover {
-box-shadow: 0 0 25px rgba(59, 130, 246, 0.5);
-transform: translateY(-2px);
-}
+	&:hover {
+		box-shadow: 0 0 25px rgba(59, 130, 246, 0.5);
+		transform: translateY(-2px);
+	}
 }
 
 .dark .card-hover {
-background-color: rgba(255, 255, 255, 0.1);
-border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-@utility card-auth {
-background-color: rgba(255, 255, 255, 0.95);
-backdrop-filter: blur(24px);
-border: 1px solid rgb(203, 213, 225);
-border-radius: 1rem;
-box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
-transition: all 0.5s;
-
-&:hover {
-box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
-}
-}
-
-.dark .card-auth {
-background-color: rgba(17, 24, 39, 0.7);
-border: 1px solid rgb(55, 65, 81);
-box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
-}
-
-.dark .card-auth:hover {
-box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+	background-color: rgba(255, 255, 255, 0.1);
+	border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 @utility btn-primary {
-display: inline-flex;
-align-items: center;
-justify-content: center;
-background: linear-gradient(to right, rgb(37, 99, 235), rgb(67, 56, 202));
-color: white;
-font-weight: 600;
-padding: 0.75rem 1.5rem;
-border-radius: 0.5rem;
-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-transition: all 0.3s ease-in-out;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(to right, rgb(37, 99, 235), rgb(67, 56, 202));
+	color: white;
+	font-weight: 600;
+	padding: 0.75rem 1.5rem;
+	border-radius: 0.5rem;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	transition: all 0.3s ease-in-out;
 
-&:hover {
-box-shadow: 0 0 25px rgba(59, 130, 246, 0.7);
-transform: translateY(-2px);
-}
+	&:hover {
+		box-shadow: 0 0 25px rgba(59, 130, 246, 0.7);
+		transform: translateY(-2px);
+	}
 }
 
 @utility btn-primary-sm {
-display: inline-flex;
-align-items: center;
-justify-content: center;
-background: linear-gradient(to right, rgb(37, 99, 235), rgb(67, 56, 202));
-color: white;
-font-weight: 600;
-padding: 0.625rem 1.25rem;
-border-radius: 0.5rem;
-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-transition: all 0.3s ease-in-out;
-cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(to right, rgb(37, 99, 235), rgb(67, 56, 202));
+	color: white;
+	font-weight: 600;
+	padding: 0.625rem 1.25rem;
+	border-radius: 0.5rem;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	transition: all 0.3s ease-in-out;
+	cursor: pointer;
 
-&:hover {
-box-shadow: 0 0 20px rgba(37, 99, 235, 0.7);
-transform: translateY(-2px);
-}
+	&:hover {
+		box-shadow: 0 0 20px rgba(37, 99, 235, 0.7);
+		transform: translateY(-2px);
+	}
 }
 
 @utility btn-disabled {
-background-color: rgb(55, 65, 81);
-color: rgb(156, 163, 175);
-cursor: not-allowed;
+	background-color: rgb(55, 65, 81);
+	color: rgb(156, 163, 175);
+	cursor: not-allowed;
 }
 
 @utility input {
-width: 100%;
-padding: 0.75rem 1rem;
-border-radius: 0.5rem;
-background-color: rgba(255, 255, 255, 0.9);
-color: rgb(17, 24, 39);
-border: 1px solid rgb(203, 213, 225);
-transition: all 0.2s;
+	width: 100%;
+	padding: 0.75rem 1rem;
+	border-radius: 0.5rem;
+	background-color: rgba(255, 255, 255, 0.9);
+	color: rgb(17, 24, 39);
+	border: 1px solid rgb(203, 213, 225);
+	transition: all 0.2s;
 
-&:focus {
-outline: none;
-ring: 2px solid rgb(59, 130, 246);
-border-color: rgb(59, 130, 246);
-}
+	&:focus {
+		outline: none;
+		ring: 2px solid rgb(59, 130, 246);
+		border-color: rgb(59, 130, 246);
+	}
 }
 
 .dark .input {
-background-color: rgba(31, 41, 55, 0.8);
-color: white;
-border: 1px solid rgb(55, 65, 81);
+	background-color: rgba(31, 41, 55, 0.8);
+	color: white;
+	border: 1px solid rgb(55, 65, 81);
 }
 
 @utility input-error {
-border-color: rgb(239, 68, 68);
+	border-color: rgb(239, 68, 68);
 }
 
 @utility heading-gradient {
-font-size: 1.875rem;
-font-weight: 700;
-color: transparent;
-background-clip: text;
-background-image: linear-gradient(to right, rgb(96, 165, 250), rgb(99, 102, 241));
-letter-spacing: 0.025em;
+	font-size: 1.875rem;
+	font-weight: 700;
+	color: transparent;
+	background-clip: text;
+	background-image: linear-gradient(to right, rgb(96, 165, 250), rgb(99, 102, 241));
+	letter-spacing: 0.025em;
 }
 
 @utility text-primary-light {
-color: rgb(37, 99, 235);
+	color: rgb(37, 99, 235);
 }
 
 .dark .text-primary-light {
-color: rgb(96, 165, 250);
+	color: rgb(96, 165, 250);
 }
 
 @utility text-accent-light {
-color: rgb(22, 163, 74);
+	color: rgb(22, 163, 74);
 }
 
 .dark .text-accent-light {
-color: rgb(74, 222, 128);
+	color: rgb(74, 222, 128);
 }
 
 @utility text-adaptive {
-color: rgb(17, 24, 39);
+	color: rgb(17, 24, 39);
 }
 
 .dark .text-adaptive {
-color: white;
+	color: white;
 }
 
 @utility text-adaptive-secondary {
-color: rgb(71, 85, 105);
+	color: rgb(71, 85, 105);
 }
 
 .dark .text-adaptive-secondary {
-color: rgb(203, 213, 225);
+	color: rgb(203, 213, 225);
 }
 
 @utility badge-blue {
-display: inline-flex;
-align-items: center;
-gap: 0.25rem;
-background: linear-gradient(to bottom right, rgb(23, 37, 84), rgb(30, 64, 175));
-color: rgb(191, 219, 254);
-padding: 0.25rem 0.75rem;
-border-radius: 0.375rem;
-font-size: 0.875rem;
-font-weight: 600;
-border: 1px solid rgb(29, 78, 216);
-box-shadow: inset 0 0 8px rgba(59, 130, 246, 0.5);
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	background: linear-gradient(to bottom right, rgb(23, 37, 84), rgb(30, 64, 175));
+	color: rgb(191, 219, 254);
+	padding: 0.25rem 0.75rem;
+	border-radius: 0.375rem;
+	font-size: 0.875rem;
+	font-weight: 600;
+	border: 1px solid rgb(29, 78, 216);
+	box-shadow: inset 0 0 8px rgba(59, 130, 246, 0.5);
 }
 
 @utility badge-green {
-display: inline-flex;
-align-items: center;
-gap: 0.25rem;
-background: linear-gradient(to bottom right, rgb(5, 46, 22), rgb(22, 101, 52));
-color: rgb(134, 239, 172);
-padding: 0.25rem 0.75rem;
-border-radius: 0.375rem;
-font-size: 0.875rem;
-font-weight: 600;
-border: 1px solid rgb(21, 128, 61);
-box-shadow: inset 0 0 8px rgba(74, 222, 128, 0.5);
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	background: linear-gradient(to bottom right, rgb(5, 46, 22), rgb(22, 101, 52));
+	color: rgb(134, 239, 172);
+	padding: 0.25rem 0.75rem;
+	border-radius: 0.375rem;
+	font-size: 0.875rem;
+	font-weight: 600;
+	border: 1px solid rgb(21, 128, 61);
+	box-shadow: inset 0 0 8px rgba(74, 222, 128, 0.5);
 }
 
 @utility loading-page {
-min-height: 100vh;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-background: linear-gradient(to bottom right, rgb(241 245 249), rgb(226 232 240), rgb(203 213 225));
-color: rgb(17, 24, 39);
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(to bottom right, rgb(241 245 249), rgb(226 232 240), rgb(203 213 225));
+	color: rgb(17, 24, 39);
 }
 
 .dark .loading-page {
-background: linear-gradient(to bottom right, rgb(17, 24, 39), rgb(0, 0, 0), rgb(31, 41, 55));
-color: white;
+	background: linear-gradient(to bottom right, rgb(17, 24, 39), rgb(0, 0, 0), rgb(31, 41, 55));
+	color: white;
 }
 
 @utility spinner {
-width: 4rem;
-height: 4rem;
-border: 4px solid rgb(37, 99, 235);
-border-top-color: transparent;
-border-radius: 50%;
-animation: spin 1s linear infinite;
+	width: 4rem;
+	height: 4rem;
+	border: 4px solid rgb(37, 99, 235);
+	border-top-color: transparent;
+	border-radius: 50%;
+	animation: spin 1s linear infinite;
 }
 
 .dark .spinner {
-border-color: rgb(59, 130, 246);
-border-top-color: transparent;
+	border-color: rgb(59, 130, 246);
+	border-top-color: transparent;
 }
 
 @utility spinner-sm {
-width: 1.25rem;
-height: 1.25rem;
-border: 2px solid white;
-border-top-color: transparent;
-border-radius: 50%;
-animation: spin 1s linear infinite;
+	width: 1.25rem;
+	height: 1.25rem;
+	border: 2px solid white;
+	border-top-color: transparent;
+	border-radius: 50%;
+	animation: spin 1s linear infinite;
 }
