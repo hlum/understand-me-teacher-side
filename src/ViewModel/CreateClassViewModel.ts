@@ -9,10 +9,15 @@ export const useCreateClassViewModel = (classManager: ClassManagerInterface, aut
 	const [className, setClassName] = useState<string>("");
 	const [majorCode, setMajorCode] = useState<string>("");
 	const [admissionYear, setAdmissionYear] = useState<string>("");
+
+	const [isOptionalClass, setIsOptionalClass] = useState<boolean>(false);
+	const [classCode, setClassCode] = useState<string>(""); // 選択科目のときに使うコード
+
 	const [errors, setErrors] = useState<{
 		className?: string | undefined;
 		admissionYear?: string | undefined;
 		majorCode?: string | undefined;
+		classCode?: string | undefined;
 	}>({});
 
 	const checkClassName = (name: string) => {
@@ -30,6 +35,17 @@ export const useCreateClassViewModel = (classManager: ClassManagerInterface, aut
 		}));
 	};
 
+	const checkClassCode = (code: string) => {
+		if (!isOptionalClass) {
+			return;
+		}
+
+		setErrors((prev) => ({
+			...prev,
+			classCode: code.trim() === "" ? "専攻コードを入力してください。" : undefined,
+		}));
+	};
+
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault();
 
@@ -37,6 +53,7 @@ export const useCreateClassViewModel = (classManager: ClassManagerInterface, aut
 			className?: string;
 			admissionYear?: string;
 			majorCode?: string;
+			classCode?: string;
 		} = {};
 
 		// Validation logic
@@ -53,6 +70,10 @@ export const useCreateClassViewModel = (classManager: ClassManagerInterface, aut
 			newErrors.majorCode = "専攻コードを入力してください。";
 		}
 
+		if (isOptionalClass && classCode.trim() === "") {
+			newErrors.classCode = "選択科目の場合はクラスコードを入力してください。";
+		}
+
 		// Update errors state
 		setErrors(newErrors);
 
@@ -61,7 +82,7 @@ export const useCreateClassViewModel = (classManager: ClassManagerInterface, aut
 			return;
 		}
 		// Proceed if no errors
-		const newClass = createClass(authData.uid, className, admissionYear, majorCode);
+		const newClass = createClass(authData.uid, className, admissionYear, majorCode, isOptionalClass ? classCode : null);
 
 		try {
 			setLoading(true);
@@ -91,5 +112,22 @@ export const useCreateClassViewModel = (classManager: ClassManagerInterface, aut
 		}
 	};
 
-	return { loading, className, setClassName, majorCode, setMajorCode, admissionYear, setAdmissionYear, errors, checkClassName, checkAdmissionYear, handleSubmit };
+	return {
+		loading,
+		className,
+		setClassName,
+		majorCode,
+		setMajorCode,
+		admissionYear,
+		setAdmissionYear,
+		errors,
+		checkClassName,
+		checkAdmissionYear,
+		handleSubmit,
+		isOptionalClass,
+		setIsOptionalClass,
+		classCode,
+		setClassCode,
+		checkClassCode,
+	};
 };

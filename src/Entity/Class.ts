@@ -4,15 +4,17 @@ export type Class = {
 	name: string;
 	admissionYear: number;
 	majorCode: string;
+	classCode: string | null;
 };
 
-export const createClass = (teacherID: string, name: string, admissionYear: string | number, majorCode: string): Class => {
+export const createClass = (teacherID: string, name: string, admissionYear: string | number, majorCode: string, classCode?: string | null): Class => {
 	return {
 		id: "", // IDは後でAPIから取得するため空文字で初期化
 		teacherID: teacherID,
 		name: name,
 		admissionYear: Number(admissionYear),
 		majorCode: majorCode,
+		classCode: classCode ?? null,
 	};
 };
 
@@ -23,6 +25,7 @@ export type RawClassResponse = {
 	name: string;
 	admission_year: number;
 	major_code: string;
+	class_code: string | null;
 };
 
 // APIレスポンスをClass型に変換する関数
@@ -32,4 +35,5 @@ export const transformClassResponse = (raw: RawClassResponse): Class => ({
 	teacherID: raw.teacher_id,
 	admissionYear: Number(raw.admission_year),
 	majorCode: raw.major_code,
+	classCode: raw.class_code,
 });

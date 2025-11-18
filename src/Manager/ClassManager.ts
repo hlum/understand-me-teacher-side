@@ -65,6 +65,7 @@ export class ClassManager implements ClassManagerInterface {
 				name: newClass.name,
 				admission_year: newClass.admissionYear,
 				major_code: newClass.majorCode,
+				class_code: newClass.classCode ?? null,
 			});
 		} catch (error) {
 			throw new DataParseError("ClassManager.addNewClass クラス情報のシリアライズに失敗しました。エラー: " + error);
