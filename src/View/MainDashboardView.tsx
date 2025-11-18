@@ -5,6 +5,7 @@ import { Loading } from "./Components/Loading.js";
 import { ThemeToggle } from "./Components/ThemeToggle.js";
 import { useRouteManager } from "../Router/useRouteManager.js";
 import type { User } from "firebase/auth";
+import { UserManager } from "@/Manager/UserManager.js";
 
 type MainDashboardViewProps = {
 	authData: User;
@@ -12,8 +13,9 @@ type MainDashboardViewProps = {
 
 const MainDashboardView = ({ authData }: MainDashboardViewProps) => {
 	const classManager = new ClassManager();
+	const userManager = new UserManager();
 	const navigate = useRouteManager();
-	const vm = useMainDashboardViewModel(classManager, authData);
+	const vm = useMainDashboardViewModel(userManager, classManager, authData);
 
 	if (vm.loading) {
 		return <Loading />;
@@ -24,7 +26,7 @@ const MainDashboardView = ({ authData }: MainDashboardViewProps) => {
 			{/* Header Section */}
 			<div className="flex flex-wrap justify-between items-center mb-10 gap-6">
 				<h1 className="text-3xl sm:text-4xl font-bold text-adaptive">
-					クラス管理、 <span className="text-accent-light">{authData.displayName}</span>
+					クラス管理、 <span className="text-accent-light">{vm.user?.name}</span>
 				</h1>
 
 				<div className="flex items-center gap-4">
