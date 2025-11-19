@@ -40,6 +40,14 @@ export const HomeworkListView = () => {
 								<span className="font-semibold text-accent-light">専攻：</span>
 								{classDetail.majorCode.toUpperCase()}
 							</span>
+							{classDetail.classCode !== null ? (
+								<span>
+									<span className="font-semibold text-green-500">クラスコード：</span>
+									{classDetail.classCode}
+								</span>
+							) : (
+								<></>
+							)}
 						</p>
 					</div>
 
