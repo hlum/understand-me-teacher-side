@@ -81,4 +81,33 @@ export class ClassManager implements ClassManagerInterface {
 
 		console.info("✅ クラス追加成功。");
 	}
+
+	async updateClass(newClass: Class): Promise<void> {
+		const endPoint = LollipopHelper.instance.buildEndpoint("/class/update_class.php", {});
+		const headers = LollipopHelper.instance.buildHeader(true);
+
+		let body: string;
+		try {
+			body = JSON.stringify({
+				id: newClass.id,
+				teacher_id: newClass.teacherID,
+				name: newClass.name,
+				admission_year: newClass.admissionYear,
+				major_code: newClass.majorCode,
+				class_code: newClass.classCode ?? null,
+			});
+
+			const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, "ClassManager.updateClass", {
+				method: "UPDATE",
+				headers: headers,
+				body,
+			});
+
+			LollipopHelper.instance.validateLollipopResponse(lollipopResponse, "ClassManager.updateClass");
+
+			console.info("✅ クラス更新成功。");
+		} catch (error) {
+			throw new DataParseError("ClassManager.updateClass クラス情報のシリアライズに失敗しました。エラー: " + error);
+		}
+	}
 }
