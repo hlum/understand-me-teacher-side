@@ -24,4 +24,12 @@ export interface ClassManagerInterface {
 	 * @throws APIError, NetworkError, DataParseError
 	 */
 	fetchClassesForTeacher(teacherID: string): Promise<Class[]>;
+
+	/**
+	 * クラス情報を更新します。
+	 * @param newClass 更新するクラスの情報
+	 * @returns void
+	 * @throws APIError, NetworkError, DataParseError
+	 */
+	updateClass(newClass: Class): Promise<void>;
 }
