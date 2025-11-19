@@ -10,6 +10,7 @@ export const useRouteManager = () => {
 		toMainDashboard: () => navigate(paths.mainDashboard()),
 		toApiKeyValidation: () => navigate(paths.apiKeyValidation()),
 		toCreateClass: () => navigate(paths.createClass()),
+		toEditClass: (classID: string) => navigate(paths.editClass(classID)),
 		toClassDetail: (classID: string) => navigate(paths.classDetail(classID)),
 		toCreateHomework: (classID: string) => navigate(paths.createHomework(classID)),
 		toStudentHomeworkStatus: (homeworkID: string) => navigate(paths.studentHomeworkStatus(homeworkID)),
