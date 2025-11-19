@@ -54,7 +54,7 @@ export const useEditClassViewModel = (classManager: ClassManagerInterface, authD
 		};
 
 		fetchClassData();
-	}, [classID, classManager]);
+	}, [classID]);
 
 	const checkClassName = (name: string) => {
 		setErrors((prev) => ({

@@ -98,7 +98,7 @@ export class ClassManager implements ClassManagerInterface {
 			});
 
 			const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, "ClassManager.updateClass", {
-				method: "POST",
+				method: "UPDATE",
 				headers: headers,
 				body,
 			});
