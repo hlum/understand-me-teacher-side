@@ -2,7 +2,7 @@ import { useState } from "react";
 import { type User } from "firebase/auth";
 import { createClass, type Class } from "../Entity/Class.js";
 import type { ClassManagerInterface } from "../ManagerInterface/ClassManagerInterface.js";
-import { APIError, DataParseError, NetworkError } from "../Helper/CustomErrors.js";
+import { handleAppError } from "../Helper/handleAppError.js";
 
 export const useCreateClassViewModel = (classManager: ClassManagerInterface, authData: User) => {
 	const [loading, setLoading] = useState<boolean>(false);
@@ -89,19 +89,7 @@ export const useCreateClassViewModel = (classManager: ClassManagerInterface, aut
 			await classManager.addNewClass(newClass as Class);
 			alert("クラスが追加されました！🎉");
 		} catch (error) {
-			if (error instanceof APIError) {
-				alert("API側でエラーが発生しました。もう一度お試しください。");
-				console.error("APIError: ", error);
-			} else if (error instanceof NetworkError) {
-				alert("ネットワークエラーが発生しました。接続を確認して、もう一度お試しください。");
-				console.error("NetworkError: ", error);
-			} else if (error instanceof DataParseError) {
-				alert("データのデコード中にエラーが発生しました。");
-				console.error("DataParseError: ", error);
-			} else {
-				alert("クラスの詳細を取得中にエラーが発生しました。");
-				console.error("Error: ", error);
-			}
+			alert(handleAppError(error));
 		} finally {
 			setLoading(false);
 			// Reset form

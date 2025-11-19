@@ -3,7 +3,7 @@ import { type Class } from "../Entity/Class.js";
 import { useEffect, useState } from "react";
 import { type Homework } from "../Entity/Homework.js";
 import { type ClassManagerInterface } from "../ManagerInterface/ClassManagerInterface.js";
-import { DataParseError, NetworkError, APIError } from "../Helper/CustomErrors.js";
+import { handleAppError } from "../Helper/handleAppError.js";
 
 export const useHomeworkListViewModel = (classID: string, classManager: ClassManagerInterface, homeworkManager: HomeworkManagerInterface) => {
 	const [classDetail, setClassDetail] = useState<Class | null>(null);
@@ -24,19 +24,7 @@ export const useHomeworkListViewModel = (classID: string, classManager: ClassMan
 				const classData = await classManager.fetchClass(classID);
 				setClassDetail(classData);
 			} catch (error: unknown) {
-				if (error instanceof APIError) {
-					alert("API側でエラーが発生しました。もう一度お試しください。");
-					console.error("APIError: ", error);
-				} else if (error instanceof NetworkError) {
-					alert("ネットワークエラーが発生しました。接続を確認して、もう一度お試しください。");
-					console.error("NetworkError: ", error);
-				} else if (error instanceof DataParseError) {
-					alert("データのデコード中にエラーが発生しました。");
-					console.error("DataParseError: ", error);
-				} else {
-					alert("クラスの詳細を取得中にエラーが発生しました。");
-					console.error("Error: ", error);
-				}
+				alert(handleAppError(error));
 			} finally {
 				setLoading(false);
 			}
@@ -53,19 +41,7 @@ export const useHomeworkListViewModel = (classID: string, classManager: ClassMan
 				const homeworkList = await homeworkManager.fetchHomeworkListForClass(classDetail.id);
 				setHomeworks(homeworkList);
 			} catch (error: unknown) {
-				if (error instanceof APIError) {
-					alert("API側でエラーが発生しました。もう一度お試しください。");
-					console.error("APIError: ", error);
-				} else if (error instanceof NetworkError) {
-					alert("ネットワークエラーが発生しました。接続を確認して、もう一度お試しください。");
-					console.error("NetworkError: ", error);
-				} else if (error instanceof DataParseError) {
-					alert("データのデコード中にエラーが発生しました。");
-					console.error("DataParseError: ", error);
-				} else {
-					alert("課題リストの取得中にエラーが発生しました。");
-					console.error("Error: ", error);
-				}
+				alert(handleAppError(error));
 			} finally {
 				setLoading(false);
 			}

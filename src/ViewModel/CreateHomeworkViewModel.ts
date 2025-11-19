@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { auth } from "../firebase/firebase.js";
 import { type HomeworkManagerInterface } from "../ManagerInterface/HomeworkManagerInterface.js";
-import { DataParseError, NetworkError, APIError } from "../Helper/CustomErrors.js";
+import { handleAppError } from "../Helper/handleAppError.js";
 
 export const useCreateHomeworkViewModel = (classID: string, homeworkManager: HomeworkManagerInterface) => {
 	const [authData, setAuthData] = useState(auth.currentUser);
@@ -29,19 +29,7 @@ export const useCreateHomeworkViewModel = (classID: string, homeworkManager: Hom
 			setDescription("");
 			setDueDate("");
 		} catch (error) {
-			if (error instanceof APIError) {
-				alert("API側でエラーが発生しました。もう一度お試しください。");
-				console.error("APIError: ", error);
-			} else if (error instanceof NetworkError) {
-				alert("ネットワークエラーが発生しました。接続を確認して、もう一度お試しください。");
-				console.error("NetworkError: ", error);
-			} else if (error instanceof DataParseError) {
-				alert("データのデコード中にエラーが発生しました。");
-				console.error("DataParseError: ", error);
-			} else {
-				alert("クラスの詳細を取得中にエラーが発生しました。");
-				console.error("Error: ", error);
-			}
+			alert(handleAppError(error));
 		} finally {
 			setLoading(false);
 		}
