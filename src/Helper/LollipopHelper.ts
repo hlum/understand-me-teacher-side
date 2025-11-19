@@ -40,7 +40,9 @@ export class LollipopHelper {
 	 */
 	validateLollipopResponse(response: LollipopResponse, context: string, requireData: boolean = false): void {
 		if (response.status !== "success") {
-			throw new APIError(`${context} APIエラー: ${response.message}`);
+			// errorCode がある場合はそれを使用、なければ UNKNOWN
+			const errorCode = response.errorCode || "UNKNOWN";
+			throw new APIError(`${context} APIエラー: ${response.message}`, errorCode);
 		}
 		if (requireData && !response.data) {
 			throw new DataParseError(`${context} Responseの中にdataが存在しません。Response: ${response}`);
