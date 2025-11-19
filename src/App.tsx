@@ -3,6 +3,7 @@ import { MainDashboardView } from "./View/MainDashboardView.js";
 import { Routes, Route } from "react-router-dom";
 import { ApiKeyCheckBeforeRegistration } from "./View/TeacherApiKeyValidationForm.js";
 import CreateClassView from "./View/CreateClassView.js";
+import EditClassView from "./View/EditClassView.js";
 import { HomeworkListView } from "./View/HomeworkListView.js";
 import { CreateHomeworkPage } from "./View/CreateHomeworkView.js";
 import { StudentHomeworkStatusView } from "./View/StudentHomeworkStatusView.js";
@@ -71,6 +72,18 @@ const App = () => {
 						<ProtectedRoute>
 							{(authData, authenticating) => {
 								return authenticating ? <Loading /> : <CreateClassView authData={authData} />;
+							}}
+						</ProtectedRoute>
+					}
+				/>
+
+				{/* クラス編集ページ */}
+				<Route
+					path={Paths.EDIT_CLASS}
+					element={
+						<ProtectedRoute>
+							{(authData, authenticating) => {
+								return authenticating ? <Loading /> : <EditClassView authData={authData} />;
 							}}
 						</ProtectedRoute>
 					}
