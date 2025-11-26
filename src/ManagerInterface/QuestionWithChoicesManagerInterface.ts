@@ -1,3 +1,4 @@
+import type { Answer } from "@/Entity/Answer.js";
 import type { QuestionWithChoices } from "@/Entity/QuestionWithChoices.js";
 
 export interface QuestionWithChoicesManagerInterface {
@@ -8,4 +9,5 @@ export interface QuestionWithChoicesManagerInterface {
 	 * @throws APIError, NetworkError, DataParseError
 	 */
 	fetch(homeworkID: string, userID: string): Promise<QuestionWithChoices[]>;
+	fetchUserAnswers(homeworkID: string, userID: string): Promise<Answer[]>;
 }
