@@ -5,8 +5,9 @@ import type { Class } from "../Entity/Class.js";
 import type { User } from "firebase/auth";
 import type { UserEntity } from "@/Entity/UserEntity.js";
 import type { UserManagerInterface } from "@/ManagerInterface/UserManagerInterface.js";
+import type { AuthManagerInterface } from "@/ManagerInterface/AuthManagerInterface.js";
 
-export const useMainDashboardViewModel = (userManager: UserManagerInterface, classManager: ClassManagerInterface, authData: User) => {
+export const useMainDashboardViewModel = (userManager: UserManagerInterface, classManager: ClassManagerInterface, authManager: AuthManagerInterface, authData: User) => {
 	const [classes, setClasses] = useState<Class[]>([]);
 	const [user, setUser] = useState<UserEntity | null>(null);
 	const [loading, setLoading] = useState(true);
@@ -42,5 +43,13 @@ export const useMainDashboardViewModel = (userManager: UserManagerInterface, cla
 		fetchUserData();
 	}, [authData]);
 
-	return { classes, loading, authData, user };
+	const logOut = async () => {
+		await authManager.logOut();
+	};
+
+	const changeAccount = async () => {
+		await authManager.changeAccount();
+	};
+
+	return { classes, loading, authData, user, logOut , changeAccount};
 };
