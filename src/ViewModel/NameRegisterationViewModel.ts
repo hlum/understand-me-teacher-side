@@ -12,7 +12,10 @@ export const useNameRegistrationViewModel = (userManager: UserManagerInterface, 
 	const registerTeacherAndNavigateToDashboard = async (name: string) => {
 		try {
 			setLoading(true);
-			await userManager.registerTeacher(authData.uid, authData.email ?? "", name, authData.photoURL ?? "");
+
+			const googleProvider = authData.providerData.find((provider) => provider.providerId === "google.com");
+
+			await userManager.registerTeacher(authData.uid, authData.email ?? "", name, googleProvider?.photoURL ?? "");
 			alert("教師として登録されました ✅");
 			navigate.toMainDashboard();
 		} catch (error) {

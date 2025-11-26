@@ -12,7 +12,7 @@ export class UserManager implements UserManagerInterface {
 			email,
 			name,
 			role: "teacher",
-			photoURL,
+			photo_url: photoURL,
 		});
 
 		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, "UserManager.registerTeacher", {

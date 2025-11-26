@@ -1,6 +1,7 @@
 import type { User } from "firebase/auth";
 import { useTeacherAPIKeyValidationFormViewModel } from "../ViewModel/TeacherAPIKeyValidationFormViewModel.js";
 import { UserManager } from "../Manager/UserManager.js";
+import { AuthManager } from "@/Manager/AuthManager.js";
 
 type ApiKeyInputProps = {
 	authData: User;
@@ -8,6 +9,7 @@ type ApiKeyInputProps = {
 
 const TeacherApiKeyValidationForm: React.FC<ApiKeyInputProps> = ({ authData }) => {
 	const userManager = new UserManager();
+	const authManager = new AuthManager();
 	const { teacherAPIKey, setTeacherAPIKey, loading, checkTeacherApiKey } = useTeacherAPIKeyValidationFormViewModel(userManager, authData);
 
 	return (
@@ -57,10 +59,28 @@ const TeacherApiKeyValidationForm: React.FC<ApiKeyInputProps> = ({ authData }) =
 						"検証する"
 					)}
 				</button>
-
 				{/* User Info Display */}
 				<div className="mt-6 pt-6 border-t border-gray-300 dark:border-gray-700">
-					<p className="text-xs text-adaptive-secondary text-center">ログイン中: {authData.email}</p>
+					<div className="flex flex-col items-center gap-3">
+						<p className="text-xs text-adaptive-secondary text-center">
+							ログイン中: <span className="font-medium">{authData.email}</span>
+						</p>
+
+						<button
+							onClick={() => authManager.changeAccount()}
+							className="
+				px-4 py-2 text-sm
+				bg-gray-100 dark:bg-gray-800
+				hover:bg-gray-200 dark:hover:bg-gray-700
+				text-gray-700 dark:text-gray-200
+				rounded-lg
+				border border-gray-300 dark:border-gray-600
+				transition
+			"
+						>
+							アカウントを切り替える
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>

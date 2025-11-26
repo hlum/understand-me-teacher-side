@@ -1,4 +1,3 @@
-import { Navigate } from "react-router-dom";
 import { useMainDashboardViewModel } from "../ViewModel/MainDashboardViewModel.js";
 import { ClassManager } from "../Manager/ClassManager.js";
 import { Loading } from "./Components/Loading.js";
@@ -6,6 +5,8 @@ import { ThemeToggle } from "./Components/ThemeToggle.js";
 import { useRouteManager } from "../Router/useRouteManager.js";
 import type { User } from "firebase/auth";
 import { UserManager } from "@/Manager/UserManager.js";
+import { ProfileMenu } from "./Components/ProfileMenu.js";
+import { AuthManager } from "@/Manager/AuthManager.js";
 
 type MainDashboardViewProps = {
 	authData: User;
@@ -15,7 +16,8 @@ const MainDashboardView = ({ authData }: MainDashboardViewProps) => {
 	const classManager = new ClassManager();
 	const userManager = new UserManager();
 	const navigate = useRouteManager();
-	const vm = useMainDashboardViewModel(userManager, classManager, authData);
+	const authManager = new AuthManager();
+	const vm = useMainDashboardViewModel(userManager, classManager, authManager, authData);
 
 	if (vm.loading) {
 		return <Loading />;
@@ -26,13 +28,24 @@ const MainDashboardView = ({ authData }: MainDashboardViewProps) => {
 			{/* Header Section */}
 			<div className="flex flex-wrap justify-between items-center mb-10 gap-6">
 				<h1 className="text-3xl sm:text-4xl font-bold text-adaptive">
-					クラス管理、 <span className="text-accent-light">{vm.user?.name}</span>
+					クラス管理、
+					<span className="text-accent-light">{vm.user?.name}</span>
 				</h1>
 
 				<div className="flex items-center gap-4">
 					<ThemeToggle />
-					<button onClick={() => navigate.toCreateClass()} className="btn-primary">
-						<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<ProfileMenu
+						photoURL={vm.user?.photoURL ?? ""}
+						onAccountChange={() => {
+							vm.changeAccount();
+						}}
+						onLogout={() => {
+							vm.logOut();
+							navigate.toLogin();
+						}}
+					/>
+					<button onClick={() => navigate.toCreateClass()} className="btn-primary flex items-center">
+						<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
 						</svg>
 						クラスを追加
