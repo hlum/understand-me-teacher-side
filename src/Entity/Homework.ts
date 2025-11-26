@@ -35,6 +35,7 @@ export type HomeworkWithSubmissionStatus = {
 	id: string;
 	userID: string;
 	userEmail: string;
+	userStudentID: string;
 	title: string;
 	classID: string;
 	description: string | null;
@@ -52,6 +53,7 @@ export type RawHomeworkWithSubmissionStatusResponse = {
 	user_email: string;
 	title: string;
 	class_id: string;
+	user_student_id: string;
 	description: string | null;
 	due_date: string | null;
 	github_file_link: string | null;
@@ -65,6 +67,7 @@ export const transformHomeworkWithSubmissionStatusResponse = (raw: RawHomeworkWi
 	id: raw.id,
 	userID: raw.user_id,
 	userEmail: raw.user_email,
+	userStudentID: raw.user_student_id,
 	title: raw.title,
 	classID: raw.class_id,
 	description: raw.description,
