@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.js";
 import { BrowserRouter } from "react-router-dom";
-import { applyTheme, setupThemeListener } from "./theme";
+import { applyTheme, setupThemeListener } from "./theme.js";
 
 // Apply theme before React mounts to prevent flash
 applyTheme();
