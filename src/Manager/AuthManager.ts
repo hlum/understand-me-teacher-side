@@ -21,4 +21,9 @@ export class AuthManager implements AuthManagerInterface {
 			throw new AuthenticationError("AuthManager.logOut ログアウトに失敗しました。" + error);
 		}
 	}
+
+	async changeAccount(): Promise<void> {
+		await this.logOut();
+		await this.signInWithGoogle();
+	}
 }
