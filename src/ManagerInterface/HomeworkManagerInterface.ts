@@ -30,6 +30,26 @@ export interface HomeworkManagerInterface {
 	fetchHomeworkWithSubmissionStatusForAllStudents(homeworkID: string): Promise<HomeworkWithSubmissionStatus[]>;
 
 	/**
+	 * 指定した宿題の情報を取得します。
+	 * @param homeworkID 宿題ID
+	 * @returns Homework
+	 * @throws APIError, NetworkError, DataParseError
+	 */
+	fetchHomework(id: string): Promise<Homework>;
+
+	/**
+	 * 指定した宿題の情報を更新します。
+	 * 必要なフィールドだけ更新可能です。
+	 * @param homeworkID 宿題ID
+	 * @param title タイトル
+	 * @param description 説明
+	 * @param dueDate 締め切り日 (YYYY-MM-DD形式)
+	 * @returns void
+	 * @throws APIError, NetworkError
+	 */
+	updateHomework(homeworkID: string, title?: string, description?: string | null, dueDate?: string | null): Promise<void>;
+
+	/**
 	 * 指定した宿題を削除します。
 	 * @param homeworkID 宿題ID
 	 * @returns void

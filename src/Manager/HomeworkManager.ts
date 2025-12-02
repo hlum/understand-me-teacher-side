@@ -10,6 +10,52 @@ import { LollipopHelper } from "../Helper/LollipopHelper.js";
 import { type HomeworkManagerInterface } from "../ManagerInterface/HomeworkManagerInterface.js";
 
 export class HomeworkManager implements HomeworkManagerInterface {
+	async fetchHomework(homeworkID: string): Promise<Homework> {
+		const endPoint = LollipopHelper.instance.buildEndpoint("homework/get_homework.php", { id: homeworkID });
+		const headers = LollipopHelper.instance.buildHeader();
+
+		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, "HomeworkManager.fetchHomework", {
+			method: "GET",
+			headers: headers,
+		});
+
+		LollipopHelper.instance.validateLollipopResponse(lollipopResponse, "HomeworkManager.fetchHomework", true);
+		const snakeCaseHomeworks = LollipopHelper.instance.decodeDataFromLollipopResponse<RawHomeworkResponse[]>(lollipopResponse.data!, "HomeworkManager.fetchHomework");
+
+		const homeworks = snakeCaseHomeworks.map(transformHomeworkResponse);
+
+		if (homeworks.length === 0) {
+			throw new Error("指定されたIDの宿題が見つかりません。");
+		}
+
+		if (!homeworks[0]) {
+			throw new Error("宿題のデータが不正です。");
+		}
+
+		return homeworks[0];
+	}
+
+	async updateHomework(homeworkID: string, title?: string, description?: string | null, dueDate?: string | null): Promise<void> {
+		const endPoint = LollipopHelper.instance.buildEndpoint("/homework/update_homework.php", {});
+		const headers = LollipopHelper.instance.buildHeader(true);
+		const body = JSON.stringify({
+			homework_id: homeworkID,
+			title: title,
+			description: description,
+			due_date: dueDate,
+		});
+
+		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, "HomeworkManager.updateHomework", {
+			method: "UPDATE",
+			headers: headers,
+			body: body,
+		});
+
+		LollipopHelper.instance.validateLollipopResponse(lollipopResponse, "HomeworkManager.updateHomework");
+
+		console.log("✅ Homework 更新成功。");
+	}
+
 	async fetchHomeworkListForClass(classID: string): Promise<Homework[]> {
 		const endPoint = LollipopHelper.instance.buildEndpoint("/homework/get_homework.php", { class_id: classID });
 		const headers = LollipopHelper.instance.buildHeader();

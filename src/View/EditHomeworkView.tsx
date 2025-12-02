@@ -1,22 +1,34 @@
-import { useParams } from "react-router-dom";
-import { useCreateHomeworkViewModel } from "../ViewModel/CreateHomeworkViewModel.js";
-import { HomeworkManager } from "../Manager/HomeworkManager.js";
-import { useRouteManager } from "../Router/useRouteManager.js";
+import { HomeworkManager } from "@/Manager/HomeworkManager.js";
+import { useEditHomeworkViewModel } from "@/ViewModel/EditHomeworkViewModel.js";
 import type { User } from "firebase/auth";
+import { useParams } from "react-router-dom";
+import { Loading } from "./Components/Loading.js";
 
-type CreateHomeworkPageProps = {
+type EditHomeworkViewProps = {
 	authData: User;
 };
+export const EditHomeworkView = ({ authData }: EditHomeworkViewProps) => {
+	const { homeworkID } = useParams<{ homeworkID: string }>();
 
-export const CreateHomeworkPage = ({ authData }: CreateHomeworkPageProps) => {
-	const { classID } = useParams<{ classID: string }>();
-	if (!classID) {
-		return <div>Invalid class ID</div>;
+	if (!homeworkID) {
+		// TODO: 404ページにリダイレクト
+		return <div>404 Not Found</div>;
 	}
-	const homeworkManager = new HomeworkManager();
-	const vm = useCreateHomeworkViewModel(classID, homeworkManager, authData);
 
-	const { title, setTitle, description, setDescription, dueDate, setDueDate, loading, addNewHomework } = vm;
+	const homeworkManager = new HomeworkManager();
+	const { originalHomework, title, setTitle, description, setDescription, dueDate, setDueDate, loading, isUpdating, updateHomework } = useEditHomeworkViewModel(
+		authData,
+		homeworkID,
+		homeworkManager
+	);
+
+	if (loading) {
+		return <Loading />;
+	}
+
+	if (!originalHomework) {
+		return <div>課題の情報を取得できませんでした。</div>;
+	}
 
 	return (
 		<div className="page-bg flex items-center justify-center p-6">
@@ -36,25 +48,25 @@ export const CreateHomeworkPage = ({ authData }: CreateHomeworkPageProps) => {
 
 					<div>
 						<label className="block text-adaptive-secondary mb-2 font-medium">課題の説明</label>
-						<textarea rows={4} placeholder="課題の詳細を入力してください..." value={description} onChange={(e) => setDescription(e.target.value)} className="input resize-none" />
+						<textarea rows={4} placeholder="課題の詳細を入力してください..." value={description ?? ""} onChange={(e) => setDescription(e.target.value)} className="input resize-none" />
 					</div>
 
 					<div>
 						<label className="block text-adaptive-secondary mb-2 font-medium">締め切り日</label>
-						<input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} className="input" />
+						<input type="date" value={dueDate ?? ""} onChange={(e) => setDueDate(e.target.value)} className="input" />
 					</div>
 
 					{/* Submit Button */}
 					<button
-						onClick={addNewHomework}
-						disabled={loading}
+						onClick={updateHomework}
+						disabled={isUpdating}
 						className={`w-full mt-6 py-3 rounded-lg font-semibold text-white text-lg transition-all duration-300 ${
-							loading
+							isUpdating
 								? "btn-disabled opacity-70"
 								: "bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-indigo-600 hover:to-blue-600 shadow-[0_0_20px_rgba(59,130,246,0.5)] hover:shadow-[0_0_40px_rgba(59,130,246,0.7)] hover:-translate-y-0.5"
 						}`}
 					>
-						{loading ? "追加中..." : "課題を追加"}
+						{isUpdating ? "更新中..." : "課題を更新"}
 					</button>
 				</div>
 			</div>

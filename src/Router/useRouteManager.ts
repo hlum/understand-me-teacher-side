@@ -11,6 +11,7 @@ export const useRouteManager = () => {
 		toApiKeyValidation: () => navigate(paths.apiKeyValidation()),
 		toCreateClass: () => navigate(paths.createClass()),
 		toEditClass: (classID: string) => navigate(paths.editClass(classID)),
+		toEditHomework: (homeworkID: string) => navigate(paths.editHomework(homeworkID)),
 		toClassDetail: (classID: string) => navigate(paths.classDetail(classID)),
 		toCreateHomework: (classID: string) => navigate(paths.createHomework(classID)),
 		toStudentHomeworkStatus: (homeworkID: string) => navigate(paths.studentHomeworkStatus(homeworkID)),
