@@ -37,7 +37,7 @@ export const HomeworkCard = (item: { id: string; title: string; description: str
 	};
 
 	return (
-		<div key={item.id} onClick={() => navigate.toStudentHomeworkStatus(item.id)} className="card-hover relative p-5 group overflow-hidden break-words">
+		<div key={item.id} onClick={() => navigate.toStudentHomeworkStatus(item.id)} className="card-hover relative p-5 group overflow-hidden break-words min-h-35">
 			{/* Title */}
 			<h3 className="text-xl font-semibold text-adaptive mb-2 pr-24">{item.title}</h3>
 
@@ -64,12 +64,11 @@ export const HomeworkCard = (item: { id: string; title: string; description: str
 			)}
 
 			{/* Due Date */}
-			{item.dueDate && (
-				<div className="flex items-center gap-2 text-sm text-adaptive-secondary mb-3">
-					<span className="font-medium">締め切り日：</span>
-					<span>{new Date(item.dueDate).toLocaleDateString("ja-JP")}</span>
-				</div>
-			)}
+
+			<div className="flex items-center gap-2 text-sm text-adaptive-secondary mb-3">
+				<span className="font-medium">締め切り日：</span>
+				{item.dueDate === null ? <span>設定なし</span> : <span>{new Date(item.dueDate).toLocaleDateString("ja-JP")}</span>}
+			</div>
 
 			{/* Action Buttons */}
 			<div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
@@ -77,7 +76,7 @@ export const HomeworkCard = (item: { id: string; title: string; description: str
 				<button
 					onClick={(e) => {
 						e.stopPropagation();
-						navigate.toStudentHomeworkStatus(item.id);
+						navigate.toEditHomework(item.id);
 					}}
 					className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary text-white hover:bg-white hover:text-primary border border-transparent hover:border-primary transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1"
 					title="編集"

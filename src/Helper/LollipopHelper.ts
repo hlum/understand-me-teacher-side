@@ -23,11 +23,15 @@ export class LollipopHelper {
 			throw new NetworkError(`${context} ネットワークエラー: ${error}`);
 		}
 
-		// Lollipopレスポンスのデコード
+		// ---- ここを改善 ----
+		const rawText = await response.text(); // ← 生レスポンスを読む
+
 		try {
-			return (await response.json()) as LollipopResponse;
+			const json = JSON.parse(rawText);
+			return json as LollipopResponse;
 		} catch (error) {
-			throw new DataParseError(`${context} Lollipopレスポンスのデコードに失敗しました。 Response: ${response.body} Error: ${error}`);
+			// 生レスポンスをエラーメッセージに含める
+			throw new DataParseError(`${context} Lollipopレスポンスのデコードに失敗しました。\nRaw Response:\n${rawText}\nError: ${error}`);
 		}
 	}
 

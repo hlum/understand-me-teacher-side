@@ -12,6 +12,7 @@ import { GuestRoute } from "./Router/GuestRoute.js";
 import { ProtectedRoute } from "./Router/ProtectedRoute.js";
 import { NameRegistrationView } from "./View/NameRegistrationView.js";
 import { Loading } from "./View/Components/Loading.js";
+import { EditHomeworkView } from "./View/EditHomeworkView.js";
 
 const App = () => {
 	return (
@@ -89,6 +90,18 @@ const App = () => {
 					}
 				/>
 
+				{/* 課題編集ページ */}
+				<Route
+					path={Paths.EDIT_HOMEWORK}
+					element={
+						<ProtectedRoute>
+							{(authData, authenticating) => {
+								return authenticating ? <Loading /> : <EditHomeworkView authData={authData} />;
+							}}
+						</ProtectedRoute>
+					}
+				/>
+
 				{/* クラス詳細ページ */}
 				<Route
 					path={Paths.CLASS_DETAIL}
@@ -106,8 +119,8 @@ const App = () => {
 					path={Paths.CREATE_HOMEWORK}
 					element={
 						<ProtectedRoute>
-							{(authenticating) => {
-								return authenticating ? <Loading /> : <CreateHomeworkPage />;
+							{(authData, authenticating) => {
+								return authenticating ? <Loading /> : <CreateHomeworkPage authData={authData} />;
 							}}
 						</ProtectedRoute>
 					}
