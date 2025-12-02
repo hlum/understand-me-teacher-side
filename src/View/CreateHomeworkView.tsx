@@ -2,14 +2,8 @@ import { useParams } from "react-router-dom";
 import { useCreateHomeworkViewModel } from "../ViewModel/CreateHomeworkViewModel.js";
 import { HomeworkManager } from "../Manager/HomeworkManager.js";
 import { useRouteManager } from "../Router/useRouteManager.js";
-import type { User } from "firebase/auth";
 
-type CreateHomeworkPageProps = {
-	authData: User;
-};
-
-export const CreateHomeworkPage = (props: CreateHomeworkPageProps) => {
-	const { authData } = props;
+export const CreateHomeworkPage = () => {
 	const { classID } = useParams<{ classID: string }>();
 	if (!classID) {
 		return <div>Invalid class ID</div>;
@@ -44,13 +38,7 @@ export const CreateHomeworkPage = (props: CreateHomeworkPageProps) => {
 
 					<div>
 						<label className="block text-adaptive-secondary mb-2 font-medium">課題の説明</label>
-						<textarea
-							rows={4}
-							placeholder="課題の詳細を入力してください..."
-							value={description}
-							onChange={(e) => setDescription(e.target.value)}
-							className="input resize-none"
-						/>
+						<textarea rows={4} placeholder="課題の詳細を入力してください..." value={description} onChange={(e) => setDescription(e.target.value)} className="input resize-none" />
 					</div>
 
 					<div>

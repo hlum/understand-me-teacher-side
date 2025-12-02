@@ -106,8 +106,8 @@ const App = () => {
 					path={Paths.CREATE_HOMEWORK}
 					element={
 						<ProtectedRoute>
-							{(authData, authenticating) => {
-								return authenticating ? <Loading /> : <CreateHomeworkPage authData={authData} />;
+							{(authenticating) => {
+								return authenticating ? <Loading /> : <CreateHomeworkPage />;
 							}}
 						</ProtectedRoute>
 					}
