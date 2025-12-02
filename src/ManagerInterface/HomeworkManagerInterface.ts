@@ -28,4 +28,12 @@ export interface HomeworkManagerInterface {
 	 * @throws APIError, NetworkError, DataParseError
 	 */
 	fetchHomeworkWithSubmissionStatusForAllStudents(homeworkID: string): Promise<HomeworkWithSubmissionStatus[]>;
+
+	/**
+	 * 指定した宿題を削除します。
+	 * @param homeworkID 宿題ID
+	 * @returns void
+	 * @throws APIError, NetworkError
+	 */
+	deleteHomework(homeworkID: string): Promise<void>;
 }
