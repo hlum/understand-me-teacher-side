@@ -2,15 +2,15 @@ import type { HomeworkWithSubmissionStatus } from "@/Entity/Homework.js";
 
 type HomeworkStatusItemProps = {
 	homeworkWithSubmissionStatus: HomeworkWithSubmissionStatus;
-	selectedSubmissionStatus: HomeworkWithSubmissionStatus | null;
+	isSelected: boolean;
 	onSelected: (hw: HomeworkWithSubmissionStatus) => void;
 };
 
-export const HomeworkStatusItem = ({ homeworkWithSubmissionStatus, selectedSubmissionStatus, onSelected }: HomeworkStatusItemProps) => {
+export const HomeworkStatusItem = ({ homeworkWithSubmissionStatus, isSelected, onSelected }: HomeworkStatusItemProps) => {
 	return (
 		<div
 			key={homeworkWithSubmissionStatus.userStudentID}
-			className={`card-hover ${selectedSubmissionStatus?.userStudentID === homeworkWithSubmissionStatus.userStudentID ? "ring-2 ring-blue-500" : ""}`}
+			className={`card-hover ${isSelected ? "ring-2 ring-blue-500" : ""}`}
 			onClick={() => {
 				onSelected(homeworkWithSubmissionStatus);
 			}}

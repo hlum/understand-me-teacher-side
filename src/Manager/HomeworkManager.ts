@@ -66,4 +66,18 @@ export class HomeworkManager implements HomeworkManagerInterface {
 
 		return homeworkStatusList.map(transformHomeworkWithSubmissionStatusResponse);
 	}
+
+	async deleteHomework(homeworkID: string): Promise<void> {
+		const endPoint = LollipopHelper.instance.buildEndpoint("/homework/delete_homework.php", { id: homeworkID });
+		const headers = LollipopHelper.instance.buildHeader(true);
+
+		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, "HomeworkManager.deleteHomework", {
+			method: "DELETE",
+			headers: headers,
+		});
+
+		LollipopHelper.instance.validateLollipopResponse(lollipopResponse, "HomeworkManager.deleteHomework");
+
+		console.log("✅ Homework 削除成功。");
+	}
 }
