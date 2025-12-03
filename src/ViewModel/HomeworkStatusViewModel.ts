@@ -26,6 +26,7 @@ export const useHomeworkStatusViewModel = (
 		try {
 			setLoading(true);
 			const statusList = await homeworkManager.fetchHomeworkWithSubmissionStatusForAllStudents(homeworkID);
+			statusList.sort((a, b) => a.userStudentID.localeCompare(b.userStudentID));
 			setHomeworkStatusList(statusList);
 		} catch (error) {
 			alert(handleAppError(error));
@@ -64,7 +65,7 @@ export const useHomeworkStatusViewModel = (
 			const result = qwc.map((q) => {
 				const userAnswer = userAnswers.find((ans) => ans.questionID === q.questionID);
 
-				return createQuestionAndChoicesAndUserSelectedChoice(q.questionID, q.questionText, q.choices, userAnswer?.selectedChoiceID ?? "");
+				return createQuestionAndChoicesAndUserSelectedChoice(q.questionID, q.questionText, q.choices, userAnswer?.selectedChoiceID ?? null);
 			});
 
 			setQuestionAndChoicesAndUserSelectedChoice(result);

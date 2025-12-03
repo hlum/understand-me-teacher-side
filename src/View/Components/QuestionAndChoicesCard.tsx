@@ -47,7 +47,13 @@ export const QuestionAndChoicesCard = ({ questionAndChoicesAndUserSelectedChoice
 				<div className="mb-4">
 					<div className="flex items-start gap-3">
 						<span className="text-primary font-bold text-lg">Q{index + 1}</span>
-						<h3 className="text-adaptive font-semibold text-base leading-relaxed flex-1">{questionAndChoicesAndUserSelectedChoice.questionText}</h3>
+						<h3 className="text-adaptive font-semibold text-base leading-relaxed flex-1">
+							{questionAndChoicesAndUserSelectedChoice.questionText}
+
+							{/* ユーザーが選択してない場合 */}
+							{!questionAndChoicesAndUserSelectedChoice.userSelectedChoiceID && !editing && <span className="text-red-500 text-l ml-4">時間切れ</span>}
+						</h3>
+
 						{!editing && (
 							<button onClick={() => setEditing(true)} className="text-adaptive-secondary hover:text-primary transition-colors p-1 rounded" aria-label="Edit answer">
 								<svg
@@ -80,8 +86,8 @@ export const QuestionAndChoicesCard = ({ questionAndChoicesAndUserSelectedChoice
 						if (!editing) {
 							if (isUserSelected && !isCorrect) {
 								bgClass = "border border-red-400";
-							} else if (isCorrect) {
-								bgClass = "border border-green-400";
+							} else if (isCorrect && isUserSelected) {
+								bgClass = "border border-blue-400";
 							}
 						} else {
 							if (isCorrect) {

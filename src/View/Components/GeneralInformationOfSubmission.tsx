@@ -22,6 +22,14 @@ export const GeneralInformationOfSubmission = ({ selectedSubmissionStatus }: Gen
 					<p className="text-adaptive mt-1">{selectedSubmissionStatus.dueDate || "期限なし"}</p>
 				</div>
 
+				{/* 提出日時 */}
+				{selectedSubmissionStatus.submittedAt && (
+					<div>
+						<label className="text-adaptive-secondary text-sm font-medium">提出日時</label>
+						<p className="text-adaptive mt-1">{selectedSubmissionStatus.submittedAt}</p>
+					</div>
+				)}
+
 				{/* GitHub リンク */}
 				<div>
 					<label className="text-adaptive-secondary text-sm font-medium">GitHub ファイル</label>

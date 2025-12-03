@@ -43,6 +43,7 @@ export type HomeworkWithSubmissionStatus = {
 	githubFileLink: string | null;
 	jobStatus: string | null;
 	score: number;
+	submittedAt: string | null;
 	submissionState: "notAssigned" | "generatingQuestions" | "questionGenerated" | "completed";
 };
 
@@ -59,6 +60,7 @@ export type RawHomeworkWithSubmissionStatusResponse = {
 	github_file_link: string | null;
 	job_status: string | null;
 	score: number;
+	submitted_at: string | null;
 	submission_state: "notAssigned" | "generatingQuestions" | "questionGenerated" | "completed";
 };
 
@@ -76,4 +78,5 @@ export const transformHomeworkWithSubmissionStatusResponse = (raw: RawHomeworkWi
 	jobStatus: raw.job_status,
 	score: raw.score,
 	submissionState: raw.submission_state,
+	submittedAt: raw.submitted_at,
 });

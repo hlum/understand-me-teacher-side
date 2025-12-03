@@ -51,13 +51,13 @@ export type QuestionAndChoicesAndUserSelectedChoice = {
 	id: string;
 	questionText: string;
 	choices: Choice[];
-	userSelectedChoiceID: string;
+	userSelectedChoiceID: string | null;
 };
 
 // ← バグ修正：正しいオブジェクト生成
-export const createQuestionAndChoicesAndUserSelectedChoice = (id: string, questionText: string, choices: Choice[], userSelectedChoiceID: string): QuestionAndChoicesAndUserSelectedChoice => ({
+export const createQuestionAndChoicesAndUserSelectedChoice = (id: string, questionText: string, choices: Choice[], userSelectedChoiceID: string | null): QuestionAndChoicesAndUserSelectedChoice => ({
 	id,
 	questionText,
 	choices,
-	userSelectedChoiceID,
+	userSelectedChoiceID: userSelectedChoiceID,
 });
