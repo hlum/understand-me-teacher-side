@@ -2,13 +2,13 @@ import { useParams } from "react-router-dom";
 import { useHomeworkStatusViewModel } from "../ViewModel/HomeworkStatusViewModel.js";
 import { Loading } from "./Components/Loading.js";
 import { HomeworkManager } from "../Manager/HomeworkManager.js";
-import { useState } from "react";
-import type { HomeworkWithSubmissionStatus } from "@/Entity/Homework.js";
 import { QuestionWithChoicesManager } from "@/Manager/QuestionWithChoicesManager.js";
 import { QuestionAndChoicesCard } from "./Components/QuestionAndChoicesCard.js";
 import { GeneralInformationOfSubmission } from "./Components/GeneralInformationOfSubmission.js";
 import { HomeworkStatusItem } from "./Components/HomeworkStatusItem.js";
 import { RemarkManager } from "@/Manager/RemarkManager.js";
+import { LucideArrowUpDown } from "lucide-react";
+import { SortButton } from "./Components/SortButton.js";
 
 export const StudentHomeworkStatusView = () => {
 	const { homeworkID } = useParams<{ homeworkID: string }>();
@@ -20,12 +20,8 @@ export const StudentHomeworkStatusView = () => {
 	const homeworkManager = new HomeworkManager();
 	const questionWithChoicesManager = new QuestionWithChoicesManager();
 	const remarkManager = new RemarkManager();
-	const { loading, homeworkStatusList, questionAndChoicesAndUserSelectedChoice, selectedSubmissionStatusIndex, onSelected, handleCorrectChoiceChange } = useHomeworkStatusViewModel(
-		homeworkID,
-		homeworkManager,
-		questionWithChoicesManager,
-		remarkManager
-	);
+	const { loading, homeworkStatusList, questionAndChoicesAndUserSelectedChoice, selectedSubmissionStatusIndex, onSelected, handleCorrectChoiceChange, handleSortOptionChange } =
+		useHomeworkStatusViewModel(homeworkID, homeworkManager, questionWithChoicesManager, remarkManager);
 
 	const selectedStatus = selectedSubmissionStatusIndex !== null ? homeworkStatusList[selectedSubmissionStatusIndex] : null;
 
@@ -40,7 +36,10 @@ export const StudentHomeworkStatusView = () => {
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 					{/* 左側：学生リスト */}
 					<div className="space-y-4">
-						<h2 className="text-adaptive text-xl font-semibold mb-4">学生一覧</h2>
+						<div className="flex items-center justify-between">
+							<h2 className="text-adaptive text-xl font-semibold mb-4">学生一覧</h2>
+							<SortButton onSortChange={(option) => handleSortOptionChange(option)} />
+						</div>
 						{homeworkStatusList.map((hw, index) => (
 							<HomeworkStatusItem
 								homeworkWithSubmissionStatus={hw}

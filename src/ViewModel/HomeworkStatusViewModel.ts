@@ -5,6 +5,7 @@ import { handleAppError } from "../Helper/handleAppError.js";
 import type { QuestionWithChoicesManagerInterface } from "@/ManagerInterface/QuestionWithChoicesManagerInterface.js";
 import { createQuestionAndChoicesAndUserSelectedChoice, type QuestionAndChoicesAndUserSelectedChoice } from "@/Entity/QuestionWithChoices.js";
 import type { RemarkManagerInterface } from "@/ManagerInterface/RemarkManagerInterface.js";
+import type { SortOption } from "@/View/Components/SortButton.js";
 
 export const useHomeworkStatusViewModel = (
 	homeworkID: string,
@@ -102,6 +103,26 @@ export const useHomeworkStatusViewModel = (
 		}
 	};
 
+	const handleSortOptionChange = (option: SortOption) => {
+		const sortedList = [...homeworkStatusList].sort((a, b) => {
+			switch (option.field) {
+				case "studentID":
+					return option.order === "asc" ? a.userStudentID.localeCompare(b.userStudentID) : b.userStudentID.localeCompare(a.userStudentID);
+
+				case "score":
+					return option.order === "asc" ? a.score - b.score : b.score - a.score;
+
+				case "submissionDate":
+					const dateA = a.submittedAt ? new Date(a.submittedAt).getTime() : 0;
+					const dateB = b.submittedAt ? new Date(b.submittedAt).getTime() : 0;
+
+					return option.order === "asc" ? dateA - dateB : dateB - dateA;
+			}
+		});
+
+		setHomeworkStatusList(sortedList);
+	};
+
 	const reload = async () => {
 		await loadHomeworkStatus();
 		await loadQuestionsAndChoices();
@@ -114,5 +135,6 @@ export const useHomeworkStatusViewModel = (
 		questionAndChoicesAndUserSelectedChoice,
 		onSelected,
 		handleCorrectChoiceChange,
+		handleSortOptionChange,
 	};
 };
