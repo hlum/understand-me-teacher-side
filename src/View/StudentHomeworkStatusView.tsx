@@ -9,6 +9,7 @@ import { HomeworkStatusItem } from "./Components/HomeworkStatusItem.js";
 import { RemarkManager } from "@/Manager/RemarkManager.js";
 import { SortButton } from "./Components/SortButton.js";
 import { FilterButton } from "./Components/FilterButton.js";
+import { DownloadCSVButton } from "./Components/DownloadCSVButton.js";
 
 export const StudentHomeworkStatusView = () => {
 	const { homeworkID } = useParams<{ homeworkID: string }>();
@@ -52,6 +53,18 @@ export const StudentHomeworkStatusView = () => {
 
 							{/* ソート・フィルターボタン群 */}
 							<div className="flex gap-2">
+								<DownloadCSVButton
+									fileName={`${filteredHomeworkStatusList[0]?.title}_進捗.csv`}
+									csvEntities={filteredHomeworkStatusList.map((hw) => ({
+										studentID: hw.userStudentID,
+										projectLink: hw.githubFileLink,
+										homeworkTitle: hw.title,
+										score: hw.score,
+										submissionState: hw.submissionState,
+										submittedAt: hw.submittedAt,
+										homeworkDueDate: hw.dueDate,
+									}))}
+								/>
 								<FilterButton
 									selectedFilters={selectedFilters}
 									setSelectedFilters={(filters) => {
