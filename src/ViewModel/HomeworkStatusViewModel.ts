@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import type { HomeworkWithSubmissionStatus } from "../Entity/Homework.js";
+import type { HomeworkWithSubmissionStatus, SubmissionState } from "../Entity/Homework.js";
 import type { HomeworkManagerInterface } from "../ManagerInterface/HomeworkManagerInterface.js";
 import { handleAppError } from "../Helper/handleAppError.js";
 import type { QuestionWithChoicesManagerInterface } from "@/ManagerInterface/QuestionWithChoicesManagerInterface.js";
 import { createQuestionAndChoicesAndUserSelectedChoice, type QuestionAndChoicesAndUserSelectedChoice } from "@/Entity/QuestionWithChoices.js";
 import type { RemarkManagerInterface } from "@/ManagerInterface/RemarkManagerInterface.js";
+import type { SortOption } from "@/View/Components/SortButton.js";
 
 export const useHomeworkStatusViewModel = (
 	homeworkID: string,
@@ -14,8 +15,14 @@ export const useHomeworkStatusViewModel = (
 ) => {
 	const [loading, setLoading] = useState(true);
 	const [homeworkStatusList, setHomeworkStatusList] = useState<HomeworkWithSubmissionStatus[]>([]);
+	const [filteredHomeworkStatusList, setFilteredHomeworkStatusList] = useState<HomeworkWithSubmissionStatus[]>([]);
 	const [selectedSubmissionStatusIndex, setSelectedSubmissionStatusIndex] = useState<number | null>(null);
 	const [questionAndChoicesAndUserSelectedChoice, setQuestionAndChoicesAndUserSelectedChoice] = useState<QuestionAndChoicesAndUserSelectedChoice[]>([]);
+
+	// Filter と Sortの状態
+	const [currentShowingMenu, setCurrentShowingMenu] = useState<"filter" | "sort" | null>(null); // ソートとフィルターメニューが同時に開かれないようにするための状態
+	const [selectedFilters, setSelectedFilters] = useState<SubmissionState[]>([]);
+	const [selectedSortOption, setSelectedSortOption] = useState<SortOption>({ field: "studentID", order: "asc" });
 
 	// ---- 課題一覧の読み込み ----
 	useEffect(() => {
@@ -28,6 +35,7 @@ export const useHomeworkStatusViewModel = (
 			const statusList = await homeworkManager.fetchHomeworkWithSubmissionStatusForAllStudents(homeworkID);
 			statusList.sort((a, b) => a.userStudentID.localeCompare(b.userStudentID));
 			setHomeworkStatusList(statusList);
+			setFilteredHomeworkStatusList(statusList);
 		} catch (error) {
 			alert(handleAppError(error));
 		} finally {
@@ -107,12 +115,62 @@ export const useHomeworkStatusViewModel = (
 		await loadQuestionsAndChoices();
 	};
 
+	const handleSortOptionChange = (option: SortOption) => {
+		setSelectedSortOption(option);
+		const sortedList = [...filteredHomeworkStatusList].sort((a, b) => {
+			switch (option.field) {
+				case "studentID":
+					return option.order === "asc" ? a.userStudentID.localeCompare(b.userStudentID) : b.userStudentID.localeCompare(a.userStudentID);
+
+				case "score":
+					return option.order === "asc" ? a.score - b.score : b.score - a.score;
+
+				case "submissionDate":
+					const dateA = a.submittedAt ? new Date(a.submittedAt).getTime() : 0;
+					const dateB = b.submittedAt ? new Date(b.submittedAt).getTime() : 0;
+
+					return option.order === "asc" ? dateA - dateB : dateB - dateA;
+			}
+		});
+
+		setFilteredHomeworkStatusList(sortedList);
+	};
+
+	const handleFilterOptionChange = (options: SubmissionState[]) => {
+		setSelectedFilters(options);
+		const filteredList = [...homeworkStatusList].filter((hw) => {
+			if (options.length === 0) return true; // フィルターが空の場合、すべて表示
+			return options.includes(hw.submissionState);
+		});
+
+		setFilteredHomeworkStatusList(filteredList);
+	};
+
+	const handleFilterOrSortChange = (sortOption: SortOption, filterOptions: SubmissionState[]) => {
+		if (sortOption === selectedSortOption) {
+			// フィルターのみ変わった場合
+			handleFilterOptionChange(filterOptions);
+		} else if (filterOptions === selectedFilters) {
+			// ソートのみ変わった場合
+			handleSortOptionChange(sortOption);
+		} else {
+			// 両方変わった場合は、先にフィルターをかけてからソートをかける
+			handleFilterOptionChange(filterOptions);
+			handleSortOptionChange(sortOption);
+		}
+	};
+
 	return {
 		loading,
-		homeworkStatusList,
 		selectedSubmissionStatusIndex,
 		questionAndChoicesAndUserSelectedChoice,
 		onSelected,
 		handleCorrectChoiceChange,
+		handleFilterOrSortChange,
+		selectedFilters,
+		selectedSortOption,
+		currentShowingMenu,
+		setCurrentShowingMenu,
+		filteredHomeworkStatusList,
 	};
 };

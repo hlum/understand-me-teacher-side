@@ -2,13 +2,13 @@ import { useParams } from "react-router-dom";
 import { useHomeworkStatusViewModel } from "../ViewModel/HomeworkStatusViewModel.js";
 import { Loading } from "./Components/Loading.js";
 import { HomeworkManager } from "../Manager/HomeworkManager.js";
-import { useState } from "react";
-import type { HomeworkWithSubmissionStatus } from "@/Entity/Homework.js";
 import { QuestionWithChoicesManager } from "@/Manager/QuestionWithChoicesManager.js";
 import { QuestionAndChoicesCard } from "./Components/QuestionAndChoicesCard.js";
 import { GeneralInformationOfSubmission } from "./Components/GeneralInformationOfSubmission.js";
 import { HomeworkStatusItem } from "./Components/HomeworkStatusItem.js";
 import { RemarkManager } from "@/Manager/RemarkManager.js";
+import { SortButton } from "./Components/SortButton.js";
+import { FilterButton } from "./Components/FilterButton.js";
 
 export const StudentHomeworkStatusView = () => {
 	const { homeworkID } = useParams<{ homeworkID: string }>();
@@ -20,14 +20,21 @@ export const StudentHomeworkStatusView = () => {
 	const homeworkManager = new HomeworkManager();
 	const questionWithChoicesManager = new QuestionWithChoicesManager();
 	const remarkManager = new RemarkManager();
-	const { loading, homeworkStatusList, questionAndChoicesAndUserSelectedChoice, selectedSubmissionStatusIndex, onSelected, handleCorrectChoiceChange } = useHomeworkStatusViewModel(
-		homeworkID,
-		homeworkManager,
-		questionWithChoicesManager,
-		remarkManager
-	);
+	const {
+		loading,
+		filteredHomeworkStatusList,
+		questionAndChoicesAndUserSelectedChoice,
+		selectedSubmissionStatusIndex,
+		onSelected,
+		handleCorrectChoiceChange,
+		handleFilterOrSortChange,
+		currentShowingMenu,
+		selectedFilters,
+		selectedSortOption,
+		setCurrentShowingMenu,
+	} = useHomeworkStatusViewModel(homeworkID, homeworkManager, questionWithChoicesManager, remarkManager);
 
-	const selectedStatus = selectedSubmissionStatusIndex !== null ? homeworkStatusList[selectedSubmissionStatusIndex] : null;
+	const selectedStatus = selectedSubmissionStatusIndex !== null ? filteredHomeworkStatusList[selectedSubmissionStatusIndex] : null;
 
 	if (loading) return <Loading />;
 
@@ -40,11 +47,35 @@ export const StudentHomeworkStatusView = () => {
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 					{/* 左側：学生リスト */}
 					<div className="space-y-4">
-						<h2 className="text-adaptive text-xl font-semibold mb-4">学生一覧</h2>
-						{homeworkStatusList.map((hw, index) => (
+						<div className="flex items-center justify-between">
+							<h2 className="text-adaptive text-xl font-semibold mb-4">学生一覧</h2>
+
+							{/* ソート・フィルターボタン群 */}
+							<div className="flex gap-2">
+								<FilterButton
+									selectedFilters={selectedFilters}
+									setSelectedFilters={(filters) => {
+										handleFilterOrSortChange(selectedSortOption, filters);
+									}}
+									showMenu={currentShowingMenu === "filter"}
+									setShowMenu={(show) => {
+										setCurrentShowingMenu(show ? "filter" : currentShowingMenu === "filter" ? null : currentShowingMenu);
+									}}
+								/>
+								<SortButton
+									selectedSortOption={selectedSortOption}
+									showSortMenu={currentShowingMenu === "sort"}
+									setShowSortMenu={(show) => {
+										setCurrentShowingMenu(show ? "sort" : currentShowingMenu === "sort" ? null : currentShowingMenu);
+									}}
+									onSortOptionChange={(option) => handleFilterOrSortChange(option, selectedFilters)}
+								/>
+							</div>
+						</div>
+						{filteredHomeworkStatusList.map((hw, index) => (
 							<HomeworkStatusItem
 								homeworkWithSubmissionStatus={hw}
-								isSelected={selectedSubmissionStatusIndex !== null && homeworkStatusList[selectedSubmissionStatusIndex]?.userStudentID === hw.userStudentID}
+								isSelected={selectedSubmissionStatusIndex !== null && filteredHomeworkStatusList[selectedSubmissionStatusIndex]?.userStudentID === hw.userStudentID}
 								onSelected={() => onSelected(index)}
 								key={hw.userStudentID}
 							/>

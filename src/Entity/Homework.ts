@@ -44,7 +44,24 @@ export type HomeworkWithSubmissionStatus = {
 	jobStatus: string | null;
 	score: number;
 	submittedAt: string | null;
-	submissionState: "notAssigned" | "generatingQuestions" | "questionGenerated" | "completed";
+	submissionState: SubmissionState;
+};
+
+export type SubmissionState = "notAssigned" | "generatingQuestions" | "questionGenerated" | "completed";
+
+export const submissionStateLabel = (state: SubmissionState): string => {
+	switch (state) {
+		case "notAssigned":
+			return "未提出";
+		case "generatingQuestions":
+			return "質問生成中";
+		case "questionGenerated":
+			return "質問生成完了";
+		case "completed":
+			return "完了";
+		default:
+			return "不明な状態";
+	}
 };
 
 // APIからの生データの型定義
@@ -61,7 +78,7 @@ export type RawHomeworkWithSubmissionStatusResponse = {
 	job_status: string | null;
 	score: number;
 	submitted_at: string | null;
-	submission_state: "notAssigned" | "generatingQuestions" | "questionGenerated" | "completed";
+	submission_state: SubmissionState;
 };
 
 // APIレスポンスをHomeworkWithSubmissionStatus型に変換する関数
