@@ -126,4 +126,18 @@ export class HomeworkManager implements HomeworkManagerInterface {
 
 		console.log("✅ Homework 削除成功。");
 	}
+
+	async resubmitHomework(homeworkID: string, studentID: string): Promise<void> {
+		const context = "HomeworkManager.resubmitHomework";
+		const endPoint = LollipopHelper.instance.buildEndpoint("homework/delete_submitted_homework.php", { user_id: studentID, homework_id: homeworkID });
+		const headers = LollipopHelper.instance.buildHeader(false);
+
+		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, context, {
+			method: "DELETE",
+			headers: headers,
+		});
+
+		LollipopHelper.instance.validateLollipopResponse(lollipopResponse, context);
+		console.log("✅ Homework resubmit success.");
+	}
 }

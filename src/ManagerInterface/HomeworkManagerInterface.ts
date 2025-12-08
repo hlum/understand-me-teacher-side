@@ -56,4 +56,14 @@ export interface HomeworkManagerInterface {
 	 * @throws APIError, NetworkError
 	 */
 	deleteHomework(homeworkID: string): Promise<void>;
+
+	/**
+	 * 再提出させるため、projeectを削除する
+	 * @param homeworkID 宿題ID
+	 * @param studentID 生徒ID
+	 * @returns void
+	 * @throws APIError, NetworkError
+	 * @throws DataParseError
+	 */
+	resubmitHomework(homeworkID: string, studentID: string): Promise<void>;
 }

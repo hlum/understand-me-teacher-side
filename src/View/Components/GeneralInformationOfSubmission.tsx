@@ -2,12 +2,22 @@ import type { HomeworkWithSubmissionStatus } from "@/Entity/Homework.js";
 
 type GeneralInformationOfSubmissionProps = {
 	selectedSubmissionStatus: HomeworkWithSubmissionStatus;
+	onCancelSubmission: () => void;
 };
 
-export const GeneralInformationOfSubmission = ({ selectedSubmissionStatus }: GeneralInformationOfSubmissionProps) => {
+export const GeneralInformationOfSubmission = ({ selectedSubmissionStatus, onCancelSubmission }: GeneralInformationOfSubmissionProps) => {
+	const submissionState = selectedSubmissionStatus.submissionState;
+
 	return (
 		<div className="card p-5 animate-fade-in">
-			<h2 className="text-adaptive text-xl font-semibold mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">基本情報</h2>
+			<div className="mb-4 pb-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+				<h2 className="text-adaptive text-xl font-semibold">基本情報</h2>
+				{submissionState !== "notAssigned" && (
+					<button className="card p-3 text-red-500 font-bold hover:cursor-pointer" onClick={onCancelSubmission}>
+						提出取り消し
+					</button>
+				)}
+			</div>
 
 			<div className="space-y-3">
 				{/* 学生情報 */}

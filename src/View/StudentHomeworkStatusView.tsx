@@ -33,6 +33,7 @@ export const StudentHomeworkStatusView = () => {
 		selectedFilters,
 		selectedSortOption,
 		setCurrentShowingMenu,
+		handleCancelSubmission,
 	} = useHomeworkStatusViewModel(homeworkID, homeworkManager, questionWithChoicesManager, remarkManager);
 
 	const selectedStatus = selectedSubmissionStatusIndex !== null ? filteredHomeworkStatusList[selectedSubmissionStatusIndex] : null;
@@ -100,7 +101,7 @@ export const StudentHomeworkStatusView = () => {
 						{selectedStatus ? (
 							<div className="space-y-4">
 								{/* 基本情報カード */}
-								<GeneralInformationOfSubmission selectedSubmissionStatus={selectedStatus} />
+								<GeneralInformationOfSubmission selectedSubmissionStatus={selectedStatus} onCancelSubmission={() => handleCancelSubmission(selectedStatus)} />
 
 								{/* 質問と回答カード群 */}
 								<div className="space-y-6">
