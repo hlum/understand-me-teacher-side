@@ -6,7 +6,7 @@ type GeneralInformationOfSubmissionProps = {
 
 export const GeneralInformationOfSubmission = ({ selectedSubmissionStatus }: GeneralInformationOfSubmissionProps) => {
 	return (
-		<div className="card animate-fade-in">
+		<div className="card p-5 animate-fade-in">
 			<h2 className="text-adaptive text-xl font-semibold mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">基本情報</h2>
 
 			<div className="space-y-3">
