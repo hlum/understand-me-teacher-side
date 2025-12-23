@@ -13,7 +13,7 @@ export class LollipopHelper {
 	 * @returns LollipopからのResponseをデコードしたもの
 	 * @throws NetworkError, DataParseError
 	 */
-	async fetchAndDecodeLollipopResponse(endpoint: string, context: string, options: RequestInit): Promise<LollipopResponse> {
+	async fetchAndDecodeLollipopResponse<T>(endpoint: string, context: string, options: RequestInit): Promise<LollipopResponse<T>> {
 		let response: Response;
 
 		// ネットワークリクエストの実行
@@ -28,7 +28,7 @@ export class LollipopHelper {
 
 		try {
 			const json = JSON.parse(rawText);
-			return json as LollipopResponse;
+			return json as LollipopResponse<T>;
 		} catch (error) {
 			// 生レスポンスをエラーメッセージに含める
 			throw new DataParseError(`${context} Lollipopレスポンスのデコードに失敗しました。\nRaw Response:\n${rawText}\nError: ${error}`);
@@ -42,29 +42,11 @@ export class LollipopHelper {
 	 * @param requireData LollipopからのResponseの中にデータの存在を必須とするかどうか
 	 * @throws APIError, DataParseError
 	 */
-	validateLollipopResponse(response: LollipopResponse, context: string, requireData: boolean = false): void {
+	validateLollipopResponse<T>(response: LollipopResponse<T>, context: string): void {
 		if (response.status !== "success") {
 			// errorCode がある場合はそれを使用、なければ UNKNOWN
 			const errorCode = response.errorCode || "UNKNOWN";
 			throw new APIError(`${context} APIエラー: ${response.message}`, errorCode);
-		}
-		if (requireData && !response.data) {
-			throw new DataParseError(`${context} Responseの中にdataが存在しません。Response: ${response}`);
-		}
-	}
-
-	/**
-	 * Lollipopレスポンスのdataフィールドからデータをデコード
-	 * @param data Lollipopレスポンスのdataフィールド
-	 * @param context エラーログ用のコンテキスト情報
-	 * @returns デコードされたデータ
-	 * @throws DataParseError
-	 */
-	decodeDataFromLollipopResponse<T>(data: string, context: string): T {
-		try {
-			return JSON.parse(data) as T;
-		} catch (error) {
-			throw new DataParseError(`${context} データのデコードに失敗しました。 Error: ${error}, Response Data: ${data}`);
 		}
 	}
 

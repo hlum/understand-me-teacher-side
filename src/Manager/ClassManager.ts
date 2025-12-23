@@ -9,19 +9,22 @@ export class ClassManager implements ClassManagerInterface {
 
 		const endPoint = LollipopHelper.instance.buildEndpoint("/class/get_class.php", { id: classID });
 		const headers = LollipopHelper.instance.buildHeader();
-		const result = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, context, {
+		const result = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawClassResponse[]>(endPoint, context, {
 			method: "GET",
 			headers: headers,
 		});
 
-		LollipopHelper.instance.validateLollipopResponse(result, context, true);
-		const rawClassResponse = LollipopHelper.instance.decodeDataFromLollipopResponse<RawClassResponse[]>(result.data!, context);
+		LollipopHelper.instance.validateLollipopResponse(result, context);
 
-		if (!Array.isArray(rawClassResponse)) {
+		if (!result.data) {
+			throw new DataParseError("ClassManager.fetchClass レスポンスの中にdataが存在しません。");
+		}
+
+		if (!Array.isArray(result.data)) {
 			throw new DataParseError("ClassManager.fetchClass レスポンスデータの形式が不正です。配列ではありません。");
 		}
 
-		const classDetails = rawClassResponse.map(transformClassResponse)[0];
+		const classDetails = result.data.map(transformClassResponse)[0];
 
 		if (!classDetails) {
 			throw new DataParseError("ClassManager.fetchClass 生のデータからクラス詳細を取得できませんでした。");
@@ -33,7 +36,7 @@ export class ClassManager implements ClassManagerInterface {
 		const endPoint = LollipopHelper.instance.buildEndpoint("class/get_class.php", { teacher_id: teacherID });
 		const headers = LollipopHelper.instance.buildHeader();
 
-		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, "ClassManager.fetchClassesForTeacher", {
+		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawClassResponse[]>(endPoint, "ClassManager.fetchClassesForTeacher", {
 			method: "GET",
 			headers: headers,
 		});
@@ -45,13 +48,11 @@ export class ClassManager implements ClassManagerInterface {
 			return [];
 		}
 
-		const rawClassList = LollipopHelper.instance.decodeDataFromLollipopResponse<RawClassResponse[]>(lollipopResponse.data, "ClassManager.fetchClassesForTeacher");
-
-		if (!Array.isArray(rawClassList)) {
+		if (!Array.isArray(lollipopResponse.data)) {
 			throw new DataParseError("ClassManager.fetchClassesForTeacher レスポンスデータの形式が不正です。配列ではありません。");
 		}
 
-		return rawClassList.map(transformClassResponse);
+		return lollipopResponse.data.map(transformClassResponse);
 	}
 
 	async addNewClass(newClass: Class): Promise<void> {

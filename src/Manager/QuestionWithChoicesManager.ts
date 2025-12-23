@@ -9,15 +9,18 @@ export class QuestionWithChoicesManager implements QuestionWithChoicesManagerInt
 		const endpoint = LollipopHelper.instance.buildEndpoint("questions_choices/get_questions_choices.php", { homework_id: homeworkID, user_id: userID });
 
 		const headers = LollipopHelper.instance.buildHeader();
-		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endpoint, context, {
+		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawQuestionWithChoicesResponse[]>(endpoint, context, {
 			method: "GET",
 			headers: headers,
 		});
 
-		LollipopHelper.instance.validateLollipopResponse(lollipopResponse, context, true);
-		const rawData = LollipopHelper.instance.decodeDataFromLollipopResponse<RawQuestionWithChoicesResponse[]>(lollipopResponse.data!, context);
+		LollipopHelper.instance.validateLollipopResponse(lollipopResponse, context);
 
-		return rawData.map(transformQuestionWithChoicesResponse);
+		if (!lollipopResponse.data) {
+			throw new Error("QuestionWithChoicesManager.fetch レスポンスの中にdataが存在しません。");
+		}
+
+		return lollipopResponse.data.map(transformQuestionWithChoicesResponse);
 	}
 
 	async fetchUserAnswers(homeworkID: string, userID: string): Promise<Answer[]> {
@@ -25,14 +28,15 @@ export class QuestionWithChoicesManager implements QuestionWithChoicesManagerInt
 		const endpoint = LollipopHelper.instance.buildEndpoint("answer/get_answers_with_homeworkID.php", { homework_id: homeworkID, user_id: userID });
 
 		const headers = LollipopHelper.instance.buildHeader();
-		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endpoint, context, {
+		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawAnswerResponse[]>(endpoint, context, {
 			method: "GET",
 			headers: headers,
 		});
 
-		LollipopHelper.instance.validateLollipopResponse(lollipopResponse, context, true);
-		const rawData = LollipopHelper.instance.decodeDataFromLollipopResponse<RawAnswerResponse[]>(lollipopResponse.data!, context);
-
-		return rawData.map(transformAnswerResponse);
+		LollipopHelper.instance.validateLollipopResponse(lollipopResponse, context);
+		if (!lollipopResponse.data) {
+			throw new Error("QuestionWithChoicesManager.fetchUserAnswer レスポンスの中にdataが存在しません。");
+		}
+		return lollipopResponse.data.map(transformAnswerResponse);
 	}
 }
