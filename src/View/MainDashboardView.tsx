@@ -7,6 +7,8 @@ import type { User } from "firebase/auth";
 import { UserManager } from "@/Manager/UserManager.js";
 import { ProfileMenu } from "./Components/ProfileMenu.js";
 import { AuthManager } from "@/Manager/AuthManager.js";
+import { ClassFilterDropdown } from "./Components/ClassFilterDropdown.js";
+import { LucideSearch, LucideX } from "lucide-react";
 
 type MainDashboardViewProps = {
 	authData: User;
@@ -26,9 +28,9 @@ const MainDashboardView = ({ authData }: MainDashboardViewProps) => {
 	return (
 		<div className="page-bg p-8">
 			{/* Header Section */}
-			<div className="flex flex-wrap justify-between items-center mb-10 gap-6">
+			<div className="flex flex-wrap justify-between items-center mb-6 gap-6">
 				<h1 className="text-3xl sm:text-4xl font-bold text-adaptive">
-					クラス管理、
+					学科管理、
 					<span className="text-accent-light">{vm.user?.name}</span>
 				</h1>
 
@@ -48,8 +50,49 @@ const MainDashboardView = ({ authData }: MainDashboardViewProps) => {
 						<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
 						</svg>
-						クラスを追加
+						学科を追加
 					</button>
+				</div>
+			</div>
+
+			{/* Search and Filter Section */}
+			<div className="flex flex-wrap items-center gap-4 mb-8">
+				{/* Search Bar */}
+				<div className="relative flex-1 min-w-[200px] max-w-md">
+					<LucideSearch size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-adaptive-secondary" />
+					<input type="text" placeholder="学科名、学科コード、年度で検索..." value={vm.searchQuery} onChange={(e) => vm.setSearchQuery(e.target.value)} className="input pl-10 pr-10" />
+					{vm.searchQuery && (
+						<button onClick={() => vm.setSearchQuery("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-adaptive-secondary hover:text-adaptive transition-colors">
+							<LucideX size={18} />
+						</button>
+					)}
+				</div>
+
+				{/* Filters */}
+				<div className="flex flex-wrap items-center gap-3">
+					<ClassFilterDropdown
+						label="年度"
+						options={vm.filterOptions.years}
+						selectedValue={vm.filters.admissionYear}
+						onSelect={(value) => vm.setFilters({ ...vm.filters, admissionYear: value })}
+						renderOption={(year) => `${year}年度`}
+					/>
+
+					<ClassFilterDropdown
+						label="学科"
+						options={vm.filterOptions.majors}
+						selectedValue={vm.filters.majorCode}
+						onSelect={(value) => vm.setFilters({ ...vm.filters, majorCode: value })}
+						renderOption={(code) => code.toUpperCase()}
+					/>
+
+					<ClassFilterDropdown
+						label="科目種別"
+						options={[true, false] as boolean[]}
+						selectedValue={vm.filters.hasClassCode}
+						onSelect={(value) => vm.setFilters({ ...vm.filters, hasClassCode: value })}
+						renderOption={(hasClass) => (hasClass ? "選択科目" : "必修科目")}
+					/>
 				</div>
 			</div>
 

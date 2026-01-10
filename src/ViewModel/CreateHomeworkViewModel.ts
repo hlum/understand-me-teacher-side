@@ -16,6 +16,11 @@ export const useCreateHomeworkViewModel = (classID: string, homeworkManager: Hom
 			return;
 		}
 
+		if (!classID) {
+			alert("科目の情報取得に失敗しました。前のページに戻って再度お試しください。");
+			return;
+		}
+ 
 		try {
 			setLoading(true);
 			await homeworkManager.addNewHomework(classID, authData.uid, title, description, dueDate);

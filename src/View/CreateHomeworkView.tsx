@@ -41,7 +41,7 @@ export const CreateHomeworkPage = ({ authData }: CreateHomeworkPageProps) => {
 
 					<div>
 						<label className="block text-adaptive-secondary mb-2 font-medium">締め切り日</label>
-						<input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} className="input" />
+						<input type="date" value={dueDate} min={new Date().toISOString().split("T")[0]} onChange={(e) => setDueDate(e.target.value)} className="input" />
 					</div>
 
 					{/* Submit Button */}

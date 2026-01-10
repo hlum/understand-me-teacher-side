@@ -5,6 +5,7 @@ import { HomeworkManager } from "../Manager/HomeworkManager.js";
 import { useRouteManager } from "../Router/useRouteManager.js";
 import { handleAppError } from "@/Helper/handleAppError.js";
 import { HomeworkCard } from "./Components/HomeworkCard.js";
+import { Loading } from "./Components/Loading.js";
 
 export const HomeworkListView = () => {
 	const navigate = useRouteManager();
@@ -19,7 +20,7 @@ export const HomeworkListView = () => {
 	const { classDetail, homeworks, loading } = useHomeworkListViewModel(classID, classManager, homeworkManager);
 
 	if (loading) {
-		return <div className="flex justify-center items-center h-screen text-gray-500 text-lg">読み込み中です…</div>;
+		return <Loading />;
 	}
 
 	if (!classDetail) {
@@ -44,7 +45,7 @@ export const HomeworkListView = () => {
 							</span>
 							{classDetail.classCode !== null ? (
 								<span>
-									<span className="font-semibold text-green-500">クラスコード：</span>
+									<span className="font-semibold text-green-500">参加コード：</span>
 									{classDetail.classCode}
 								</span>
 							) : (
