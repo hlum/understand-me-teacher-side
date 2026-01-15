@@ -2,10 +2,10 @@ import type { HomeworkWithSubmissionStatus } from "@/Entity/Homework.js";
 
 type GeneralInformationOfSubmissionProps = {
 	selectedSubmissionStatus: HomeworkWithSubmissionStatus;
-	onCancelSubmission: () => void;
+	onResetSubmission: () => void;
 };
 
-export const GeneralInformationOfSubmission = ({ selectedSubmissionStatus, onCancelSubmission }: GeneralInformationOfSubmissionProps) => {
+export const GeneralInformationOfSubmission = ({ selectedSubmissionStatus, onResetSubmission }: GeneralInformationOfSubmissionProps) => {
 	const submissionState = selectedSubmissionStatus.submissionState;
 
 	return (
@@ -13,7 +13,7 @@ export const GeneralInformationOfSubmission = ({ selectedSubmissionStatus, onCan
 			<div className="mb-4 pb-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
 				<h2 className="text-adaptive text-xl font-semibold">基本情報</h2>
 				{submissionState !== "notAssigned" && (
-					<button className="card p-3 text-red-500 font-bold hover:cursor-pointer" onClick={onCancelSubmission}>
+					<button className="card p-3 text-red-500 font-bold hover:cursor-pointer" onClick={onResetSubmission}>
 						提出取り消し
 					</button>
 				)}

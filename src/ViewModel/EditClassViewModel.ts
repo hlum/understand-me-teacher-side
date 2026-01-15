@@ -2,7 +2,14 @@ import { useState, useEffect } from "react";
 import { type User } from "firebase/auth";
 import { type Class } from "../Entity/Class.js";
 import type { ClassManagerInterface } from "../ManagerInterface/ClassManagerInterface.js";
-import { APIError, DataParseError, NetworkError } from "../Helper/CustomErrors.js";
+import { handleAppError } from "../Helper/handleAppError.js";
+
+type FormErrors = {
+	className?: string | undefined;
+	admissionYear?: string | undefined;
+	majorCode?: string | undefined;
+	classCode?: string | undefined;
+};
 
 export const useEditClassViewModel = (classManager: ClassManagerInterface, authData: User, classID: string) => {
 	const [loading, setLoading] = useState<boolean>(true);
@@ -11,18 +18,12 @@ export const useEditClassViewModel = (classManager: ClassManagerInterface, authD
 	const [admissionYear, setAdmissionYear] = useState<string>("");
 
 	const [isOptionalClass, setIsOptionalClass] = useState<boolean>(false);
-	const [classCode, setClassCode] = useState<string>(""); // 選択科目のときに使うコード
+	const [classCode, setClassCode] = useState<string>("");
 
-	const [errors, setErrors] = useState<{
-		className?: string | undefined;
-		admissionYear?: string | undefined;
-		majorCode?: string | undefined;
-		classCode?: string | undefined;
-	}>({});
+	const [errors, setErrors] = useState<FormErrors>({});
 
 	const [originalClass, setOriginalClass] = useState<Class | null>(null);
 
-	// クラス情報を取得
 	useEffect(() => {
 		const fetchClassData = async () => {
 			try {
@@ -35,19 +36,7 @@ export const useEditClassViewModel = (classManager: ClassManagerInterface, authD
 				setIsOptionalClass(classData.classCode !== null);
 				setClassCode(classData.classCode ?? "");
 			} catch (error) {
-				if (error instanceof APIError) {
-					alert("API側でエラーが発生しました。もう一度お試しください。");
-					console.error("APIError: ", error);
-				} else if (error instanceof NetworkError) {
-					alert("ネットワークエラーが発生しました。接続を確認して、もう一度お試しください。");
-					console.error("NetworkError: ", error);
-				} else if (error instanceof DataParseError) {
-					alert("データのデコード中にエラーが発生しました。");
-					console.error("DataParseError: ", error);
-				} else {
-					alert("クラスの詳細を取得中にエラーが発生しました。");
-					console.error("Error: ", error);
-				}
+				alert(handleAppError(error));
 			} finally {
 				setLoading(false);
 			}
@@ -57,7 +46,7 @@ export const useEditClassViewModel = (classManager: ClassManagerInterface, authD
 	}, [classID]);
 
 	const checkClassName = (name: string) => {
-		setErrors((prev) => ({
+		setErrors((prev): FormErrors => ({
 			...prev,
 			className: name.trim() === "" ? "クラス名を入力してください。" : undefined,
 		}));
@@ -65,7 +54,7 @@ export const useEditClassViewModel = (classManager: ClassManagerInterface, authD
 
 	const checkAdmissionYear = (year: string) => {
 		const yearNum = Number(year);
-		setErrors((prev) => ({
+		setErrors((prev): FormErrors => ({
 			...prev,
 			admissionYear: isNaN(yearNum) || yearNum < 10 || yearNum > 99 ? "入学年度は10から100の間の数字で入力してください。" : undefined,
 		}));
@@ -76,7 +65,7 @@ export const useEditClassViewModel = (classManager: ClassManagerInterface, authD
 			return;
 		}
 
-		setErrors((prev) => ({
+		setErrors((prev): FormErrors => ({
 			...prev,
 			classCode: code.trim() === "" ? "専攻コードを入力してください。" : undefined,
 		}));
@@ -92,7 +81,6 @@ export const useEditClassViewModel = (classManager: ClassManagerInterface, authD
 			classCode?: string;
 		} = {};
 
-		// Validation logic
 		if (className.trim() === "") {
 			newErrors.className = "クラス名を入力してください。";
 		}
@@ -110,10 +98,8 @@ export const useEditClassViewModel = (classManager: ClassManagerInterface, authD
 			newErrors.classCode = "選択科目の場合はクラスコードを入力してください。";
 		}
 
-		// Update errors state
 		setErrors(newErrors);
 
-		// If any errors exist, stop submission
 		if (Object.keys(newErrors).length > 0) {
 			return;
 		}
@@ -123,7 +109,6 @@ export const useEditClassViewModel = (classManager: ClassManagerInterface, authD
 			return;
 		}
 
-		// Proceed if no errors
 		const updatedClass: Class = {
 			id: classID,
 			teacherID: authData.uid,
@@ -136,21 +121,9 @@ export const useEditClassViewModel = (classManager: ClassManagerInterface, authD
 		try {
 			setLoading(true);
 			await classManager.updateClass(updatedClass);
-			alert("クラスが更新されました！🎉");
+			alert("クラスが更新されました！");
 		} catch (error) {
-			if (error instanceof APIError) {
-				alert("API側でエラーが発生しました。もう一度お試しください。");
-				console.error("APIError: ", error);
-			} else if (error instanceof NetworkError) {
-				alert("ネットワークエラーが発生しました。接続を確認して、もう一度お試しください。");
-				console.error("NetworkError: ", error);
-			} else if (error instanceof DataParseError) {
-				alert("データのデコード中にエラーが発生しました。");
-				console.error("DataParseError: ", error);
-			} else {
-				alert("クラスの更新中にエラーが発生しました。");
-				console.error("Error: ", error);
-			}
+			alert(handleAppError(error));
 		} finally {
 			setLoading(false);
 		}

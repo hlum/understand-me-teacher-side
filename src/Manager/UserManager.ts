@@ -1,11 +1,13 @@
 import { transformUserEntityResponse, type RawUserEntityResponse, type UserEntity } from "../Entity/UserEntity.js";
+import { DataParseError } from "../Helper/CustomErrors.js";
 import { LollipopHelper } from "../Helper/LollipopHelper.js";
 import type { UserManagerInterface } from "../ManagerInterface/UserManagerInterface.js";
 
 export class UserManager implements UserManagerInterface {
 	async registerTeacher(id: string, email: string, name: string, photoURL: string): Promise<void> {
-		const endPoint = LollipopHelper.instance.buildEndpoint("/user/register_teacher.php", {});
-		const headers = LollipopHelper.instance.buildHeader(true);
+		const context = "UserManager.registerTeacher";
+		const endpoint = LollipopHelper.instance.buildEndpoint("/user/register_teacher.php", {});
+		const headers = LollipopHelper.instance.buildHeaders(true);
 
 		const body = JSON.stringify({
 			id,
@@ -15,58 +17,56 @@ export class UserManager implements UserManagerInterface {
 			photo_url: photoURL,
 		});
 
-		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, "UserManager.registerTeacher", {
+		const response = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endpoint, context, {
 			method: "POST",
 			headers: headers,
 			body,
 		});
 
-		LollipopHelper.instance.validateLollipopResponse(lollipopResponse, "UserManager.registerTeacher");
-
-		console.log("✅ User 保存成功。");
+		LollipopHelper.instance.validateLollipopResponse(response, context);
 	}
 
 	async teacherRecordExists(userID: string): Promise<boolean> {
-		const endPoint = LollipopHelper.instance.buildEndpoint("/user/get_user.php", { id: userID });
-		const headers = LollipopHelper.instance.buildHeader();
+		const context = "UserManager.teacherRecordExists";
+		const endpoint = LollipopHelper.instance.buildEndpoint("/user/get_user.php", { id: userID });
+		const headers = LollipopHelper.instance.buildHeaders();
 
-		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawUserEntityResponse[]>(endPoint, "UserManager.userAlreadyExistsInDB", {
+		const response = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawUserEntityResponse[]>(endpoint, context, {
 			method: "GET",
 			headers: headers,
 		});
 
-		LollipopHelper.instance.validateLollipopResponse(lollipopResponse, "UserManager.userAlreadyExistsInDB");
-		if (!lollipopResponse.data) {
+		LollipopHelper.instance.validateLollipopResponse(response, context);
+
+		if (!response.data) {
 			return false;
 		}
 
-		const user = lollipopResponse.data.map(transformUserEntityResponse)[0];
+		const user = response.data.map(transformUserEntityResponse)[0];
 
-		if (!user || user.role !== "teacher") {
-			return false;
-		}
-
-		return true;
+		return user?.role === "teacher";
 	}
 
 	async fetchUserData(userID: string): Promise<UserEntity> {
-		const endPoint = LollipopHelper.instance.buildEndpoint("/user/get_user.php", { id: userID });
-		const headers = LollipopHelper.instance.buildHeader();
+		const context = "UserManager.fetchUserData";
+		const endpoint = LollipopHelper.instance.buildEndpoint("/user/get_user.php", { id: userID });
+		const headers = LollipopHelper.instance.buildHeaders();
 
-		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawUserEntityResponse[]>(endPoint, "UserManager.fetchUserData", {
+		const response = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawUserEntityResponse[]>(endpoint, context, {
 			method: "GET",
 			headers: headers,
 		});
 
-		LollipopHelper.instance.validateLollipopResponse(lollipopResponse, "UserManager.fetchUserData");
+		LollipopHelper.instance.validateLollipopResponse(response, context);
 
-		if (!lollipopResponse.data) {
-			throw new Error("UserManager.fetchUserData: レスポンスの中にdataが存在しません。");
+		if (!response.data) {
+			throw new DataParseError(`${context}: レスポンスの中にdataが存在しません。`);
 		}
 
-		const user = lollipopResponse.data.map(transformUserEntityResponse)[0];
+		const user = response.data.map(transformUserEntityResponse)[0];
+
 		if (!user) {
-			throw new Error("UserManager.fetchUserData: ユーザーデータが存在しません。");
+			throw new DataParseError(`${context}: ユーザーデータが存在しません。`);
 		}
 
 		return user;

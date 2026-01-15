@@ -5,110 +5,99 @@ import { type ClassManagerInterface } from "../ManagerInterface/ClassManagerInte
 
 export class ClassManager implements ClassManagerInterface {
 	async fetchClass(classID: string): Promise<Class> {
-		const context = "ClassManager.fetchClass"; // エラーログ用のコンテキスト情報
+		const context = "ClassManager.fetchClass";
+		const endpoint = LollipopHelper.instance.buildEndpoint("/class/get_class.php", { id: classID });
+		const headers = LollipopHelper.instance.buildHeaders();
 
-		const endPoint = LollipopHelper.instance.buildEndpoint("/class/get_class.php", { id: classID });
-		const headers = LollipopHelper.instance.buildHeader();
-		const result = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawClassResponse[]>(endPoint, context, {
+		const response = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawClassResponse[]>(endpoint, context, {
 			method: "GET",
 			headers: headers,
 		});
 
-		LollipopHelper.instance.validateLollipopResponse(result, context);
+		LollipopHelper.instance.validateLollipopResponse(response, context);
 
-		if (!result.data) {
-			throw new DataParseError("ClassManager.fetchClass レスポンスの中にdataが存在しません。");
+		if (!response.data) {
+			throw new DataParseError(`${context}: レスポンスの中にdataが存在しません。`);
 		}
 
-		if (!Array.isArray(result.data)) {
-			throw new DataParseError("ClassManager.fetchClass レスポンスデータの形式が不正です。配列ではありません。");
+		if (!Array.isArray(response.data)) {
+			throw new DataParseError(`${context}: レスポンスデータの形式が不正です。配列ではありません。`);
 		}
 
-		const classDetails = result.data.map(transformClassResponse)[0];
+		const classData = response.data.map(transformClassResponse)[0];
 
-		if (!classDetails) {
-			throw new DataParseError("ClassManager.fetchClass 生のデータからクラス詳細を取得できませんでした。");
+		if (!classData) {
+			throw new DataParseError(`${context}: クラスデータを取得できませんでした。`);
 		}
-		return classDetails;
+
+		return classData;
 	}
 
 	async fetchClassesForTeacher(teacherID: string): Promise<Class[]> {
-		const endPoint = LollipopHelper.instance.buildEndpoint("class/get_class.php", { teacher_id: teacherID });
-		const headers = LollipopHelper.instance.buildHeader();
+		const context = "ClassManager.fetchClassesForTeacher";
+		const endpoint = LollipopHelper.instance.buildEndpoint("class/get_class.php", { teacher_id: teacherID });
+		const headers = LollipopHelper.instance.buildHeaders();
 
-		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawClassResponse[]>(endPoint, "ClassManager.fetchClassesForTeacher", {
+		const response = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawClassResponse[]>(endpoint, context, {
 			method: "GET",
 			headers: headers,
 		});
 
-		LollipopHelper.instance.validateLollipopResponse(lollipopResponse, "ClassManager.fetchClassesForTeacher");
+		LollipopHelper.instance.validateLollipopResponse(response, context);
 
-		if (!lollipopResponse.data) {
-			console.warn("ClassManager.fetchClassesForTeacher レスポンスの中にdataが存在しません。");
+		if (!response.data) {
 			return [];
 		}
 
-		if (!Array.isArray(lollipopResponse.data)) {
-			throw new DataParseError("ClassManager.fetchClassesForTeacher レスポンスデータの形式が不正です。配列ではありません。");
+		if (!Array.isArray(response.data)) {
+			throw new DataParseError(`${context}: レスポンスデータの形式が不正です。配列ではありません。`);
 		}
 
-		return lollipopResponse.data.map(transformClassResponse);
+		return response.data.map(transformClassResponse);
 	}
 
-	async addNewClass(newClass: Class): Promise<void> {
-		const endPoint = LollipopHelper.instance.buildEndpoint("/class/add_class.php", {});
-		const headers = LollipopHelper.instance.buildHeader(true);
+	async addClass(newClass: Class): Promise<void> {
+		const context = "ClassManager.addClass";
+		const endpoint = LollipopHelper.instance.buildEndpoint("/class/add_class.php", {});
+		const headers = LollipopHelper.instance.buildHeaders(true);
 
-		let body: string;
-		try {
-			body = JSON.stringify({
-				teacher_id: newClass.teacherID,
-				name: newClass.name,
-				admission_year: newClass.admissionYear,
-				major_code: newClass.majorCode,
-				class_code: newClass.classCode ?? null,
-			});
-		} catch (error) {
-			throw new DataParseError("ClassManager.addNewClass クラス情報のシリアライズに失敗しました。エラー: " + error);
-		}
+		const body = JSON.stringify({
+			teacher_id: newClass.teacherID,
+			name: newClass.name,
+			admission_year: newClass.admissionYear,
+			major_code: newClass.majorCode,
+			class_code: newClass.classCode ?? null,
+		});
 
-		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, "ClassManager.addNewClass", {
+		const response = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endpoint, context, {
 			method: "POST",
 			headers: headers,
 			body,
 		});
 
-		LollipopHelper.instance.validateLollipopResponse(lollipopResponse, "ClassManager.addNewClass");
-
-		console.info("✅ クラス追加成功。");
+		LollipopHelper.instance.validateLollipopResponse(response, context);
 	}
 
-	async updateClass(newClass: Class): Promise<void> {
-		const endPoint = LollipopHelper.instance.buildEndpoint("/class/update_class.php", {});
-		const headers = LollipopHelper.instance.buildHeader(true);
+	async updateClass(classData: Class): Promise<void> {
+		const context = "ClassManager.updateClass";
+		const endpoint = LollipopHelper.instance.buildEndpoint("/class/update_class.php", {});
+		const headers = LollipopHelper.instance.buildHeaders(true);
 
-		let body: string;
-		try {
-			body = JSON.stringify({
-				id: newClass.id,
-				teacher_id: newClass.teacherID,
-				name: newClass.name,
-				admission_year: newClass.admissionYear,
-				major_code: newClass.majorCode,
-				class_code: newClass.classCode ?? null,
-			});
+		const body = JSON.stringify({
+			id: classData.id,
+			teacher_id: classData.teacherID,
+			name: classData.name,
+			admission_year: classData.admissionYear,
+			major_code: classData.majorCode,
+			class_code: classData.classCode ?? null,
+		});
 
-			const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, "ClassManager.updateClass", {
-				method: "UPDATE",
-				headers: headers,
-				body,
-			});
+		const response = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endpoint, context, {
+			method: "UPDATE",
+			headers: headers,
+			body,
+		});
 
-			LollipopHelper.instance.validateLollipopResponse(lollipopResponse, "ClassManager.updateClass");
-
-			console.info("✅ クラス更新成功。");
-		} catch (error) {
-			throw new DataParseError("ClassManager.updateClass クラス情報のシリアライズに失敗しました。エラー: " + error);
-		}
+		LollipopHelper.instance.validateLollipopResponse(response, context);
 	}
 }

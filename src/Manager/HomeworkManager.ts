@@ -6,15 +6,16 @@ import {
 	type RawHomeworkResponse,
 	type RawHomeworkWithSubmissionStatusResponse,
 } from "../Entity/Homework.js";
+import { DataParseError } from "../Helper/CustomErrors.js";
 import { LollipopHelper } from "../Helper/LollipopHelper.js";
 import { type HomeworkManagerInterface } from "../ManagerInterface/HomeworkManagerInterface.js";
 
 export class HomeworkManager implements HomeworkManagerInterface {
 	async fetchHomework(homeworkID: string): Promise<Homework> {
-		const endPoint = LollipopHelper.instance.buildEndpoint("homework/get_homework.php", { id: homeworkID });
-		const headers = LollipopHelper.instance.buildHeader();
+		const endpoint = LollipopHelper.instance.buildEndpoint("homework/get_homework.php", { id: homeworkID });
+		const headers = LollipopHelper.instance.buildHeaders();
 
-		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawHomeworkResponse[]>(endPoint, "HomeworkManager.fetchHomework", {
+		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawHomeworkResponse[]>(endpoint, "HomeworkManager.fetchHomework", {
 			method: "GET",
 			headers: headers,
 		});
@@ -22,29 +23,29 @@ export class HomeworkManager implements HomeworkManagerInterface {
 		LollipopHelper.instance.validateLollipopResponse(lollipopResponse, "HomeworkManager.fetchHomework");
 
 		if (!lollipopResponse.data) {
-			throw new Error("HomeworkManager.fetchHomework レスポンスの中にdataが存在しません。");
+			throw new DataParseError("HomeworkManager.fetchHomework レスポンスの中にdataが存在しません。");
 		}
 
 		if (!Array.isArray(lollipopResponse.data)) {
-			throw new Error("HomeworkManager.fetchHomework レスポンスデータの形式が不正です。配列ではありません。");
+			throw new DataParseError("HomeworkManager.fetchHomework レスポンスデータの形式が不正です。配列ではありません。");
 		}
 
 		const homeworks = lollipopResponse.data.map(transformHomeworkResponse);
 
 		if (homeworks.length === 0) {
-			throw new Error("指定されたIDの宿題が見つかりません。");
+			throw new DataParseError("指定されたIDの宿題が見つかりません。");
 		}
 
 		if (!homeworks[0]) {
-			throw new Error("宿題のデータが不正です。");
+			throw new DataParseError("宿題のデータが不正です。");
 		}
 
 		return homeworks[0];
 	}
 
 	async updateHomework(homeworkID: string, title?: string, description?: string | null, dueDate?: string | null): Promise<void> {
-		const endPoint = LollipopHelper.instance.buildEndpoint("/homework/update_homework.php", {});
-		const headers = LollipopHelper.instance.buildHeader(true);
+		const endpoint = LollipopHelper.instance.buildEndpoint("/homework/update_homework.php", {});
+		const headers = LollipopHelper.instance.buildHeaders(true);
 		const body = JSON.stringify({
 			homework_id: homeworkID,
 			title: title,
@@ -52,7 +53,7 @@ export class HomeworkManager implements HomeworkManagerInterface {
 			due_date: dueDate,
 		});
 
-		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, "HomeworkManager.updateHomework", {
+		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endpoint, "HomeworkManager.updateHomework", {
 			method: "UPDATE",
 			headers: headers,
 			body: body,
@@ -64,9 +65,9 @@ export class HomeworkManager implements HomeworkManagerInterface {
 	}
 
 	async fetchHomeworkListForClass(classID: string): Promise<Homework[]> {
-		const endPoint = LollipopHelper.instance.buildEndpoint("/homework/get_homework.php", { class_id: classID });
-		const headers = LollipopHelper.instance.buildHeader();
-		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawHomeworkResponse[]>(endPoint, "HomeworkManager.fetchHomeworkListForClass", {
+		const endpoint = LollipopHelper.instance.buildEndpoint("/homework/get_homework.php", { class_id: classID });
+		const headers = LollipopHelper.instance.buildHeaders();
+		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawHomeworkResponse[]>(endpoint, "HomeworkManager.fetchHomeworkListForClass", {
 			method: "GET",
 			headers: headers,
 		});
@@ -79,15 +80,16 @@ export class HomeworkManager implements HomeworkManagerInterface {
 		}
 
 		if (!Array.isArray(lollipopResponse.data)) {
-			throw new Error("HomeworkManager.fetchHomeworkListForClass レスポンスデータの形式が不正です。配列ではありません。");
+			throw new DataParseError("HomeworkManager.fetchHomeworkListForClass レスポンスデータの形式が不正です。配列ではありません。");
 		}
 
 		return lollipopResponse.data.map(transformHomeworkResponse);
 	}
 
-	async addNewHomework(classID: string, teacherID: string, title: string, description: string | null, dueDate: string | null): Promise<void> {
-		const endPoint = LollipopHelper.instance.buildEndpoint("/homework/add_homework.php", {});
-		const headers = LollipopHelper.instance.buildHeader(true);
+	async addHomework(classID: string, teacherID: string, title: string, description: string | null, dueDate: string | null): Promise<void> {
+		const context = "HomeworkManager.addHomework";
+		const endpoint = LollipopHelper.instance.buildEndpoint("/homework/add_homework.php", {});
+		const headers = LollipopHelper.instance.buildHeaders(true);
 		const dueDateInISO = new Date(`${dueDate}T23:59:00Z`).toISOString();
 
 		const body = JSON.stringify({
@@ -98,23 +100,21 @@ export class HomeworkManager implements HomeworkManagerInterface {
 			due_date: dueDateInISO,
 		});
 
-		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, "HomeworkManager.addNewHomework", {
+		const response = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endpoint, context, {
 			method: "POST",
 			headers: headers,
 			body: body,
 		});
 
-		LollipopHelper.instance.validateLollipopResponse(lollipopResponse, "HomeworkManager.addNewHomework");
-
-		console.log("✅ Homework 保存成功。");
+		LollipopHelper.instance.validateLollipopResponse(response, context);
 	}
 
 	async fetchHomeworkWithSubmissionStatusForAllStudents(homeworkID: string): Promise<HomeworkWithSubmissionStatus[]> {
-		const endPoint = LollipopHelper.instance.buildEndpoint("/homework/homework_status_list.php", { homework_id: homeworkID });
-		const headers = LollipopHelper.instance.buildHeader();
+		const endpoint = LollipopHelper.instance.buildEndpoint("/homework/homework_status_list.php", { homework_id: homeworkID });
+		const headers = LollipopHelper.instance.buildHeaders();
 
 		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawHomeworkWithSubmissionStatusResponse[]>(
-			endPoint,
+			endpoint,
 			"HomeworkManager.fetchHomeworkWithSubmissionStatusForAllStudents",
 			{
 				method: "GET",
@@ -130,17 +130,17 @@ export class HomeworkManager implements HomeworkManagerInterface {
 		}
 
 		if (!Array.isArray(lollipopResponse.data)) {
-			throw new Error("HomeworkManager.fetchHomeworkWithSubmissionStatusForAllStudents レスポンスデータの形式が不正です。配列ではありません。");
+			throw new DataParseError("HomeworkManager.fetchHomeworkWithSubmissionStatusForAllStudents レスポンスデータの形式が不正です。配列ではありません。");
 		}
 
 		return lollipopResponse.data.map(transformHomeworkWithSubmissionStatusResponse);
 	}
 
 	async deleteHomework(homeworkID: string): Promise<void> {
-		const endPoint = LollipopHelper.instance.buildEndpoint("/homework/delete_homework.php", { id: homeworkID });
-		const headers = LollipopHelper.instance.buildHeader(true);
+		const endpoint = LollipopHelper.instance.buildEndpoint("/homework/delete_homework.php", { id: homeworkID });
+		const headers = LollipopHelper.instance.buildHeaders(true);
 
-		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, "HomeworkManager.deleteHomework", {
+		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endpoint, "HomeworkManager.deleteHomework", {
 			method: "DELETE",
 			headers: headers,
 		});
@@ -150,17 +150,16 @@ export class HomeworkManager implements HomeworkManagerInterface {
 		console.log("✅ Homework 削除成功。");
 	}
 
-	async resubmitHomework(homeworkID: string, studentID: string): Promise<void> {
-		const context = "HomeworkManager.resubmitHomework";
-		const endPoint = LollipopHelper.instance.buildEndpoint("homework/delete_submitted_homework.php", { user_id: studentID, homework_id: homeworkID });
-		const headers = LollipopHelper.instance.buildHeader(false);
+	async resetSubmission(homeworkID: string, studentID: string): Promise<void> {
+		const context = "HomeworkManager.resetSubmission";
+		const endpoint = LollipopHelper.instance.buildEndpoint("homework/delete_submitted_homework.php", { user_id: studentID, homework_id: homeworkID });
+		const headers = LollipopHelper.instance.buildHeaders();
 
-		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, context, {
+		const response = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endpoint, context, {
 			method: "DELETE",
 			headers: headers,
 		});
 
-		LollipopHelper.instance.validateLollipopResponse(lollipopResponse, context);
-		console.log("✅ Homework resubmit success.");
+		LollipopHelper.instance.validateLollipopResponse(response, context);
 	}
 }

@@ -160,9 +160,9 @@ export const useHomeworkStatusViewModel = (
 		}
 	};
 
-	const handleCancelSubmission = async (hw: HomeworkWithSubmissionStatus) => {
+	const handleResetSubmission = async (hw: HomeworkWithSubmissionStatus) => {
 		try {
-			await homeworkManager.resubmitHomework(hw.id, hw.userID);
+			await homeworkManager.resetSubmission(hw.id, hw.userID);
 			await reload();
 		} catch (error) {
 			alert(handleAppError(error));
@@ -179,7 +179,7 @@ export const useHomeworkStatusViewModel = (
 		selectedFilters,
 		selectedSortOption,
 		currentShowingMenu,
-		handleCancelSubmission,
+		handleResetSubmission,
 		setCurrentShowingMenu,
 		filteredHomeworkStatusList,
 	};

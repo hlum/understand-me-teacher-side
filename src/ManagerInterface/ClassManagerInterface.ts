@@ -4,10 +4,9 @@ export interface ClassManagerInterface {
 	/**
 	 * 新しいクラスを追加します。
 	 * @param newClass 追加するクラスの情報
-	 * @returns void
 	 * @throws APIError, NetworkError, DataParseError
 	 */
-	addNewClass(newClass: Class): Promise<void>;
+	addClass(newClass: Class): Promise<void>;
 
 	/**
 	 * 指定したクラスIDのクラス情報を取得します。

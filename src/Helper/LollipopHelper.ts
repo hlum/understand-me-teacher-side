@@ -62,10 +62,12 @@ export class LollipopHelper {
 		return `${baseURL}${path}?${searchParams.toString()}`;
 	}
 
-	buildHeader(forTeacher: boolean = false): Headers {
+	buildHeaders(requiresTeacherAuth: boolean = false): Headers {
 		const headers = new Headers();
 		headers.append("Content-Type", "application/json");
-		const apiKey = forTeacher ? (import.meta.env.VITE_TEACHER_APIKEY as string) : (import.meta.env.VITE_API_KEY as string);
+		const apiKey = requiresTeacherAuth
+			? (import.meta.env.VITE_TEACHER_APIKEY as string)
+			: (import.meta.env.VITE_API_KEY as string);
 		headers.append("Authorization", apiKey);
 		return headers;
 	}

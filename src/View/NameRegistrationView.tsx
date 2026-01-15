@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { User } from "firebase/auth";
-import { useNameRegistrationViewModel } from "../ViewModel/NameRegisterationViewModel.js";
+import { useNameRegistrationViewModel } from "../ViewModel/NameRegistrationViewModel.js";
 import { UserManager } from "../Manager/UserManager.js";
 
 type NameInputPageProps = {

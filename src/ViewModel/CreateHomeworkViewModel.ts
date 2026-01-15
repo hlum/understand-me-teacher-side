@@ -9,8 +9,7 @@ export const useCreateHomeworkViewModel = (classID: string, homeworkManager: Hom
 	const [dueDate, setDueDate] = useState<string>("");
 	const [loading, setLoading] = useState<boolean>(false);
 
-	const addNewHomework = async () => {
-		// TODO : 締切の日を過去日や今日に設定できないようにする
+	const addHomework = async () => {
 		if (!title || !dueDate) {
 			alert("課題名と締め切り日は必須です。");
 			return;
@@ -20,11 +19,11 @@ export const useCreateHomeworkViewModel = (classID: string, homeworkManager: Hom
 			alert("科目の情報取得に失敗しました。前のページに戻って再度お試しください。");
 			return;
 		}
- 
+
 		try {
 			setLoading(true);
-			await homeworkManager.addNewHomework(classID, authData.uid, title, description, dueDate);
-			alert("課題を追加しました ✅");
+			await homeworkManager.addHomework(classID, authData.uid, title, description, dueDate);
+			alert("課題を追加しました！");
 			setTitle("");
 			setDescription("");
 			setDueDate("");
@@ -35,5 +34,5 @@ export const useCreateHomeworkViewModel = (classID: string, homeworkManager: Hom
 		}
 	};
 
-	return { title, setTitle, description, setDescription, dueDate, setDueDate, loading, addNewHomework };
+	return { title, setTitle, description, setDescription, dueDate, setDueDate, loading, addHomework };
 };

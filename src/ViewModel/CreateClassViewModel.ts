@@ -86,13 +86,12 @@ export const useCreateClassViewModel = (classManager: ClassManagerInterface, aut
 
 		try {
 			setLoading(true);
-			await classManager.addNewClass(newClass as Class);
-			alert("クラスが追加されました！🎉");
+			await classManager.addClass(newClass as Class);
+			alert("クラスが追加されました！");
 		} catch (error) {
 			alert(handleAppError(error));
 		} finally {
 			setLoading(false);
-			// Reset form
 			setClassName("");
 			setAdmissionYear("");
 			setMajorCode("");

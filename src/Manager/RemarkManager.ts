@@ -9,39 +9,40 @@ export class RemarkManager implements RemarkManagerInterface {
 
 	private async changeCorrectChoice(newCorrectChoiceID: string, questionID: string): Promise<void> {
 		const context = "RemarkManager.changeCorrectChoice";
-		const endPoint = LollipopHelper.instance.buildEndpoint("choices/update_correct_choice.php", {});
-		const headers = LollipopHelper.instance.buildHeader(true);
+		const endpoint = LollipopHelper.instance.buildEndpoint("choices/update_correct_choice.php", {});
+		const headers = LollipopHelper.instance.buildHeaders(true);
+
 		const body = JSON.stringify({
 			question_id: questionID,
 			new_correct_choice_id: newCorrectChoiceID,
 		});
 
-		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, context, {
+		const response = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endpoint, context, {
 			method: "PATCH",
 			headers: headers,
 			body: body,
 		});
 
-		LollipopHelper.instance.validateLollipopResponse(lollipopResponse, context);
-		console.log("✅ 正解の選択肢を変更しました。");
+		LollipopHelper.instance.validateLollipopResponse(response, context);
 	}
 
 	private async updateScore(newScore: number, homeworkID: string, studentID: string): Promise<void> {
 		const context = "RemarkManager.updateScore";
-		const endPoint = LollipopHelper.instance.buildEndpoint("result/update_score.php", {});
-		const headers = LollipopHelper.instance.buildHeader(true);
+		const endpoint = LollipopHelper.instance.buildEndpoint("result/update_score.php", {});
+		const headers = LollipopHelper.instance.buildHeaders(true);
+
 		const body = JSON.stringify({
 			homework_id: homeworkID,
 			student_id: studentID,
 			new_score: newScore,
 		});
-		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endPoint, context, {
+
+		const response = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endpoint, context, {
 			method: "PATCH",
 			headers: headers,
 			body: body,
 		});
 
-		LollipopHelper.instance.validateLollipopResponse(lollipopResponse, context);
-		console.log("✅ スコアを更新しました。");
+		LollipopHelper.instance.validateLollipopResponse(response, context);
 	}
 }

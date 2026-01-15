@@ -16,7 +16,7 @@ export const CreateHomeworkPage = ({ authData }: CreateHomeworkPageProps) => {
 	const homeworkManager = new HomeworkManager();
 	const vm = useCreateHomeworkViewModel(classID, homeworkManager, authData);
 
-	const { title, setTitle, description, setDescription, dueDate, setDueDate, loading, addNewHomework } = vm;
+	const { title, setTitle, description, setDescription, dueDate, setDueDate, loading, addHomework } = vm;
 
 	return (
 		<div className="page-bg flex items-center justify-center p-6">
@@ -46,7 +46,7 @@ export const CreateHomeworkPage = ({ authData }: CreateHomeworkPageProps) => {
 
 					{/* Submit Button */}
 					<button
-						onClick={addNewHomework}
+						onClick={addHomework}
 						disabled={loading}
 						className={`w-full mt-6 py-3 rounded-lg font-semibold text-white text-lg transition-all duration-300 ${
 							loading
