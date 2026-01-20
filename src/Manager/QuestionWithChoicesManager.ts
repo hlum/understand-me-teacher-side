@@ -8,7 +8,7 @@ export class QuestionWithChoicesManager implements QuestionWithChoicesManagerInt
 	async fetch(homeworkID: string, userID: string): Promise<QuestionWithChoices[]> {
 		const context = "QuestionWithChoicesManager.fetch";
 		const endpoint = LollipopHelper.instance.buildEndpoint("questions_choices/get_questions_choices.php", { homework_id: homeworkID, user_id: userID });
-		const headers = LollipopHelper.instance.buildHeaders();
+		const headers = await LollipopHelper.instance.buildHeaders();
 
 		const response = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawQuestionWithChoicesResponse[]>(endpoint, context, {
 			method: "GET",
@@ -27,7 +27,7 @@ export class QuestionWithChoicesManager implements QuestionWithChoicesManagerInt
 	async fetchUserAnswers(homeworkID: string, userID: string): Promise<Answer[]> {
 		const context = "QuestionWithChoicesManager.fetchUserAnswers";
 		const endpoint = LollipopHelper.instance.buildEndpoint("answer/get_answers_with_homeworkID.php", { homework_id: homeworkID, user_id: userID });
-		const headers = LollipopHelper.instance.buildHeaders();
+		const headers = await LollipopHelper.instance.buildHeaders();
 
 		const response = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawAnswerResponse[]>(endpoint, context, {
 			method: "GET",

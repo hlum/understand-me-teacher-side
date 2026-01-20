@@ -10,7 +10,7 @@ export class RemarkManager implements RemarkManagerInterface {
 	private async changeCorrectChoice(newCorrectChoiceID: string, questionID: string): Promise<void> {
 		const context = "RemarkManager.changeCorrectChoice";
 		const endpoint = LollipopHelper.instance.buildEndpoint("choices/update_correct_choice.php", {});
-		const headers = LollipopHelper.instance.buildHeaders(true);
+		const headers = await LollipopHelper.instance.buildHeaders(true);
 
 		const body = JSON.stringify({
 			question_id: questionID,
@@ -29,7 +29,7 @@ export class RemarkManager implements RemarkManagerInterface {
 	private async updateScore(newScore: number, homeworkID: string, studentID: string): Promise<void> {
 		const context = "RemarkManager.updateScore";
 		const endpoint = LollipopHelper.instance.buildEndpoint("result/update_score.php", {});
-		const headers = LollipopHelper.instance.buildHeaders(true);
+		const headers = await LollipopHelper.instance.buildHeaders(true);
 
 		const body = JSON.stringify({
 			homework_id: homeworkID,

@@ -13,7 +13,7 @@ import { type HomeworkManagerInterface } from "../ManagerInterface/HomeworkManag
 export class HomeworkManager implements HomeworkManagerInterface {
 	async fetchHomework(homeworkID: string): Promise<Homework> {
 		const endpoint = LollipopHelper.instance.buildEndpoint("homework/get_homework.php", { id: homeworkID });
-		const headers = LollipopHelper.instance.buildHeaders();
+		const headers = await LollipopHelper.instance.buildHeaders();
 
 		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawHomeworkResponse[]>(endpoint, "HomeworkManager.fetchHomework", {
 			method: "GET",
@@ -45,7 +45,7 @@ export class HomeworkManager implements HomeworkManagerInterface {
 
 	async updateHomework(homeworkID: string, title?: string, description?: string | null, dueDate?: string | null): Promise<void> {
 		const endpoint = LollipopHelper.instance.buildEndpoint("/homework/update_homework.php", {});
-		const headers = LollipopHelper.instance.buildHeaders(true);
+		const headers = await LollipopHelper.instance.buildHeaders(true);
 		const body = JSON.stringify({
 			homework_id: homeworkID,
 			title: title,
@@ -66,7 +66,7 @@ export class HomeworkManager implements HomeworkManagerInterface {
 
 	async fetchHomeworkListForClass(classID: string): Promise<Homework[]> {
 		const endpoint = LollipopHelper.instance.buildEndpoint("/homework/get_homework.php", { class_id: classID });
-		const headers = LollipopHelper.instance.buildHeaders();
+		const headers = await LollipopHelper.instance.buildHeaders();
 		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawHomeworkResponse[]>(endpoint, "HomeworkManager.fetchHomeworkListForClass", {
 			method: "GET",
 			headers: headers,
@@ -89,7 +89,7 @@ export class HomeworkManager implements HomeworkManagerInterface {
 	async addHomework(classID: string, teacherID: string, title: string, description: string | null, dueDate: string | null): Promise<void> {
 		const context = "HomeworkManager.addHomework";
 		const endpoint = LollipopHelper.instance.buildEndpoint("/homework/add_homework.php", {});
-		const headers = LollipopHelper.instance.buildHeaders(true);
+		const headers = await LollipopHelper.instance.buildHeaders(true);
 		const dueDateInISO = new Date(`${dueDate}T23:59:00Z`).toISOString();
 
 		const body = JSON.stringify({
@@ -111,7 +111,7 @@ export class HomeworkManager implements HomeworkManagerInterface {
 
 	async fetchHomeworkWithSubmissionStatusForAllStudents(homeworkID: string): Promise<HomeworkWithSubmissionStatus[]> {
 		const endpoint = LollipopHelper.instance.buildEndpoint("/homework/homework_status_list.php", { homework_id: homeworkID });
-		const headers = LollipopHelper.instance.buildHeaders();
+		const headers = await LollipopHelper.instance.buildHeaders();
 
 		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawHomeworkWithSubmissionStatusResponse[]>(
 			endpoint,
@@ -138,7 +138,7 @@ export class HomeworkManager implements HomeworkManagerInterface {
 
 	async deleteHomework(homeworkID: string): Promise<void> {
 		const endpoint = LollipopHelper.instance.buildEndpoint("/homework/delete_homework.php", { id: homeworkID });
-		const headers = LollipopHelper.instance.buildHeaders(true);
+		const headers = await LollipopHelper.instance.buildHeaders(true);
 
 		const lollipopResponse = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endpoint, "HomeworkManager.deleteHomework", {
 			method: "DELETE",
@@ -153,7 +153,7 @@ export class HomeworkManager implements HomeworkManagerInterface {
 	async resetSubmission(homeworkID: string, studentID: string): Promise<void> {
 		const context = "HomeworkManager.resetSubmission";
 		const endpoint = LollipopHelper.instance.buildEndpoint("homework/delete_submitted_homework.php", { user_id: studentID, homework_id: homeworkID });
-		const headers = LollipopHelper.instance.buildHeaders();
+		const headers = await LollipopHelper.instance.buildHeaders();
 
 		const response = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endpoint, context, {
 			method: "DELETE",

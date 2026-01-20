@@ -13,8 +13,25 @@ import { ProtectedRoute } from "./Router/ProtectedRoute.js";
 import { NameRegistrationView } from "./View/NameRegistrationView.js";
 import { Loading } from "./View/Components/Loading.js";
 import { EditHomeworkView } from "./View/EditHomeworkView.js";
+import { useEffect } from "react";
+import { RemoteConfigManager } from "./Helper/RemoteConfigManager.js";
 
 const App = () => {
+	// Initialize Remote Config on app startup
+	useEffect(() => {
+		const initRemoteConfig = async () => {
+			try {
+				const remoteConfigManager = RemoteConfigManager.getInstance();
+				await remoteConfigManager.fetchRemoteConfig();
+				console.log("Remote Config initialized successfully");
+			} catch (error) {
+				console.error("Failed to initialize Remote Config:", error);
+			}
+		};
+
+		initRemoteConfig();
+	}, []);
+
 	return (
 		<div className="w-full mx-auto">
 			<Routes>

@@ -7,7 +7,7 @@ export class UserManager implements UserManagerInterface {
 	async registerTeacher(id: string, email: string, name: string, photoURL: string): Promise<void> {
 		const context = "UserManager.registerTeacher";
 		const endpoint = LollipopHelper.instance.buildEndpoint("/user/register_teacher.php", {});
-		const headers = LollipopHelper.instance.buildHeaders(true);
+		const headers = await LollipopHelper.instance.buildHeaders(true);
 
 		const body = JSON.stringify({
 			id,
@@ -29,7 +29,7 @@ export class UserManager implements UserManagerInterface {
 	async teacherRecordExists(userID: string): Promise<boolean> {
 		const context = "UserManager.teacherRecordExists";
 		const endpoint = LollipopHelper.instance.buildEndpoint("/user/get_user.php", { id: userID });
-		const headers = LollipopHelper.instance.buildHeaders();
+		const headers = await LollipopHelper.instance.buildHeaders();
 
 		const response = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawUserEntityResponse[]>(endpoint, context, {
 			method: "GET",
@@ -50,7 +50,7 @@ export class UserManager implements UserManagerInterface {
 	async fetchUserData(userID: string): Promise<UserEntity> {
 		const context = "UserManager.fetchUserData";
 		const endpoint = LollipopHelper.instance.buildEndpoint("/user/get_user.php", { id: userID });
-		const headers = LollipopHelper.instance.buildHeaders();
+		const headers = await LollipopHelper.instance.buildHeaders();
 
 		const response = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawUserEntityResponse[]>(endpoint, context, {
 			method: "GET",

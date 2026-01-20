@@ -7,7 +7,7 @@ export class ClassManager implements ClassManagerInterface {
 	async fetchClass(classID: string): Promise<Class> {
 		const context = "ClassManager.fetchClass";
 		const endpoint = LollipopHelper.instance.buildEndpoint("/class/get_class.php", { id: classID });
-		const headers = LollipopHelper.instance.buildHeaders();
+		const headers = await LollipopHelper.instance.buildHeaders();
 
 		const response = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawClassResponse[]>(endpoint, context, {
 			method: "GET",
@@ -36,7 +36,7 @@ export class ClassManager implements ClassManagerInterface {
 	async fetchClassesForTeacher(teacherID: string): Promise<Class[]> {
 		const context = "ClassManager.fetchClassesForTeacher";
 		const endpoint = LollipopHelper.instance.buildEndpoint("class/get_class.php", { teacher_id: teacherID });
-		const headers = LollipopHelper.instance.buildHeaders();
+		const headers = await LollipopHelper.instance.buildHeaders();
 
 		const response = await LollipopHelper.instance.fetchAndDecodeLollipopResponse<RawClassResponse[]>(endpoint, context, {
 			method: "GET",
@@ -59,7 +59,7 @@ export class ClassManager implements ClassManagerInterface {
 	async addClass(newClass: Class): Promise<void> {
 		const context = "ClassManager.addClass";
 		const endpoint = LollipopHelper.instance.buildEndpoint("/class/add_class.php", {});
-		const headers = LollipopHelper.instance.buildHeaders(true);
+		const headers = await LollipopHelper.instance.buildHeaders(true);
 
 		const body = JSON.stringify({
 			teacher_id: newClass.teacherID,
@@ -81,7 +81,7 @@ export class ClassManager implements ClassManagerInterface {
 	async updateClass(classData: Class): Promise<void> {
 		const context = "ClassManager.updateClass";
 		const endpoint = LollipopHelper.instance.buildEndpoint("/class/update_class.php", {});
-		const headers = LollipopHelper.instance.buildHeaders(true);
+		const headers = await LollipopHelper.instance.buildHeaders(true);
 
 		const body = JSON.stringify({
 			id: classData.id,

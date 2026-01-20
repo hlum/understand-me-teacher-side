@@ -1,8 +1,11 @@
 import type { LollipopResponse } from "../Entity/LollipopResponse.js";
 import { APIError, DataParseError, NetworkError } from "./CustomErrors.js";
+import { auth } from "../firebase/firebase.js";
+import { RemoteConfigManager } from "./RemoteConfigManager.js";
 
 export class LollipopHelper {
 	public static readonly instance = new LollipopHelper();
+	private remoteConfigManager = RemoteConfigManager.getInstance();
 	private constructor() {}
 
 	/**
@@ -57,18 +60,39 @@ export class LollipopHelper {
 	 * @returns 完全なAPIエンドポイントURL
 	 */
 	buildEndpoint(path: string, params: Record<string, string>): string {
-		const baseURL = import.meta.env.VITE_API_ENDPOINT;
+		const baseURL = this.remoteConfigManager.getApiEndpoint();
 		const searchParams = new URLSearchParams(params);
 		return `${baseURL}${path}?${searchParams.toString()}`;
 	}
 
-	buildHeaders(requiresTeacherAuth: boolean = false): Headers {
+	/**
+	 * Get Firebase ID token from current user
+	 * @param requiresTeacherAuth Whether this request requires teacher authentication
+	 * @returns Firebase ID token
+	 * @throws Error if user is not authenticated
+	 */
+	private async getAuthToken(requiresTeacherAuth: boolean = false): Promise<string> {
+		const currentUser = auth.currentUser;
+		if (!currentUser) {
+			throw new Error("User must be authenticated to make API requests");
+		}
+
+		try {
+			const token = await currentUser.getIdToken();
+			return token;
+		} catch (error) {
+			console.error("Failed to get Firebase ID token:", error);
+			throw error;
+		}
+	}
+
+	async buildHeaders(requiresTeacherAuth: boolean = false): Promise<Headers> {
 		const headers = new Headers();
 		headers.append("Content-Type", "application/json");
-		const apiKey = requiresTeacherAuth
-			? (import.meta.env.VITE_TEACHER_APIKEY as string)
-			: (import.meta.env.VITE_API_KEY as string);
-		headers.append("Authorization", apiKey);
+
+		const authToken = await this.getAuthToken(requiresTeacherAuth);
+		headers.append("Authorization", authToken);
+
 		return headers;
 	}
 }
