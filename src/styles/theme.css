@@ -56,16 +56,19 @@
 	backdrop-filter: blur(12px);
 	border: 1px solid rgba(203, 213, 225, 0.8);
 	border-radius: 1rem;
-	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	box-shadow:
+		0 4px 6px -1px rgba(0, 0, 0, 0.1),
+		0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-// Card with slightly less transparency for secondary use
 @utility card-secondary {
 	background-color: rgba(255, 255, 255, 0.9);
 	backdrop-filter: blur(12px);
 	border: 1px solid rgba(203, 213, 225, 0.8);
 	border-radius: 1rem;
-	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	box-shadow:
+		0 4px 6px -1px rgba(0, 0, 0, 0.1),
+		0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .dark .card-secondary {
@@ -86,7 +89,9 @@
 	border: 1px solid rgba(203, 213, 225, 0.8);
 	border-radius: 1rem;
 	padding: 1.5rem;
-	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	box-shadow:
+		0 4px 6px -1px rgba(0, 0, 0, 0.1),
+		0 2px 4px -1px rgba(0, 0, 0, 0.06);
 	transition: all 0.3s ease-in-out;
 	cursor: pointer;
 
@@ -110,7 +115,9 @@
 	font-weight: 600;
 	padding: 0.75rem 1.5rem;
 	border-radius: 0.5rem;
-	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	box-shadow:
+		0 4px 6px -1px rgba(0, 0, 0, 0.1),
+		0 2px 4px -1px rgba(0, 0, 0, 0.06);
 	transition: all 0.3s ease-in-out;
 
 	&:hover {
@@ -128,7 +135,9 @@
 	font-weight: 600;
 	padding: 0.625rem 1.25rem;
 	border-radius: 0.5rem;
-	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	box-shadow:
+		0 4px 6px -1px rgba(0, 0, 0, 0.1),
+		0 2px 4px -1px rgba(0, 0, 0, 0.06);
 	transition: all 0.3s ease-in-out;
 	cursor: pointer;
 
@@ -288,13 +297,13 @@
 }
 
 @utility hover-text-primary {
-	&::hover {
+	&:hover {
 		color: var(--color-primary);
 	}
 }
 
 @utility hover-text-accent {
-	&::hover {
+	&:hover {
 		color: var(--color-accent);
 	}
 }

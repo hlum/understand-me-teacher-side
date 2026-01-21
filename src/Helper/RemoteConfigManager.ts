@@ -1,5 +1,5 @@
-import { remoteConfig } from "../firebase/firebase";
 import { fetchAndActivate, getString } from "firebase/remote-config";
+import { remoteConfig } from "../firebase/firebase.js";
 
 const STORAGE_KEY = "cached_api_endpoint";
 const REMOTE_KEY = "API_ENDPOINT";
