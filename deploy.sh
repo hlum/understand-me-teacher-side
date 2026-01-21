@@ -7,7 +7,7 @@ set -e  # Exit immediately if a command fails
 
 IMAGE_NAME="teacherside"
 CONTAINER_NAME="teacherside-container"
-PORT="80:80"
+PORT="3000:3000"
 
 echo "🚀 Starting deployment..."
 
