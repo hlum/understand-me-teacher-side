@@ -1,6 +1,7 @@
+import { onAuthStateChanged, type User } from "@firebase/auth";
 import type { LollipopResponse } from "../Entity/LollipopResponse.js";
-import { APIError, DataParseError, NetworkError } from "./CustomErrors.js";
 import { auth } from "../firebase/firebase.js";
+import { APIError, DataParseError, NetworkError } from "./CustomErrors.js";
 import { RemoteConfigManager } from "./RemoteConfigManager.js";
 
 export class LollipopHelper {
@@ -65,6 +66,15 @@ export class LollipopHelper {
 		return `${baseURL}${path}?${searchParams.toString()}`;
 	}
 
+	private async waitForAuthReady(): Promise<User | null> {
+		return new Promise((resolve) => {
+			const unsubscribe = onAuthStateChanged(auth, (user) => {
+				unsubscribe(); // stop listening after first result
+				resolve(user);
+			});
+		});
+	}
+
 	/**
 	 * Get Firebase ID token from current user
 	 * @param requiresTeacherAuth Whether this request requires teacher authentication
@@ -72,14 +82,15 @@ export class LollipopHelper {
 	 * @throws Error if user is not authenticated
 	 */
 	private async getAuthToken(requiresTeacherAuth: boolean = false): Promise<string> {
-		const currentUser = auth.currentUser;
-		if (!currentUser) {
+		// Wait until Firebase finishes loading auth state
+		const user = auth.currentUser ?? (await this.waitForAuthReady());
+
+		if (!user) {
 			throw new Error("User must be authenticated to make API requests");
 		}
 
 		try {
-			const token = await currentUser.getIdToken();
-			return token;
+			return await user.getIdToken();
 		} catch (error) {
 			console.error("Failed to get Firebase ID token:", error);
 			throw error;
