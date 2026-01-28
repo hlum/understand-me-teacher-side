@@ -339,9 +339,6 @@ check_env_production() {
 deploy() {
     print_header "デプロイ開始"
 
-    echo "📥 最新のコードを取得中..."
-    git pull
-
     echo ""
     echo "🛑 コンテナを停止中（起動している場合）..."
     docker stop $CONTAINER_NAME 2>/dev/null || true
