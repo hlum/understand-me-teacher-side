@@ -305,7 +305,7 @@ check_env_production() {
         print_warning "$ENV_KEY が設定されていません"
 
         echo ""
-        echo "🔑 教師用APIキーの設定が必要です。"
+        echo "🔑 教師用認証キーの設定が必要です。"
         echo ""
         echo "このキーは、"
         echo "🧑‍🏫 新しい教師アカウントを登録する際の認証用キー"
@@ -314,7 +314,7 @@ check_env_production() {
         echo "※ 外部に漏れないよう、安全に管理してください。"
         echo ""
 
-        read -p "教師用APIキーを入力してください: " api_key
+        read -p "教師用認証キーを入力してください: " api_key
 
         if [ -z "$api_key" ]; then
             print_error "APIキーが入力されていません。デプロイを中止します。"
