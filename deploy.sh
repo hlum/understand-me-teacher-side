@@ -13,6 +13,9 @@ FIREBASE_DIR="src/firebase"
 FIREBASE_FILE="$FIREBASE_DIR/firebase.ts"
 FIREBASE_EXAMPLE="$FIREBASE_DIR/firebase.ts.example"
 
+ENV_FILE=".env.production"
+ENV_KEY="VITE_TEACHER_APIKEY"
+
 # 出力用の色
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -267,6 +270,71 @@ check_firebase_config() {
     fi
 }
 
+
+check_env_production() {
+    print_header ".env.production のチェック"
+
+    # .env.production が存在しない場合
+    if [ ! -f "$ENV_FILE" ]; then
+        print_warning ".env.production が見つかりません"
+
+        echo ""
+        echo "🔑 教師用APIキーの設定が必要です。"
+        echo ""
+        echo "このキーは、"
+        echo "🧑‍🏫 新しい教師アカウントを登録する際の認証用キー"
+        echo "として使用されます。"
+        echo ""
+        echo "※ 外部に漏れないよう、安全に管理してください。"
+        echo ""
+
+        read -p "教師用APIキーを入力してください: " api_key
+
+        if [ -z "$api_key" ]; then
+            print_error "APIキーが入力されていません。デプロイを中止します。"
+            exit 1
+        fi
+
+        echo "$ENV_KEY=$api_key" > "$ENV_FILE"
+        print_success ".env.production を作成しました"
+        return
+    fi
+
+    # .env.production はあるが KEY が無い or 空の場合
+    if ! grep -q "^$ENV_KEY=" "$ENV_FILE" || [ -z "$(grep "^$ENV_KEY=" "$ENV_FILE" | cut -d '=' -f2)" ]; then
+        print_warning "$ENV_KEY が設定されていません"
+
+        echo ""
+        echo "🔑 教師用APIキーの設定が必要です。"
+        echo ""
+        echo "このキーは、"
+        echo "🧑‍🏫 新しい教師アカウントを登録する際の認証用キー"
+        echo "として使用されます。"
+        echo ""
+        echo "※ 外部に漏れないよう、安全に管理してください。"
+        echo ""
+
+        read -p "教師用APIキーを入力してください: " api_key
+
+        if [ -z "$api_key" ]; then
+            print_error "APIキーが入力されていません。デプロイを中止します。"
+            exit 1
+        fi
+
+        # 既存キーを更新 or 追記
+        if grep -q "^$ENV_KEY=" "$ENV_FILE"; then
+            sed -i.bak "s/^$ENV_KEY=.*/$ENV_KEY=$api_key/" "$ENV_FILE"
+        else
+            echo "$ENV_KEY=$api_key" >> "$ENV_FILE"
+        fi
+
+        print_success "$ENV_KEY を .env.production に設定しました"
+    else
+        print_success ".env.production の設定は正常です"
+    fi
+}
+
+
 # メインのデプロイ処理
 deploy() {
     print_header "デプロイ開始"
@@ -310,6 +378,7 @@ main() {
 
     check_dependencies
     check_firebase_config
+    check_env_production
     deploy
 }
 
