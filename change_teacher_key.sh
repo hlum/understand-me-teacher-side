@@ -95,5 +95,4 @@ main() {
     update_API_key
     run_deploy
 }
-1
 main
