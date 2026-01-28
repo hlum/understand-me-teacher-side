@@ -372,10 +372,33 @@ deploy() {
     print_info "ログを確認: docker logs -f $CONTAINER_NAME"
 }
 
+
+check_sudo() {
+    if [ "$EUID" -ne 0 ]; then
+        print_header "実行権限エラー"
+
+        echo "❌ このスクリプトは sudo で実行する必要があります。"
+        echo ""
+        echo "理由:"
+        echo " - Docker の操作（起動・停止・ビルド）"
+        echo " - systemctl によるサービス操作"
+        echo " - 必要なファイルの作成・編集"
+        echo ""
+        echo "次のように実行してください:"
+        echo ""
+        echo "  sudo ./deploy.sh"
+        echo ""
+
+        exit 1
+    fi
+}
+
+
 # メイン実行
 main() {
     print_header "Understand Me Teacher Side デプロイ"
 
+    check_sudo
     check_dependencies
     check_firebase_config
     check_env_production
