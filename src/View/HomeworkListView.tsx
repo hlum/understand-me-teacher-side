@@ -1,9 +1,8 @@
 import { useParams } from "react-router-dom";
-import { useHomeworkListViewModel } from "../ViewModel/HomeworkListViewModel.js";
 import { ClassManager } from "../Manager/ClassManager.js";
 import { HomeworkManager } from "../Manager/HomeworkManager.js";
 import { useRouteManager } from "../Router/useRouteManager.js";
-import { handleAppError } from "@/Helper/handleAppError.js";
+import { useHomeworkListViewModel } from "../ViewModel/HomeworkListViewModel.js";
 import { HomeworkCard } from "./Components/HomeworkCard.js";
 import { Loading } from "./Components/Loading.js";
 
@@ -17,7 +16,18 @@ export const HomeworkListView = () => {
 		return <div className="flex justify-center items-center h-screen text-red-500 text-lg">クラスIDが提供されていません。</div>;
 	}
 
-	const { classDetail, homeworks, loading } = useHomeworkListViewModel(classID, classManager, homeworkManager);
+	const { classDetail, homeworks, loading, deleteClass } = useHomeworkListViewModel(classID, classManager, homeworkManager);
+
+	const handleDeleteClass = async () => {
+		if (!window.confirm(`「${classDetail?.name || "このクラス"}」を削除してもよろしいですか？この操作は取り消せません。`)) {
+			return;
+		}
+
+		const success = await deleteClass();
+		if (success) {
+			navigate.toMainDashboard();
+		}
+	};
 
 	if (loading) {
 		return <Loading />;
@@ -71,6 +81,12 @@ export const HomeworkListView = () => {
 								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
 							</svg>
 							課題を追加
+						</button>
+						<button onClick={handleDeleteClass} className="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex items-center disabled:opacity-50 disabled:cursor-not-allowed text-sm">
+							<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+							</svg>
+							クラスを削除
 						</button>
 					</div>
 				</div>

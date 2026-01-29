@@ -31,4 +31,6 @@ export interface ClassManagerInterface {
 	 * @throws APIError, NetworkError, DataParseError
 	 */
 	updateClass(newClass: Class): Promise<void>;
+
+	deleteClass(classID: string): Promise<void>;
 }

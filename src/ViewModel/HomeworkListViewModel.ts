@@ -1,9 +1,9 @@
-import { type HomeworkManagerInterface } from "../ManagerInterface/HomeworkManagerInterface.js";
-import { type Class } from "../Entity/Class.js";
 import { useEffect, useState } from "react";
+import { type Class } from "../Entity/Class.js";
 import { type Homework } from "../Entity/Homework.js";
-import { type ClassManagerInterface } from "../ManagerInterface/ClassManagerInterface.js";
 import { handleAppError } from "../Helper/handleAppError.js";
+import { type ClassManagerInterface } from "../ManagerInterface/ClassManagerInterface.js";
+import { type HomeworkManagerInterface } from "../ManagerInterface/HomeworkManagerInterface.js";
 
 export const useHomeworkListViewModel = (classID: string, classManager: ClassManagerInterface, homeworkManager: HomeworkManagerInterface) => {
 	const [classDetail, setClassDetail] = useState<Class | null>(null);
@@ -49,5 +49,18 @@ export const useHomeworkListViewModel = (classID: string, classManager: ClassMan
 		loadHomeworks();
 	}, [classDetail]);
 
-	return { classDetail, homeworks, loading };
+	const deleteClass = async (): Promise<boolean> => {
+		try {
+			setLoading(true);
+			await classManager.deleteClass(classID);
+			return true;
+		} catch (error: unknown) {
+			alert(handleAppError(error));
+			return false;
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	return { classDetail, homeworks, loading, deleteClass };
 };

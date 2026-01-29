@@ -100,4 +100,20 @@ export class ClassManager implements ClassManagerInterface {
 
 		LollipopHelper.instance.validateLollipopResponse(response, context);
 	}
+
+	async deleteClass(classID: string): Promise<void> {
+		const context = "ClassManager.deleteClass";
+		const endpoint = LollipopHelper.instance.buildEndpoint("/class/delete_class.php", {
+			class_id: classID,
+		});
+
+		const headers = await LollipopHelper.instance.buildHeaders(true);
+
+		const response = await LollipopHelper.instance.fetchAndDecodeLollipopResponse(endpoint, context, {
+			method: "DELETE",
+			headers: headers,
+		});
+
+		LollipopHelper.instance.validateLollipopResponse(response, context);
+	}
 }
