@@ -162,6 +162,8 @@ export const useHomeworkStatusViewModel = (
 
 	const handleResetSubmission = async (hw: HomeworkWithSubmissionStatus) => {
 		try {
+			const resetConfirmed = confirm(`本当に${hw.userStudentID}さんの提出をリセットしますか？\nリセットすると、学生の進捗状況が「未割り当て」に戻ります。`);
+			if (!resetConfirmed) return;
 			await homeworkManager.resetSubmission(hw.id, hw.userID);
 			await reload();
 		} catch (error) {
