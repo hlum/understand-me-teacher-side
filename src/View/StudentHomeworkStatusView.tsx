@@ -45,7 +45,10 @@ export const StudentHomeworkStatusView = () => {
 		<div className="page-bg min-h-screen p-8">
 			<div className="max-w-7xl mx-auto">
 				{/* ページタイトル */}
-				<h1 className="heading-gradient mb-8 text-center">{homeworkTitle}学生の進捗</h1>
+				<h1 className="heading-gradient mb-8 text-center">
+					<span className="text-red-500">{homeworkTitle} </span>
+					学生の進捗
+				</h1>
 
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 					{/* 左側：学生リスト */}
