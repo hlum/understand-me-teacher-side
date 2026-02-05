@@ -7,6 +7,6 @@ export const Paths = {
 	EDIT_HOMEWORK: "/editHomework/:homeworkID" as const,
 	CLASS_DETAIL: "/classDetail/:classID" as const,
 	CREATE_HOMEWORK: "/createHomework/:classID" as const,
-	STUDENT_HOMEWORK_STATUS: "/homeworkDetail/:homeworkID" as const,
+	STUDENT_HOMEWORK_STATUS: "/homeworkDetail/:homeworkID/:homeworkTitle" as const,
 	LOGIN: "/login" as const,
 };

@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { Pencil, Trash2, ChevronDown, ChevronUp } from "lucide-react";
 import { handleAppError } from "@/Helper/handleAppError.js";
 import { HomeworkManager } from "@/Manager/HomeworkManager.js";
 import { useRouteManager } from "@/Router/useRouteManager.js";
+import { ChevronDown, ChevronUp, Pencil, Trash2 } from "lucide-react";
+import { useState } from "react";
 
 export const HomeworkCard = (item: { id: string; title: string; description: string | null; dueDate: string | null }) => {
 	const [expandedCards, setExpandedCards] = useState<{ [key: string]: boolean }>({});
@@ -37,7 +37,7 @@ export const HomeworkCard = (item: { id: string; title: string; description: str
 	};
 
 	return (
-		<div key={item.id} onClick={() => navigate.toStudentHomeworkStatus(item.id)} className="card-hover relative p-5 group overflow-hidden break-words min-h-35">
+		<div key={item.id} onClick={() => navigate.toStudentHomeworkStatus(item.id, item.title)} className="card-hover relative p-5 group overflow-hidden break-words min-h-35">
 			{/* Title */}
 			<h3 className="text-xl font-semibold text-adaptive mb-2 pr-24">{item.title}</h3>
 

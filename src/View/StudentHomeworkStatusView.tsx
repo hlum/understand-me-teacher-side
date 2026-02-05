@@ -1,18 +1,19 @@
-import { useParams } from "react-router-dom";
-import { useHomeworkStatusViewModel } from "../ViewModel/HomeworkStatusViewModel.js";
-import { Loading } from "./Components/Loading.js";
-import { HomeworkManager } from "../Manager/HomeworkManager.js";
 import { QuestionWithChoicesManager } from "@/Manager/QuestionWithChoicesManager.js";
-import { QuestionAndChoicesCard } from "./Components/QuestionAndChoicesCard.js";
+import { RemarkManager } from "@/Manager/RemarkManager.js";
+import { useParams } from "react-router-dom";
+import { HomeworkManager } from "../Manager/HomeworkManager.js";
+import { useHomeworkStatusViewModel } from "../ViewModel/HomeworkStatusViewModel.js";
+import { DownloadCSVButton } from "./Components/DownloadCSVButton.js";
+import { FilterButton } from "./Components/FilterButton.js";
 import { GeneralInformationOfSubmission } from "./Components/GeneralInformationOfSubmission.js";
 import { HomeworkStatusItem } from "./Components/HomeworkStatusItem.js";
-import { RemarkManager } from "@/Manager/RemarkManager.js";
+import { Loading } from "./Components/Loading.js";
+import { QuestionAndChoicesCard } from "./Components/QuestionAndChoicesCard.js";
 import { SortButton } from "./Components/SortButton.js";
-import { FilterButton } from "./Components/FilterButton.js";
-import { DownloadCSVButton } from "./Components/DownloadCSVButton.js";
 
 export const StudentHomeworkStatusView = () => {
 	const { homeworkID } = useParams<{ homeworkID: string }>();
+	const { homeworkTitle } = useParams<{ homeworkTitle: string }>();
 
 	if (!homeworkID) {
 		return <div>Invalid homework ID</div>;
@@ -44,7 +45,7 @@ export const StudentHomeworkStatusView = () => {
 		<div className="page-bg min-h-screen p-8">
 			<div className="max-w-7xl mx-auto">
 				{/* ページタイトル */}
-				<h1 className="heading-gradient mb-8 text-center">学生の進捗</h1>
+				<h1 className="heading-gradient mb-8 text-center">{homeworkTitle}学生の進捗</h1>
 
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 					{/* 左側：学生リスト */}

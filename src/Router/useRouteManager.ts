@@ -14,7 +14,7 @@ export const useRouteManager = () => {
 		toEditHomework: (homeworkID: string) => navigate(paths.editHomework(homeworkID)),
 		toClassDetail: (classID: string) => navigate(paths.classDetail(classID)),
 		toCreateHomework: (classID: string) => navigate(paths.createHomework(classID)),
-		toStudentHomeworkStatus: (homeworkID: string) => navigate(paths.studentHomeworkStatus(homeworkID)),
+		toStudentHomeworkStatus: (homeworkID: string, homeworkTitle: string) => navigate(paths.studentHomeworkStatus(homeworkID, homeworkTitle)),
 
 		// Prevent browser back button
 		toLogin: () => navigate(paths.login(), { replace: true }),

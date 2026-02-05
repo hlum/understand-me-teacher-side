@@ -1,20 +1,20 @@
-import SignInView from "./View/SignInView.js";
-import { MainDashboardView } from "./View/MainDashboardView.js";
-import { Routes, Route } from "react-router-dom";
-import { ApiKeyCheckBeforeRegistration } from "./View/TeacherApiKeyValidationForm.js";
-import CreateClassView from "./View/CreateClassView.js";
-import EditClassView from "./View/EditClassView.js";
-import { HomeworkListView } from "./View/HomeworkListView.js";
-import { CreateHomeworkPage } from "./View/CreateHomeworkView.js";
-import { StudentHomeworkStatusView } from "./View/StudentHomeworkStatusView.js";
-import { Paths } from "./Router/Paths.js";
-import { GuestRoute } from "./Router/GuestRoute.js";
-import { ProtectedRoute } from "./Router/ProtectedRoute.js";
-import { NameRegistrationView } from "./View/NameRegistrationView.js";
-import { Loading } from "./View/Components/Loading.js";
-import { EditHomeworkView } from "./View/EditHomeworkView.js";
 import { useEffect } from "react";
+import { Route, Routes } from "react-router-dom";
 import { RemoteConfigManager } from "./Helper/RemoteConfigManager.js";
+import { GuestRoute } from "./Router/GuestRoute.js";
+import { Paths } from "./Router/Paths.js";
+import { ProtectedRoute } from "./Router/ProtectedRoute.js";
+import { Loading } from "./View/Components/Loading.js";
+import CreateClassView from "./View/CreateClassView.js";
+import { CreateHomeworkPage } from "./View/CreateHomeworkView.js";
+import EditClassView from "./View/EditClassView.js";
+import { EditHomeworkView } from "./View/EditHomeworkView.js";
+import { HomeworkListView } from "./View/HomeworkListView.js";
+import { MainDashboardView } from "./View/MainDashboardView.js";
+import { NameRegistrationView } from "./View/NameRegistrationView.js";
+import SignInView from "./View/SignInView.js";
+import { StudentHomeworkStatusView } from "./View/StudentHomeworkStatusView.js";
+import { ApiKeyCheckBeforeRegistration } from "./View/TeacherApiKeyValidationForm.js";
 
 const App = () => {
 	// Initialize Remote Config on app startup
@@ -144,7 +144,7 @@ const App = () => {
 				/>
 
 				{/* 生徒一人一人の課題状況ページ */}
-				<Route path={Paths.STUDENT_HOMEWORK_STATUS} element={<ProtectedRoute>{() => <StudentHomeworkStatusView />}</ProtectedRoute>} />
+				<Route path={Paths.STUDENT_HOMEWORK_STATUS} element={<ProtectedRoute>{() => <StudentHomeworkStatusView/>}</ProtectedRoute>} />
 			</Routes>
 		</div>
 	);

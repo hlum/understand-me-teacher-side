@@ -12,6 +12,6 @@ export const usePathBuilder = () => {
 		editHomework: (homeworkID: string) => Paths.EDIT_HOMEWORK.replace(":homeworkID", homeworkID),
 		classDetail: (classID: string) => Paths.CLASS_DETAIL.replace(":classID", classID),
 		createHomework: (classID: string) => Paths.CREATE_HOMEWORK.replace(":classID", classID),
-		studentHomeworkStatus: (homeworkID: string) => Paths.STUDENT_HOMEWORK_STATUS.replace(":homeworkID", homeworkID),
+		studentHomeworkStatus: (homeworkID: string, homeworkTitle: string) => Paths.STUDENT_HOMEWORK_STATUS.replace(":homeworkID", homeworkID).replace(":homeworkTitle", homeworkTitle),
 	};
 };
